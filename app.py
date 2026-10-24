@@ -60,35 +60,8 @@ def generate_pdf(df):
         return output.encode('latin1')
     return bytes(output)
 
-# --- APP CONFIG & FORCED CUSTOM STYLING ---
+# --- APP CONFIG & SESSION STATES ---
 st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
-
-st.markdown("""
-<style>
-    /* Force background gradient across the entire app window */
-    .stApp {
-        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%) !important;
-    }
-    /* Style sidebar */
-    [data-testid="stSidebar"] {
-        background-color: #f7f9fa !important;
-        border-right: 1px solid #e1e4e8 !important;
-    }
-    /* Custom button styling */
-    div.stButton > button {
-        background-color: #ff4b4b !important;
-        color: white !important;
-        border-radius: 8px !important;
-        padding: 0.5rem 1rem !important;
-        border: none !important;
-        font-weight: 600 !important;
-    }
-    div.stButton > button:hover {
-        background-color: #e03e3e !important;
-        color: white !important;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
@@ -150,6 +123,50 @@ app_mode = st.sidebar.radio(
     ],
     label_visibility="collapsed"
 )
+
+# --- COMPLETELY DISTINCT, VIBRANT COLOR PALETTES FOR EACH FEATURE ---
+bg_mapping = {
+    "Daily Log & Phase Tracker": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",     # Warm Sunset Peach
+    "AI Insights & Analytics": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",        # Cool Electric Blue
+    "Doctor Report Generator": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",        # Vivid Emerald Green
+    "AI Health Companion": "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",          # Golden Amber Sunset
+    "PCOS Risk Screener": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",           # Royal Violet & Indigo
+    "Medication Tracker": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",           # Hot Magenta Pink
+    "Habit Correlation": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",            # Turquoise Aqua
+    "Emergency & Clinics": "linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)",          # Crimson Alert Orange/Red
+    "Telugu Accessibility": "linear-gradient(135deg, #0acffe 0%, #495aff 100%)"          # Vibrant Cyan to Deep Blue
+}
+
+current_bg = bg_mapping.get(app_mode, "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)")
+
+st.markdown(f"""
+<style>
+    /* Dynamic Feature-Based Distinct Background */
+    [data-testid="stAppViewContainer"] {{
+        background: {current_bg} !important;
+        transition: background 0.6s ease-in-out;
+    }}
+    [data-testid="stMain"] {{
+        background: transparent !important;
+    }}
+    [data-testid="stSidebar"] {{
+        background-color: #ffffff !important;
+        border-right: 1px solid #e2e8f0 !important;
+    }}
+    div.stButton > button {{
+        background: #0f172a !important;
+        color: white !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1rem !important;
+        border: none !important;
+        font-weight: 600 !important;
+    }}
+    div.stButton > button:hover {{
+        background: #334155 !important;
+        color: white !important;
+    }}
+</style>
+""", unsafe_allow_html=True)
 
 # --- MAIN APP ROUTING ---
 
@@ -286,13 +303,13 @@ elif app_mode == "Emergency & Clinics":
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
             var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
-            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#ff4b4b; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
+            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#0f172a; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
         }
         function showError(error) {
             document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
         }
         </script>
-        <button onclick="getLocation()" style="background-color:#ff4b4b; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
+        <button onclick="getLocation()" style="background-color:#0f172a; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
         <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
         """
         components.html(loc_html, height=140)
