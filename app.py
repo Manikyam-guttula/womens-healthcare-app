@@ -63,26 +63,38 @@ page = st.sidebar.radio("Go to", [
 ])
 
 # PDF Generation Function
+from fpdf import FPDF
+import pandas as pd
+
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Helvetica", 'B', 16)
-    pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", ln=1, align='C')
-    pdf.set_font("Helvetica", size=10)
-    pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", new_x="LMARGIN", new_y="NEXT", align='C')
+    pdf.set_font("Arial", 'B', 16)
+    
+    # Title
+    pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", ln=1, align="C")
+    pdf.ln(5)
+    
+    # Timestamp
+    pdf.set_font("Arial", size=10)
+    pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
     pdf.ln(10)
     
-    pdf.set_font("Helvetica", 'B', 12)
-    pdf.cell(0, 10, "Logged Symptoms Summary:", new_x="LMARGIN", new_y="NEXT")
+    pdf.set_font("Arial", 'B', 10)
     
-    pdf.set_font("Helvetica", size=10)
-    for idx, row in df.iterrows():
-        text = f"Date: {row['date']} | Day {row['cycle_day']} | Symptom: {row['symptom']} | Severity: {row['severity']}/10 | Mood: {row['mood']}"
-        pdf.cell(0, 8, text, new_x="LMARGIN", new_y="NEXT")
-        if row['notes']:
-            pdf.cell(0, 6, f"   Notes: {row['notes']}", new_x="LMARGIN", new_y="NEXT")
+    # Table Headers
+    for col in df.columns:
+        pdf.cell(35, 10, str(col), border=1)
+    pdf.ln()
     
-    return pdf.output()
+    # Table Data
+    pdf.set_font("Arial", size=10)
+    for _, row in df.iterrows():
+        for val in row:
+            pdf.cell(35, 10, str(val), border=1)
+        pdf.ln()
+        
+    return pdf.output(dest='S').encode('latin1')
 
 # ---------------------------------------------------------
 # 1. Daily Log & Cycle Phase Tracker
