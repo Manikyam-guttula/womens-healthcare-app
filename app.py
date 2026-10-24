@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from fpdf import FPDF
-import hashlib
-import os
 import sqlite3
 
 # --- DATABASE SETUP ---
@@ -27,7 +25,7 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR FUNCTION ---
+# --- PDF GENERATOR (STABLE FPDF SYNTAX) ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -62,7 +60,7 @@ def generate_pdf(df):
     return bytes(output)
 
 # --- APP CONFIG & STATE ---
-st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="HerHealth AI - Women's Health & Wellness", page_icon="🩺", layout="wide")
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
@@ -102,11 +100,7 @@ app_mode = st.sidebar.radio(
     label_visibility="collapsed"
 )
 
-# --- LANGUAGE HELPER ---
-def t(en_text, te_text):
-    return te_text if st.session_state["lang"] == "Telugu" else en_text
-
-# --- MAIN APP ROUTING ---
+# --- MAIN NAVIGATION ROUTING ---
 
 if app_mode == "Daily Log & Phase Tracker":
     st.title("📅 Daily Log & Phase Tracker")
@@ -144,8 +138,7 @@ elif app_mode == "AI Insights & Analytics":
         fig = px.scatter(df, x="cycle_day", y="severity", color="mood", size="severity", title="Symptom Severity across Cycle Days")
         st.plotly_chart(fig, use_container_width=True)
     else:
-        info_text = "No logs recorded yet. Please add entries in the Daily Log section!"
-        st.info(info_text)
+        st.info("No logs recorded yet. Please add entries in the Daily Log section!")
 
 elif app_mode == "Doctor Report Generator":
     st.title("📄 Clinical Summary Report Exporter")
@@ -196,7 +189,7 @@ elif app_mode == "Medication Tracker":
         st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
 elif app_mode == "Habit Correlation":
-    st.title("🔄 Habit Correlation Engine")
+    st.title("📊 Habit Correlation Engine")
     st.write("Discover how hydration, sleep quality, and physical activity impact your symptom intensity.")
     st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
 
