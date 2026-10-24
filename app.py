@@ -253,26 +253,53 @@ elif app_mode == "Habit Correlation":
     st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
 
 elif app_mode == "Emergency & Clinics":
-    st.title("🚨 Emergency & Nearby Clinics")
-    st.write("Quick access to emergency helplines, nearby women's health clinics, and interactive route mapping.")
+    st.title("🚨 Emergency Services & All-India Clinic Finder")
+    st.write("Access 24/7 National Emergency Helplines or search for women's hospitals anywhere in India.")
     
     col_a, col_b = st.columns(2)
+    
     with col_a:
-        st.markdown("### ☎️ Emergency Contacts")
-        st.markdown("- **National Women's Helpline:** `1091`")
-        st.markdown("- **Emergency Ambulance:** `108` / `112`")
-        st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
+        st.markdown("### 🇮🇳 All-India Emergency Helplines")
+        st.markdown("- **National Emergency Number:** `112` (24/7 Medical / Police)")
+        st.markdown("- **National Women Helpline:** `1091`")
+        st.markdown("- **National Medical Ambulance:** `108`")
+        st.markdown("- **Women Helpline (NCW):** `7827170170`")
+        st.markdown("- **KIRAN Mental Health Helpline:** `1800-599-0019`")
         
-        st.markdown("### 🗺️ Live Navigation")
-        st.markdown("[Click here for turn-by-turn Google Maps Directions to Gachibowli Network Hospital](https://www.google.com/maps/search/?api=1&query=Gachibowli+Network+Hospital+Hyderabad)")
-
     with col_b:
-        st.markdown("### 📍 Hospital Location Map")
-        hospital_location = pd.DataFrame({
-            'lat': [17.4401],
-            'lon': [78.3489]
-        })
-        st.map(hospital_location, zoom=13)
+        st.markdown("### 🏥 All-India Hospital & Clinic Search")
+        user_city = st.text_input("Enter your City or Location in India:", "Hyderabad")
+        
+        # Major City Coordinates mapping for instant live map rendering
+        city_coords = {
+            "hyderabad": (17.3850, 78.4867),
+            "mumbai": (19.0760, 72.8777),
+            "delhi": (28.6139, 77.2090),
+            "bangalore": (12.9716, 77.5946),
+            "bengaluru": (12.9716, 77.5946),
+            "chennai": (13.0827, 80.2707),
+            "kolkata": (22.5726, 88.3639),
+            "pune": (18.5204, 73.8567),
+            "ahmedabad": (23.0225, 72.5714),
+            "jaipur": (26.9124, 75.7873),
+            "visakhapatnam": (17.6868, 83.2185),
+            "vijayawada": (16.5062, 80.6480)
+        }
+        
+        city_key = user_city.strip().lower()
+        if city_key in city_coords:
+            lat, lon = city_coords[city_key]
+        else:
+            lat, lon = 20.5937, 78.9629 # Default center of India
+            
+        hospital_df = pd.DataFrame({'lat': [lat], 'lon': [lon]})
+        st.map(hospital_df, zoom=11)
+        
+        # Dynamic Google Maps Navigation Link for any city in India
+        encoded_city = user_city.replace(" ", "+")
+        gmaps_url = f"https://www.google.com/maps/search/gynaecologist+womens+hospital+near+{encoded_city}"
+        
+        st.markdown(f"[👉 Click here to find Women's Hospitals near **{user_city}** on Google Maps]({gmaps_url})")
 
 elif app_mode == "Telugu Accessibility":
     st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
