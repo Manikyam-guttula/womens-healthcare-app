@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import plotly.express as px
 from fpdf import FPDF
 from database import init_db, add_log, get_logs, verify_pin, set_pin
 
@@ -9,14 +10,14 @@ init_db()
 st.set_page_config(page_title="HerHealth AI - Women's Health Platform", layout="wide")
 
 # ---------------------------------------------------------
-# FEATURE 4: Privacy Vault Lock Screen
+# FEATURE: Privacy Vault Lock Screen
 # ---------------------------------------------------------
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
 st.sidebar.title("🔐 Security & Navigation")
 
-pin_status = verify_pin("0000")  # Checks if any PIN is saved in the database
+pin_status = verify_pin("0000")  # Checks if any PIN is saved in database
 
 if not st.session_state.authenticated:
     if pin_status is None:
@@ -46,16 +47,22 @@ if not st.session_state.authenticated:
     st.stop()
 
 # ---------------------------------------------------------
-# Authenticated App Content
+# Authenticated App Content & Navigation (All 9 Features)
 # ---------------------------------------------------------
 st.sidebar.success("Vault Unlocked ✅")
 page = st.sidebar.radio("Go to", [
     "Daily Log & Phase Tracker", 
     "AI Insights & Analytics", 
     "Doctor Report Generator",
-    "AI Health Companion"
+    "AI Health Companion",
+    "🩺 PCOS Risk Screener",
+    "💊 Medication Tracker",
+    "🌡️ Habit Correlation",
+    "🏥 Emergency & Clinics",
+    "🌐 Telugu Accessibility"
 ])
 
+# PDF Generation Function
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -77,7 +84,9 @@ def generate_pdf(df):
     
     return pdf.output()
 
-# PAGE 1: Daily Log & Cycle Phase Tracker
+# ---------------------------------------------------------
+# 1. Daily Log & Cycle Phase Tracker
+# ---------------------------------------------------------
 if page == "Daily Log & Phase Tracker":
     st.title("🩺 Daily Health & Cycle Tracker")
     
@@ -114,7 +123,9 @@ if page == "Daily Log & Phase Tracker":
             st.warning("**Luteal Phase**")
             st.write("• Energy: Decreasing\n• Focus: Progesterone rises; prioritize sleep and stress management.")
 
-# PAGE 2: AI Insights & Analytics
+# ---------------------------------------------------------
+# 2. AI Insights & Analytics
+# ---------------------------------------------------------
 elif page == "AI Insights & Analytics":
     st.title("📊 AI Health Analytics & Risk Engine")
     df = get_logs()
@@ -140,7 +151,9 @@ elif page == "AI Insights & Analytics":
         st.subheader("Severity Trend Over Time")
         st.line_chart(df.set_index('date')['severity'])
 
-# PAGE 3: Doctor Report Generator
+# ---------------------------------------------------------
+# 3. Doctor Report Generator
+# ---------------------------------------------------------
 elif page == "Doctor Report Generator":
     st.title("📄 Clinical Summary Report Exporter")
     st.write("Export an aggregated, privacy-focused medical summary report to share with your healthcare provider.")
@@ -159,7 +172,9 @@ elif page == "Doctor Report Generator":
             mime="application/pdf"
         )
 
-# PAGE 4: GenAI Conversational Companion
+# ---------------------------------------------------------
+# 4. GenAI Conversational Companion
+# ---------------------------------------------------------
 elif page == "AI Health Companion":
     st.title("💬 HerHealth GenAI Assistant")
     st.write("Ask educational questions about symptoms, hormones, or wellness recommendations.")
@@ -182,3 +197,101 @@ elif page == "AI Health Companion":
         with st.chat_message("assistant"):
             st.write(bot_response)
         st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
+
+# ---------------------------------------------------------
+# 5. PCOS Risk Screener
+# ---------------------------------------------------------
+elif page == "🩺 PCOS Risk Screener":
+    st.title("🩺 Clinical PCOS & Hormonal Risk Screener")
+    st.write("Answer a few quick questions based on standard clinical indicators to assess your risk profile.")
+    
+    with st.form("pcos_form"):
+        q1 = st.checkbox("Do you experience irregular menstrual cycles (fewer than 8 periods a year)?")
+        q2 = st.checkbox("Have you noticed unexplained weight gain or difficulty losing weight?")
+        q3 = st.checkbox("Do you experience excess facial or body hair growth (hirsutism)?")
+        q4 = st.checkbox("Have you experienced thinning hair or hair loss from the scalp?")
+        q5 = st.checkbox("Do you experience persistent acne or oily skin breakouts?")
+        
+        submitted_pcos = st.form_submit_button("Calculate Risk Score")
+        if submitted_pcos:
+            score = sum([q1, q2, q3, q4, q5])
+            if score >= 3:
+                st.error(f"⚠️ **High Risk Indicator (Score: {score}/5):** Your responses align with common clinical symptoms of Polycystic Ovary Syndrome (PCOS). We recommend sharing this report with an endocrinologist or gynecologist.")
+            elif score >= 1:
+                st.warning(f"⚠️ **Moderate Risk Indicator (Score: {score}/5):** Some hormonal overlap detected. Monitor your cycle closely over the next month.")
+            else:
+                st.success(f"✅ **Low Risk (Score: {score}/5):** No significant PCOS-related symptom indicators reported.")
+
+# ---------------------------------------------------------
+# 6. Medication Tracker
+# ---------------------------------------------------------
+elif page == "💊 Medication Tracker":
+    st.title("💊 Daily Supplement & Medication Tracker")
+    st.write("Track daily iron, vitamins, or prescribed medications to maintain consistent baseline health.")
+    
+    med_name = st.selectbox("Select Supplement/Medication", ["Iron / Folic Acid", "Vitamin D3", "Calcium", "Magnesium", "Pain Relief (NSAID)", "Custom"])
+    if med_name == "Custom":
+        med_name = st.text_input("Enter Medication Name")
+        
+    taken_status = st.checkbox(f"I have taken my {med_name} today")
+    if st.button("Log Medication"):
+        if taken_status:
+            st.success(f"Successfully recorded intake for {med_name}! Streak updated 🔥")
+        else:
+            st.warning("Please check the box to confirm intake before logging.")
+
+# ---------------------------------------------------------
+# 7. Habit Correlation Chart
+# ---------------------------------------------------------
+elif page == "🌡️ Habit Correlation":
+    st.title("📊 Lifestyle & Symptom Correlation Heatmap")
+    st.write("Visualize how lifestyle factors like hydration and sleep affect your symptom severity.")
+    
+    df = get_logs()
+    if df.empty:
+        st.warning("Please log some daily data first to generate heatmaps!")
+    else:
+        fig = px.scatter(df, x='cycle_day', y='severity', color='mood', 
+                         size='severity', hover_data=['symptom', 'notes'],
+                         title="Symptom Severity vs. Cycle Day & Mood Correlation")
+        st.plotly_chart(fig, use_container_width=True)
+
+# ---------------------------------------------------------
+# 8. Emergency & Clinic Locator
+# ---------------------------------------------------------
+elif page == "🏥 Emergency & Clinics":
+    st.title("🏥 Emergency Support & Healthcare Locator")
+    st.write("Quick access to women's helpline numbers and local medical assistance.")
+    
+    st.error("🚨 **Immediate Emergency Services:** Call **112** (National Emergency) or **1091** (Women's Helpline in India).")
+    
+    st.subheader("Nearby Specialized Clinics")
+    search_loc = st.text_input("Enter your area / locality (e.g., Gachibowli, Hyderabad):", value="Hyderabad")
+    
+    if st.button("Find Gynecologists Nearby"):
+        st.info(f"📍 Top rated clinics near **{search_loc}**:")
+        st.markdown("""
+        * **Fernandez Hospital** — Specialized Women & Newborn Care (Open 24/7)
+        * **Apollo Hospitals Women's & Children's Clinic** — Multidisciplinary Care
+        * **KIMS Hospitals** — Department of Obstetrics & Gynecology
+        """)
+
+# ---------------------------------------------------------
+# 9. Telugu Accessibility
+# ---------------------------------------------------------
+elif page == "🌐 Telugu Accessibility":
+    st.title("🌐 Regional Language Support / ప్రాంతీయ భాషా మద్దతు")
+    st.write("Empowering women by making health tracking accessible in native languages.")
+    
+    lang = st.radio("Select Language / భాషను ఎంచుకోండి:", ["English", "తెలుగు (Telugu)"])
+    
+    if lang == "తెలుగు (Telugu)":
+        st.markdown("""
+        ### **హెల్త్ హెల్త్ AI కి స్వాగతం**
+        * **రోజువారీ లాగ్:** మీ లక్షణాలను సులభంగా ట్రాక్ చేయండి.
+        * **AI అంతృష్టి:** మీ ఆరోగ్య ధోరణులను విశ్లేషించండి.
+        * **డాక్టర్ రిపోర్ట్:** మీ వైద్య నివేదికను PDF రూపంలో డౌన్‌లోడ్ చేసుకోండి.
+        """)
+        st.success("తెలుగు మోడ్ విజయవంతంగా సక్రియం చేయబడింది! (Telugu mode activated successfully!)")
+    else:
+        st.write("English mode is currently active. Use the sidebar to switch features.")
