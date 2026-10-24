@@ -195,3 +195,16 @@ elif app_mode == "Habit Correlation":
 
 elif app_mode == "Emergency & Clinics":
     st.title("🚨 Emergency & Nearby Clinics")
+    st.write("Quick access to emergency helplines and nearby women's health clinics.")
+    st.markdown("- **National Women's Helpline:** 1091")
+    st.markdown("- **Emergency Ambulance:** 108 / 112")
+    st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
+
+elif app_mode == "Telugu Accessibility":
+    st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
+    st.write("Switch interface preferences to Telugu.")
+    lang_choice = st.radio("Select Language / భాషను ఎంచుకోండి", ["English", "Telugu"], index=0 if st.session_state["lang"]=="English" else 1)
+    if st.button("Apply Language Preference"):
+        st.session_state["lang"] = lang_choice
+        st.success(f"Language successfully switched to {lang_choice}!")
+        st.rerun()
