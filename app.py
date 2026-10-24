@@ -59,8 +59,32 @@ def generate_pdf(df):
         return output.encode('latin1')
     return bytes(output)
 
-# --- APP CONFIG & STATE ---
+# --- APP CONFIG & CUSTOM STYLING ---
 st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
+
+st.markdown("""
+<style>
+    .stApp {
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    }
+    [data-testid="stSidebar"] {
+        background-color: #f7f9fa;
+        border-right: 1px solid #e1e4e8;
+    }
+    div.stButton > button {
+        background-color: #ff4b4b;
+        color: white;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        border: none;
+        font-weight: 600;
+    }
+    div.stButton > button:hover {
+        background-color: #e03e3e;
+        color: white;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
@@ -195,10 +219,25 @@ elif app_mode == "Habit Correlation":
 
 elif app_mode == "Emergency & Clinics":
     st.title("🚨 Emergency & Nearby Clinics")
-    st.write("Quick access to emergency helplines and nearby women's health clinics.")
-    st.markdown("- **National Women's Helpline:** 1091")
-    st.markdown("- **Emergency Ambulance:** 108 / 112")
-    st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
+    st.write("Quick access to emergency helplines, nearby women's health clinics, and interactive route mapping.")
+    
+    col_a, col_b = st.columns(2)
+    with col_a:
+        st.markdown("### ☎️ Emergency Contacts")
+        st.markdown("- **National Women's Helpline:** `1091`")
+        st.markdown("- **Emergency Ambulance:** `108` / `112`")
+        st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
+        
+        st.markdown("### 🗺️ Live Navigation")
+        st.markdown("[Click here for turn-by-turn Google Maps Directions to Gachibowli Network Hospital](https://www.google.com/maps/search/?api=1&query=Gachibowli+Network+Hospital+Hyderabad)")
+
+    with col_b:
+        st.markdown("### 📍 Hospital Location Map")
+        hospital_location = pd.DataFrame({
+            'lat': [17.4401],
+            'lon': [78.3489]
+        })
+        st.map(hospital_location, zoom=13)
 
 elif app_mode == "Telugu Accessibility":
     st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
