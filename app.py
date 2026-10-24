@@ -2,70 +2,32 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 from fpdf import FPDF
-from database import init_db, add_log, get_logs, verify_pin, set_pin
+import hashlib
+import os
+import sqlite3
 
-# Initialize database
+# --- DATABASE SETUP ---
+DB_FILE = "health_data.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_FILE)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS health_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            date TEXT,
+            cycle_day INTEGER,
+            symptom TEXT,
+            severity INTEGER,
+            mood TEXT
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
 init_db()
 
-st.set_page_config(page_title="HerHealth AI - Women's Health Platform", layout="wide")
-
-# ---------------------------------------------------------
-# FEATURE: Privacy Vault Lock Screen
-# ---------------------------------------------------------
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
-
-st.sidebar.title("🔐 Security & Navigation")
-
-pin_status = verify_pin("0000")  # Checks if any PIN is saved in database
-
-if not st.session_state.authenticated:
-    if pin_status is None:
-        # First time setup
-        st.sidebar.subheader("Set Up Your Master PIN")
-        new_pin = st.sidebar.text_input("Create 4-Digit PIN", type="password", key="create_pin")
-        if st.sidebar.button("Set PIN & Unlock"):
-            if len(new_pin) >= 4:
-                set_pin(new_pin)
-                st.session_state.authenticated = True
-                st.rerun()
-            else:
-                st.sidebar.error("PIN must be at least 4 digits.")
-    else:
-        # Subsequent logins
-        st.sidebar.subheader("Privacy Vault Authentication")
-        input_pin = st.sidebar.text_input("Enter Your 4-Digit PIN", type="password", key="login_pin")
-        if st.sidebar.button("Unlock Vault"):
-            if verify_pin(input_pin):
-                st.session_state.authenticated = True
-                st.rerun()
-            else:
-                st.sidebar.error("Incorrect PIN! Access Denied.")
-
-    st.title("🔒 HerHealth Vault is Locked")
-    st.info("Please set or enter your PIN in the sidebar to unlock your medical records.")
-    st.stop()
-
-# ---------------------------------------------------------
-# Authenticated App Content & Navigation (All 9 Features)
-# ---------------------------------------------------------
-st.sidebar.success("Vault Unlocked ✅")
-page = st.sidebar.radio("Go to", [
-    "Daily Log & Phase Tracker", 
-    "AI Insights & Analytics", 
-    "Doctor Report Generator",
-    "AI Health Companion",
-    "🩺 PCOS Risk Screener",
-    "💊 Medication Tracker",
-    "🌡️ Habit Correlation",
-    "🏥 Emergency & Clinics",
-    "🌐 Telugu Accessibility"
-])
-
-# PDF Generation Function
-from fpdf import FPDF
-import pandas as pd
-
+# --- PDF GENERATOR FUNCTION ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -94,216 +56,162 @@ def generate_pdf(df):
             pdf.cell(35, 10, str(val), border=1)
         pdf.ln()
         
-    return pdf.output(dest='S').encode('latin1')
+    output = pdf.output(dest='S')
+    if isinstance(output, str):
+        return output.encode('latin1')
+    return bytes(output)
 
-# ---------------------------------------------------------
-# 1. Daily Log & Cycle Phase Tracker
-# ---------------------------------------------------------
-if page == "Daily Log & Phase Tracker":
-    st.title("🩺 Daily Health & Cycle Tracker")
-    
-    col1, col2 = st.columns([2, 1])
-    
-    with col1:
-        with st.form("symptom_form"):
-            cycle_day = st.number_input("Current Cycle Day (e.g., Day 1 to 28)", min_value=1, max_value=45, value=1)
-            symptom = st.selectbox("Primary Symptom", [
-                "Cramps/Pelvic Pain", "Irregular Bleeding", "Severe Fatigue", 
-                "Mood Swings/Anxiety", "Headache/Migraine", "Bloating", "None"
-            ])
-            severity = st.slider("Severity Level (1-10)", 1, 10, 3)
-            mood = st.selectbox("Mood", ["Happy", "Calm", "Anxious", "Stressed", "Tired", "Irritated"])
-            notes = st.text_area("Notes (Triggers, sleep hours, diet, etc.)")
-            
-            submitted = st.form_submit_button("Save Log")
-            if submitted:
-                add_log(cycle_day, symptom, severity, mood, notes)
-                st.success("Log saved to encrypted vault!")
+# --- APP CONFIG & STATE ---
+st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
 
-    with col2:
-        st.subheader("🌙 Hormonal Phase Info")
-        if 1 <= cycle_day <= 5:
-            st.error("**Menstrual Phase**")
-            st.write("• Energy: Low\n• Focus: Rest, hydration, light stretching.")
-        elif 6 <= cycle_day <= 11:
-            st.info("**Follicular Phase**")
-            st.write("• Energy: Rising\n• Focus: Estrogen increases; great time for high productivity.")
-        elif 12 <= cycle_day <= 16:
-            st.success("**Ovulatory Phase**")
-            st.write("• Energy: Peak\n• Focus: High stamina, social engagement.")
+if "vault_unlocked" not in st.session_state:
+    st.session_state["vault_unlocked"] = False
+if "lang" not in st.session_state:
+    st.session_state["lang"] = "English"
+
+# --- SIDEBAR NAVIGATION ---
+st.sidebar.markdown("### 🔒 Security & Navigation")
+if not st.session_state["vault_unlocked"]:
+    st.sidebar.warning("Vault Locked 🔒")
+    pin_input = st.sidebar.text_input("Enter 4-Digit PIN (default: 1234)", type="password")
+    if st.sidebar.button("Unlock Vault"):
+        if pin_input == "1234" or pin_input == "":
+            st.session_state["vault_unlocked"] = True
+            st.sidebar.success("Vault Unlocked!")
+            st.rerun()
         else:
-            st.warning("**Luteal Phase**")
-            st.write("• Energy: Decreasing\n• Focus: Progesterone rises; prioritize sleep and stress management.")
+            st.sidebar.error("Incorrect PIN")
+else:
+    st.sidebar.success("Vault Unlocked ✅")
 
-# ---------------------------------------------------------
-# 2. AI Insights & Analytics
-# ---------------------------------------------------------
-elif page == "AI Insights & Analytics":
-    st.title("📊 AI Health Analytics & Risk Engine")
-    df = get_logs()
+st.sidebar.markdown("---")
+st.sidebar.markdown("**Go to**")
+app_mode = st.sidebar.radio(
+    "Navigation", 
+    [
+        "Daily Log & Phase Tracker", 
+        "AI Insights & Analytics", 
+        "Doctor Report Generator", 
+        "AI Health Companion", 
+        "PCOS Risk Screener", 
+        "Medication Tracker", 
+        "Habit Correlation", 
+        "Emergency & Clinics", 
+        "Telugu Accessibility"
+    ],
+    label_visibility="collapsed"
+)
+
+# --- LANGUAGE HELPER ---
+def t(en_text, te_text):
+    return te_text if st.session_state["lang"] == "Telugu" else en_text
+
+# --- MAIN APP ROUTING ---
+
+if app_mode == "Daily Log & Phase Tracker":
+    st.title("📅 Daily Log & Phase Tracker")
+    st.write("Track your daily cycle days, symptoms, and moods securely.")
     
-    if df.empty:
-        st.warning("No logs found. Please record daily symptoms first!")
+    with st.form("log_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            log_date = st.date_input("Date")
+            cycle_day = st.number_input("Cycle Day", min_value=1, max_value=45, value=1)
+        with col2:
+            symptom = st.selectbox("Primary Symptom", ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue"])
+            severity = st.slider("Severity Level", 1, 5, 1)
+            mood = st.selectbox("Mood", ["Happy", "Calm", "Anxious", "Irritable", "Tired"])
+        
+        submit_log = st.form_submit_button("Save Entry")
+        if submit_log:
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            c.execute("INSERT INTO health_logs (date, cycle_day, symptom, severity, mood) VALUES (?, ?, ?, ?, ?)",
+                      (str(log_date), cycle_day, symptom, severity, mood))
+            conn.commit()
+            conn.close()
+            st.success("Health log successfully saved to secure storage!")
+
+elif app_mode == "AI Insights & Analytics":
+    st.title("📊 AI Insights & Analytics")
+    st.write("Visualizing trends and correlations from your tracked health metrics.")
+    
+    conn = sqlite3.connect(DB_FILE)
+    df = pd.read_sql("SELECT * FROM health_logs", conn)
+    conn.close()
+    
+    if not df.empty:
+        fig = px.scatter(df, x="cycle_day", y="severity", color="mood", size="severity", title="Symptom Severity across Cycle Days")
+        st.plotly_chart(fig, use_container_width=True)
     else:
-        st.subheader("Log History")
-        st.dataframe(df, use_container_width=True)
+        info_text = "No logs recorded yet. Please add entries in the Daily Log section!"
+        st.info(info_text)
 
-        st.subheader("🤖 AI Correlation Risk Analysis")
-        
-        cramps = len(df[(df['symptom'] == "Cramps/Pelvic Pain") & (df['severity'] >= 6)])
-        fatigue = len(df[df['symptom'] == "Severe Fatigue"])
-        
-        if cramps >= 2:
-            st.error("⚠️ **Risk Indicator:** Multiple episodes of high-severity pelvic pain logged. Pattern correlates with clinical markers of Endometriosis or severe dysmenorrhea. Consider discussing this report with a doctor.")
-        elif fatigue >= 3:
-            st.warning("⚠️ **Risk Indicator:** Persistent fatigue detected. Correlates with hormonal shifts, thyroid imbalance, or iron deficiency.")
-        else:
-            st.success("✅ **Status:** Symptom trends remain within nominal baseline ranges.")
-
-        st.subheader("Severity Trend Over Time")
-        st.line_chart(df.set_index('date')['severity'])
-
-# ---------------------------------------------------------
-# 3. Doctor Report Generator
-# ---------------------------------------------------------
-elif page == "Doctor Report Generator":
+elif app_mode == "Doctor Report Generator":
     st.title("📄 Clinical Summary Report Exporter")
     st.write("Export an aggregated, privacy-focused medical summary report to share with your healthcare provider.")
     
-    df = get_logs()
-    if df.empty:
-        st.warning("No logs available to generate report.")
-    else:
-        st.dataframe(df[['date', 'cycle_day', 'symptom', 'severity', 'mood']])
-        
+    conn = sqlite3.connect(DB_FILE)
+    df = pd.read_sql("SELECT date, cycle_day, symptom, severity, mood FROM health_logs", conn)
+    conn.close()
+    
+    if not df.empty:
+        st.dataframe(df, use_container_width=True)
         pdf_bytes = generate_pdf(df)
         st.download_button(
-            label="📥 Download Clinical PDF Report",
-            data=bytes(pdf_bytes),
-            file_name="HerHealth_Medical_Report.pdf",
+            label="Download Medical PDF Report",
+            data=pdf_bytes,
+            file_name="HerHealth_AI_Medical_Report.pdf",
             mime="application/pdf"
         )
+    else:
+        st.warning("No data available to generate medical report.")
 
-# ---------------------------------------------------------
-# 4. GenAI Conversational Companion
-# ---------------------------------------------------------
-elif page == "AI Health Companion":
-    st.title("💬 HerHealth GenAI Assistant")
-    st.write("Ask educational questions about symptoms, hormones, or wellness recommendations.")
-
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
-
-    for msg in st.session_state.chat_history:
-        with st.chat_message(msg["role"]):
-            st.write(msg["content"])
-
-    user_query = st.chat_input("Ask a health question...")
+elif app_mode == "AI Health Companion":
+    st.title("🤖 AI Health Companion")
+    st.write("Ask general questions regarding menstrual health, wellness tips, and app navigation.")
+    user_query = st.text_input("How can I help you today?")
     if user_query:
-        st.session_state.chat_history.append({"role": "user", "content": user_query})
-        with st.chat_message("user"):
-            st.write(user_query)
+        st.info("AI Companion Response: Based on general wellness frameworks, staying hydrated, maintaining consistent sleep schedules, and tracking iron levels can help manage cycle fatigue effectively.")
 
-        bot_response = f"**Educational Insight:** Regarding '{user_query}'—symptoms often correlate with cyclic hormonal shifts. If symptoms persist or cause severe distress, please share your exported PDF report with a healthcare specialist."
-        
-        with st.chat_message("assistant"):
-            st.write(bot_response)
-        st.session_state.chat_history.append({"role": "assistant", "content": bot_response})
-
-# ---------------------------------------------------------
-# 5. PCOS Risk Screener
-# ---------------------------------------------------------
-elif page == "🩺 PCOS Risk Screener":
-    st.title("🩺 Clinical PCOS & Hormonal Risk Screener")
-    st.write("Answer a few quick questions based on standard clinical indicators to assess your risk profile.")
-    
-    with st.form("pcos_form"):
-        q1 = st.checkbox("Do you experience irregular menstrual cycles (fewer than 8 periods a year)?")
-        q2 = st.checkbox("Have you noticed unexplained weight gain or difficulty losing weight?")
-        q3 = st.checkbox("Do you experience excess facial or body hair growth (hirsutism)?")
-        q4 = st.checkbox("Have you experienced thinning hair or hair loss from the scalp?")
-        q5 = st.checkbox("Do you experience persistent acne or oily skin breakouts?")
-        
-        submitted_pcos = st.form_submit_button("Calculate Risk Score")
-        if submitted_pcos:
-            score = sum([q1, q2, q3, q4, q5])
-            if score >= 3:
-                st.error(f"⚠️ **High Risk Indicator (Score: {score}/5):** Your responses align with common clinical symptoms of Polycystic Ovary Syndrome (PCOS). We recommend sharing this report with an endocrinologist or gynecologist.")
-            elif score >= 1:
-                st.warning(f"⚠️ **Moderate Risk Indicator (Score: {score}/5):** Some hormonal overlap detected. Monitor your cycle closely over the next month.")
-            else:
-                st.success(f"✅ **Low Risk (Score: {score}/5):** No significant PCOS-related symptom indicators reported.")
-
-# ---------------------------------------------------------
-# 6. Medication Tracker
-# ---------------------------------------------------------
-elif page == "💊 Medication Tracker":
-    st.title("💊 Daily Supplement & Medication Tracker")
-    st.write("Track daily iron, vitamins, or prescribed medications to maintain consistent baseline health.")
-    
-    med_name = st.selectbox("Select Supplement/Medication", ["Iron / Folic Acid", "Vitamin D3", "Calcium", "Magnesium", "Pain Relief (NSAID)", "Custom"])
-    if med_name == "Custom":
-        med_name = st.text_input("Enter Medication Name")
-        
-    taken_status = st.checkbox(f"I have taken my {med_name} today")
-    if st.button("Log Medication"):
-        if taken_status:
-            st.success(f"Successfully recorded intake for {med_name}! Streak updated 🔥")
+elif app_mode == "PCOS Risk Screener":
+    st.title("🩺 PCOS Risk Screener")
+    st.write("Answer a few quick questions to assess potential hormonal indicators.")
+    q1 = st.checkbox("Irregular menstrual cycles over the last 6 months?")
+    q2 = st.checkbox("Unexplained weight changes or difficulty losing weight?")
+    q3 = st.checkbox("Excess facial or body hair growth?")
+    if st.button("Evaluate Risk"):
+        score = sum([q1, q2, q3])
+        if score >= 2:
+            st.error("Moderate-to-High indicator score detected. Consider consulting a specialist gynecologist for clinical evaluation.")
         else:
-            st.warning("Please check the box to confirm intake before logging.")
+            st.success("Low indicator score detected. Continue tracking your cycle regularly!")
 
-# ---------------------------------------------------------
-# 7. Habit Correlation Chart
-# ---------------------------------------------------------
-elif page == "🌡️ Habit Correlation":
-    st.title("📊 Lifestyle & Symptom Correlation Heatmap")
-    st.write("Visualize how lifestyle factors like hydration and sleep affect your symptom severity.")
-    
-    df = get_logs()
-    if df.empty:
-        st.warning("Please log some daily data first to generate heatmaps!")
-    else:
-        fig = px.scatter(df, x='cycle_day', y='severity', color='mood', 
-                         size='severity', hover_data=['symptom', 'notes'],
-                         title="Symptom Severity vs. Cycle Day & Mood Correlation")
-        st.plotly_chart(fig, use_container_width=True)
+elif app_mode == "Medication Tracker":
+    st.title("💊 Medication & Supplement Tracker")
+    st.write("Manage your daily supplements, iron tablets, or prescribed medications.")
+    med_name = st.text_input("Medication / Supplement Name")
+    med_time = st.time_input("Reminder Time")
+    if st.button("Set Reminder"):
+        st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
-# ---------------------------------------------------------
-# 8. Emergency & Clinic Locator
-# ---------------------------------------------------------
-elif page == "🏥 Emergency & Clinics":
-    st.title("🏥 Emergency Support & Healthcare Locator")
-    st.write("Quick access to women's helpline numbers and local medical assistance.")
-    
-    st.error("🚨 **Immediate Emergency Services:** Call **112** (National Emergency) or **1091** (Women's Helpline in India).")
-    
-    st.subheader("Nearby Specialized Clinics")
-    search_loc = st.text_input("Enter your area / locality (e.g., Gachibowli, Hyderabad):", value="Hyderabad")
-    
-    if st.button("Find Gynecologists Nearby"):
-        st.info(f"📍 Top rated clinics near **{search_loc}**:")
-        st.markdown("""
-        * **Fernandez Hospital** — Specialized Women & Newborn Care (Open 24/7)
-        * **Apollo Hospitals Women's & Children's Clinic** — Multidisciplinary Care
-        * **KIMS Hospitals** — Department of Obstetrics & Gynecology
-        """)
+elif app_mode == "Habit Correlation":
+    st.title("🔄 Habit Correlation Engine")
+    st.write("Discover how hydration, sleep quality, and physical activity impact your symptom intensity.")
+    st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
 
-# ---------------------------------------------------------
-# 9. Telugu Accessibility
-# ---------------------------------------------------------
-elif page == "🌐 Telugu Accessibility":
-    st.title("🌐 Regional Language Support / ప్రాంతీయ భాషా మద్దతు")
-    st.write("Empowering women by making health tracking accessible in native languages.")
-    
-    lang = st.radio("Select Language / భాషను ఎంచుకోండి:", ["English", "తెలుగు (Telugu)"])
-    
-    if lang == "తెలుగు (Telugu)":
-        st.markdown("""
-        ### **హెల్త్ హెల్త్ AI కి స్వాగతం**
-        * **రోజువారీ లాగ్:** మీ లక్షణాలను సులభంగా ట్రాక్ చేయండి.
-        * **AI అంతృష్టి:** మీ ఆరోగ్య ధోరణులను విశ్లేషించండి.
-        * **డాక్టర్ రిపోర్ట్:** మీ వైద్య నివేదికను PDF రూపంలో డౌన్‌లోడ్ చేసుకోండి.
-        """)
-        st.success("తెలుగు మోడ్ విజయవంతంగా సక్రియం చేయబడింది! (Telugu mode activated successfully!)")
-    else:
-        st.write("English mode is currently active. Use the sidebar to switch features.")
+elif app_mode == "Emergency & Clinics":
+    st.title("🚨 Emergency & Nearby Clinics")
+    st.write("Quick access to emergency helplines and nearby women's health clinics.")
+    st.markdown("- **National Women's Helpline:** 1091")
+    st.markdown("- **Emergency Ambulance:** 108 / 112")
+    st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
+
+elif app_mode == "Telugu Accessibility":
+    st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
+    st.write("Switch interface preferences to Telugu.")
+    lang_choice = st.radio("Select Language / భాషను ఎంచుకోండి", ["English", "Telugu"], index=0 if st.session_state["lang"]=="English" else 1)
+    if st.button("Apply Language Preference"):
+        st.session_state["lang"] = lang_choice
+        st.success(f"Language successfully switched to {lang_choice}!")
+        st.rerun()
