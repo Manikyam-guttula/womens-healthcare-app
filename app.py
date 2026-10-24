@@ -67,7 +67,7 @@ def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Helvetica", 'B', 16)
-    pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", new_x="LMARGIN", new_y="NEXT", align='C')
+    pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", ln=1, align='C')
     pdf.set_font("Helvetica", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", new_x="LMARGIN", new_y="NEXT", align='C')
     pdf.ln(10)
