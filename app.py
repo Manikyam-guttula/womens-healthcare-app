@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 from fpdf import FPDF
 import sqlite3
+import streamlit.components.v1 as components
 
 # --- DATABASE SETUP ---
 DB_FILE = "health_data.db"
@@ -253,8 +254,8 @@ elif app_mode == "Habit Correlation":
     st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
 
 elif app_mode == "Emergency & Clinics":
-    st.title("🚨 Emergency Services & All-India Clinic Finder")
-    st.write("Access 24/7 National Emergency Helplines or search for women's hospitals anywhere in India.")
+    st.title("🚨 Emergency Services & Live Clinic Finder")
+    st.write("Access 24/7 National Emergency Helplines or detect your live location to find nearby women's hospitals across India.")
     
     col_a, col_b = st.columns(2)
     
@@ -267,10 +268,37 @@ elif app_mode == "Emergency & Clinics":
         st.markdown("- **KIRAN Mental Health Helpline:** `1800-599-0019`")
         
     with col_b:
-        st.markdown("### 🏥 All-India Hospital & Clinic Search")
-        user_city = st.text_input("Enter your City or Location in India:", "Hyderabad")
+        st.markdown("### 📍 Live GPS Location Finder")
         
-        # Major City Coordinates mapping for instant live map rendering
+        # HTML5 JavaScript Geolocation Button
+        loc_html = """
+        <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("status").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
+            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#ff4b4b; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
+        }
+        function showError(error) {
+            document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
+        }
+        </script>
+        <button onclick="getLocation()" style="background-color:#ff4b4b; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
+        <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
+        """
+        components.html(loc_html, height=140)
+        
+        st.markdown("---")
+        st.markdown("### 🏙️ Or Search by City Name")
+        user_city = st.text_input("Enter City/Area Name:", "Hyderabad")
+        
         city_coords = {
             "hyderabad": (17.3850, 78.4867),
             "mumbai": (19.0760, 72.8777),
@@ -290,15 +318,13 @@ elif app_mode == "Emergency & Clinics":
         if city_key in city_coords:
             lat, lon = city_coords[city_key]
         else:
-            lat, lon = 20.5937, 78.9629 # Default center of India
+            lat, lon = 20.5937, 78.9629
             
         hospital_df = pd.DataFrame({'lat': [lat], 'lon': [lon]})
         st.map(hospital_df, zoom=11)
         
-        # Dynamic Google Maps Navigation Link for any city in India
         encoded_city = user_city.replace(" ", "+")
         gmaps_url = f"https://www.google.com/maps/search/gynaecologist+womens+hospital+near+{encoded_city}"
-        
         st.markdown(f"[👉 Click here to find Women's Hospitals near **{user_city}** on Google Maps]({gmaps_url})")
 
 elif app_mode == "Telugu Accessibility":
