@@ -60,29 +60,32 @@ def generate_pdf(df):
         return output.encode('latin1')
     return bytes(output)
 
-# --- APP CONFIG & CUSTOM STYLING ---
+# --- APP CONFIG & FORCED CUSTOM STYLING ---
 st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
 
 st.markdown("""
 <style>
+    /* Force background gradient across the entire app window */
     .stApp {
-        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%) !important;
     }
+    /* Style sidebar */
     [data-testid="stSidebar"] {
-        background-color: #f7f9fa;
-        border-right: 1px solid #e1e4e8;
+        background-color: #f7f9fa !important;
+        border-right: 1px solid #e1e4e8 !important;
     }
+    /* Custom button styling */
     div.stButton > button {
-        background-color: #ff4b4b;
-        color: white;
-        border-radius: 8px;
-        padding: 0.5rem 1rem;
-        border: none;
-        font-weight: 600;
+        background-color: #ff4b4b !important;
+        color: white !important;
+        border-radius: 8px !important;
+        padding: 0.5rem 1rem !important;
+        border: none !important;
+        font-weight: 600 !important;
     }
     div.stButton > button:hover {
-        background-color: #e03e3e;
-        color: white;
+        background-color: #e03e3e !important;
+        color: white !important;
     }
 </style>
 """, unsafe_allow_html=True)
