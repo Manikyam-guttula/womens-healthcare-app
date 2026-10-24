@@ -124,45 +124,85 @@ app_mode = st.sidebar.radio(
     label_visibility="collapsed"
 )
 
-# --- COMPLETELY DISTINCT, VIBRANT COLOR PALETTES FOR EACH FEATURE ---
-bg_mapping = {
-    "Daily Log & Phase Tracker": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",     # Warm Sunset Peach
-    "AI Insights & Analytics": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",        # Cool Electric Blue
-    "Doctor Report Generator": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",        # Vivid Emerald Green
-    "AI Health Companion": "linear-gradient(135deg, #f6d365 0%, #fda085 100%)",          # Golden Amber Sunset
-    "PCOS Risk Screener": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",           # Royal Violet & Indigo
-    "Medication Tracker": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)",           # Hot Magenta Pink
-    "Habit Correlation": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",            # Turquoise Aqua
-    "Emergency & Clinics": "linear-gradient(135deg, #ff4e50 0%, #f9d423 100%)",          # Crimson Alert Orange/Red
-    "Telugu Accessibility": "linear-gradient(135deg, #0acffe 0%, #495aff 100%)"          # Vibrant Cyan to Deep Blue
+# --- LUXURY FEATURE-SPECIFIC GRADIENTS & BUTTON ACCENTS ---
+theme_mapping = {
+    "Daily Log & Phase Tracker": {
+        "bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)",  # Rose Quartz & Peach
+        "btn": "#e11d48"
+    },
+    "AI Insights & Analytics": {
+        "bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",             # Sapphire Ocean Mist
+        "btn": "#2563eb"
+    },
+    "Doctor Report Generator": {
+        "bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",             # Mint Emerald Teal
+        "btn": "#0d9488"
+    },
+    "AI Health Companion": {
+        "bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",             # Warm Sunrise Gold
+        "btn": "#ea580c"
+    },
+    "PCOS Risk Screener": {
+        "bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",              # Lavender Violet Glow
+        "btn": "#7c3aed"
+    },
+    "Medication Tracker": {
+        "bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",              # Electric Orchid Lilac
+        "btn": "#c026d3"
+    },
+    "Habit Correlation": {
+        "bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",              # Neon Lime & Spring Sage
+        "btn": "#16a34a"
+    },
+    "Emergency & Clinics": {
+        "bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",             # Urgent Crimson Alert
+        "btn": "#dc2626"
+    },
+    "Telugu Accessibility": {
+        "bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)",             # Soft Cyber Cyan
+        "btn": "#0284c7"
+    }
 }
 
-current_bg = bg_mapping.get(app_mode, "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)")
+current_theme = theme_mapping.get(app_mode, {
+    "bg": "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)",
+    "btn": "#0f172a"
+})
 
 st.markdown(f"""
 <style>
-    /* Dynamic Feature-Based Distinct Background */
+    /* Dynamic Feature Background Gradient */
     [data-testid="stAppViewContainer"] {{
-        background: {current_bg} !important;
+        background: {current_theme['bg']} !important;
         transition: background 0.6s ease-in-out;
     }}
     [data-testid="stMain"] {{
         background: transparent !important;
     }}
+    
+    /* Clean white frosted sidebar */
     [data-testid="stSidebar"] {{
-        background-color: #ffffff !important;
-        border-right: 1px solid #e2e8f0 !important;
+        background-color: rgba(255, 255, 255, 0.95) !important;
+        border-right: 1px solid #cbd5e1 !important;
     }}
+    
+    /* Glassmorphism content cards for high contrast and readability */
+    div[data-testid="stForm"], div.stMarkdown, div[data-testid="stVerticalBlock"] > div {{
+        border-radius: 12px;
+    }}
+    
+    /* Feature-matching themed buttons */
     div.stButton > button {{
-        background: #0f172a !important;
+        background: {current_theme['btn']} !important;
         color: white !important;
         border-radius: 8px !important;
-        padding: 0.5rem 1rem !important;
+        padding: 0.5rem 1.2rem !important;
         border: none !important;
         font-weight: 600 !important;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }}
     div.stButton > button:hover {{
-        background: #334155 !important;
+        filter: brightness(0.9);
         color: white !important;
     }}
 </style>
@@ -303,13 +343,13 @@ elif app_mode == "Emergency & Clinics":
             var lat = position.coords.latitude;
             var lon = position.coords.longitude;
             var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
-            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#0f172a; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
+            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#dc2626; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
         }
         function showError(error) {
             document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
         }
         </script>
-        <button onclick="getLocation()" style="background-color:#0f172a; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
+        <button onclick="getLocation()" style="background-color:#dc2626; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
         <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
         """
         components.html(loc_html, height=140)
