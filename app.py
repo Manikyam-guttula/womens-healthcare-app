@@ -25,7 +25,7 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR (STABLE FPDF SYNTAX) ---
+# --- PDF GENERATOR (ROBUST STREAMLIT COMPATIBLE) ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -60,14 +60,14 @@ def generate_pdf(df):
     return bytes(output)
 
 # --- APP CONFIG & STATE ---
-st.set_page_config(page_title="HerHealth AI - Women's Health & Wellness", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
 
-# --- SIDEBAR NAVIGATION ---
+# --- SIDEBAR NAVIGATION & SECURITY VAULT ---
 st.sidebar.markdown("### 🔒 Security & Navigation")
 if not st.session_state["vault_unlocked"]:
     st.sidebar.warning("Vault Locked 🔒")
@@ -100,7 +100,7 @@ app_mode = st.sidebar.radio(
     label_visibility="collapsed"
 )
 
-# --- MAIN NAVIGATION ROUTING ---
+# --- MAIN APP ROUTING ---
 
 if app_mode == "Daily Log & Phase Tracker":
     st.title("📅 Daily Log & Phase Tracker")
@@ -189,22 +189,9 @@ elif app_mode == "Medication Tracker":
         st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
 elif app_mode == "Habit Correlation":
-    st.title("📊 Habit Correlation Engine")
+    st.title("🔄 Habit Correlation Engine")
     st.write("Discover how hydration, sleep quality, and physical activity impact your symptom intensity.")
     st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
 
 elif app_mode == "Emergency & Clinics":
     st.title("🚨 Emergency & Nearby Clinics")
-    st.write("Quick access to emergency helplines and nearby women's health clinics.")
-    st.markdown("- **National Women's Helpline:** 1091")
-    st.markdown("- **Emergency Ambulance:** 108 / 112")
-    st.markdown("- **Nearby Women's Hospital:** Gachibowli Network Hospital (Open 24/7)")
-
-elif app_mode == "Telugu Accessibility":
-    st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
-    st.write("Switch interface preferences to Telugu.")
-    lang_choice = st.radio("Select Language / భాషను ఎంచుకోండి", ["English", "Telugu"], index=0 if st.session_state["lang"]=="English" else 1)
-    if st.button("Apply Language Preference"):
-        st.session_state["lang"] = lang_choice
-        st.success(f"Language successfully switched to {lang_choice}!")
-        st.rerun()
