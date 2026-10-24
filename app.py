@@ -88,23 +88,46 @@ st.markdown("""
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
+if "saved_username" not in st.session_state:
+    st.session_state["saved_username"] = "admin"
+if "saved_password" not in st.session_state:
+    st.session_state["saved_password"] = "1234"
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
 
-# --- SIDEBAR NAVIGATION & SECURITY VAULT ---
-st.sidebar.markdown("### 🔒 Security & Navigation")
+# --- SIDEBAR NAVIGATION & CUSTOM CREDENTIAL VAULT ---
+st.sidebar.markdown("### 🔒 Security Vault & Setup")
+
 if not st.session_state["vault_unlocked"]:
-    st.sidebar.warning("Vault Locked 🔒")
-    pin_input = st.sidebar.text_input("Enter 4-Digit PIN (default: 1234)", type="password")
-    if st.sidebar.button("Unlock Vault"):
-        if pin_input == "1234" or pin_input == "":
-            st.session_state["vault_unlocked"] = True
-            st.sidebar.success("Vault Unlocked!")
-            st.rerun()
-        else:
-            st.sidebar.error("Incorrect PIN")
+    tab_login, tab_create = st.sidebar.tabs(["Login", "Create Vault"])
+    
+    with tab_login:
+        login_user = st.text_input("Username", key="login_u")
+        login_pass = st.text_input("Password", type="password", key="login_p")
+        if st.button("Unlock Vault"):
+            if login_user == st.session_state["saved_username"] and login_pass == st.session_state["saved_password"]:
+                st.session_state["vault_unlocked"] = True
+                st.success("Vault Unlocked!")
+                st.rerun()
+            else:
+                st.error("Invalid Username or Password")
+                
+    with tab_create:
+        st.markdown("Set custom credentials:")
+        new_user = st.text_input("New Username", key="new_u")
+        new_pass = st.text_input("New Password", type="password", key="new_p")
+        if st.button("Save New Credentials"):
+            if new_user and new_pass:
+                st.session_state["saved_username"] = new_user
+                st.session_state["saved_password"] = new_pass
+                st.success("Credentials created successfully! You can now log in.")
+            else:
+                st.warning("Please enter both username and password.")
 else:
     st.sidebar.success("Vault Unlocked ✅")
+    if st.sidebar.button("Lock Vault"):
+        st.session_state["vault_unlocked"] = False
+        st.rerun()
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Go to**")
@@ -186,10 +209,22 @@ elif app_mode == "Doctor Report Generator":
 
 elif app_mode == "AI Health Companion":
     st.title("🤖 AI Health Companion")
-    st.write("Ask general questions regarding menstrual health, wellness tips, and app navigation.")
-    user_query = st.text_input("How can I help you today?")
+    st.write("Ask questions regarding menstrual health, cycle symptoms, wellness tips, or app navigation.")
+    
+    user_query = st.text_input("How can I help you today? (e.g., 'How to ease cramps?', 'Why am I fatigued?', 'How do I use the tracker?')")
+    
     if user_query:
-        st.info("AI Companion Response: Based on general wellness frameworks, staying hydrated, maintaining consistent sleep schedules, and tracking iron levels can help manage cycle fatigue effectively.")
+        query_lower = user_query.lower()
+        if "cramp" in query_lower or "pain" in query_lower:
+            st.success("🤖 **AI Companion Response:** For cramp relief, try applying a heating pad to your lower abdomen, drinking warm chamomile or ginger tea, and engaging in light stretching or yoga.")
+        elif "fatigue" in query_lower or "tired" in query_lower:
+            st.success("🤖 **AI Companion Response:** Fatigue during certain cycle phases is common due to changing hormone levels. Focus on iron-rich foods, stay well-hydrated, and aim for 7-9 hours of consistent sleep.")
+        elif "pcos" in query_lower:
+            st.success("🤖 **AI Companion Response:** Managing PCOS often involves balancing blood sugar through a low-glycemic diet, regular physical activity, and stress management. Try using our built-in **PCOS Risk Screener**.")
+        elif "navigation" in query_lower or "use" in query_lower or "app" in query_lower:
+            st.success("🤖 **AI Companion Response:** You can navigate HerHealth AI using the sidebar! Record symptoms in **Daily Log**, view insights in **Analytics**, and export your report from the **Doctor Report Generator**.")
+        else:
+            st.success(f"🤖 **AI Companion Response:** Thank you for asking about *'{user_query}'*. Maintaining a balanced diet, tracking symptoms consistently, and staying hydrated are key to overall hormonal balance.")
 
 elif app_mode == "PCOS Risk Screener":
     st.title("🩺 PCOS Risk Screener")
