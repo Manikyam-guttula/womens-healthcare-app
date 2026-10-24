@@ -270,7 +270,6 @@ elif app_mode == "Emergency & Clinics":
     with col_b:
         st.markdown("### 📍 Live GPS Location Finder")
         
-        # HTML5 JavaScript Geolocation Button
         loc_html = """
         <script>
         function getLocation() {
