@@ -4,9 +4,12 @@ import plotly.express as px
 from fpdf import FPDF
 import sqlite3
 import streamlit.components.v1 as components
+import os
 
 # --- DATABASE SETUP ---
 DB_FILE = "health_data.db"
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 def init_db():
     conn = sqlite3.connect(DB_FILE)
@@ -21,7 +24,14 @@ def init_db():
             mood TEXT
         )
     ''')
-    # Safely add new columns if upgrading from previous version
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS transformations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category TEXT,
+            notes TEXT,
+            img_path TEXT
+        )
+    ''')
     for col, col_type in [("flow", "TEXT"), ("energy", "INTEGER"), ("notes", "TEXT")]:
         try:
             c.execute(f"ALTER TABLE health_logs ADD COLUMN {col} {col_type}")
@@ -119,6 +129,7 @@ app_mode = st.sidebar.radio(
     [
         "Daily Log & Phase Tracker", 
         "AI Insights & Analytics", 
+        "PCOS Transformation Vault",
         "Doctor Report Generator", 
         "AI Health Companion", 
         "PCOS Risk Screener", 
@@ -139,6 +150,10 @@ theme_mapping = {
     "AI Insights & Analytics": {
         "bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
         "btn": "#2563eb"
+    },
+    "PCOS Transformation Vault": {
+        "bg": "linear-gradient(135deg, #ffdde1 0%, #ee9ca7 100%)",
+        "btn": "#be123c"
     },
     "Doctor Report Generator": {
         "bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
@@ -258,6 +273,48 @@ elif app_mode == "AI Insights & Analytics":
     else:
         st.info("No logs recorded yet. Please add entries in the Daily Log section!")
 
+elif app_mode == "PCOS Transformation Vault":
+    st.title("📸 PCOS Transformation Vault (Before & After)")
+    st.write("Securely store and compare your health, skin clarity, and wellness progress before and after managing PCOD/PCOS.")
+    
+    with st.form("transformation_form"):
+        trans_category = st.selectbox("Progress Category", ["Before & After Treatment / Lifestyle Change", "Skin Clarity Progress", "Fitness & Weight Journey", "General Wellness"])
+        trans_notes = st.text_area("Progress Notes", placeholder="e.g., Week 12 of low-glycemic diet and regular workouts - noticing improved energy and regular cycle.")
+        uploaded_file = st.file_uploader("Upload Progress Photo", type=["jpg", "png", "jpeg"])
+        
+        submit_trans = st.form_submit_button("Save to Secure Vault")
+        if submit_trans:
+            if uploaded_file is not None:
+                file_path = os.path.join(UPLOAD_DIR, uploaded_file.name)
+                with open(file_path, "wb") as f:
+                    f.write(uploaded_file.getbuffer())
+                
+                conn = sqlite3.connect(DB_FILE)
+                c = conn.cursor()
+                c.execute("INSERT INTO transformations (category, notes, img_path) VALUES (?, ?, ?)",
+                          (trans_category, trans_notes, file_path))
+                conn.commit()
+                conn.close()
+                st.success("Progress entry and photo securely saved!")
+            else:
+                st.warning("Please upload an image before submitting.")
+                
+    st.markdown("---")
+    st.subheader("🌟 Your Saved Progress Timeline")
+    conn = sqlite3.connect(DB_FILE)
+    trans_df = pd.read_sql("SELECT * FROM transformations ORDER BY id DESC", conn)
+    conn.close()
+    
+    if not trans_df.empty:
+        for _, row in trans_df.iterrows():
+            st.markdown(f"### Category: {row['category']}")
+            st.write(f"**Notes:** {row['notes']}")
+            if os.path.exists(row['img_path']):
+                st.image(row['img_path'], width=350)
+            st.markdown("---")
+    else:
+        st.info("No transformation photos uploaded yet. Use the form above to add your first milestone!")
+
 elif app_mode == "Doctor Report Generator":
     st.title("📄 Clinical Summary Report Exporter")
     st.write("Export an aggregated, privacy-focused medical summary report to share with your healthcare provider.")
@@ -286,7 +343,6 @@ elif app_mode == "AI Health Companion":
     
     if user_query:
         q = user_query.lower()
-        
         if any(w in q for w in ["pcod", "polycystic", "pcos"]):
             st.success("🤖 **AI Companion Response:** PCOD and PCOS are hormonal conditions affecting ovarian function. Managing them successfully relies on a low-glycemic diet, regular physical activity, insulin regulation, and consistent symptom tracking using our app's **PCOS Risk Screener**.")
         elif any(w in q for w in ["food", "diet", "eat", "nutrition", "sugar", "iron"]):
@@ -335,9 +391,35 @@ elif app_mode == "Medication Tracker":
         st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
 elif app_mode == "Habit Correlation":
-    st.title("🔄 Habit Correlation Engine")
-    st.write("Discover how hydration, sleep quality, and physical activity impact your symptom intensity.")
-    st.info("Correlation engine active: Tracking sleep duration vs. cramp severity trends.")
+    st.title("🔄 Interactive Habit Correlation Engine")
+    st.write("Input your daily lifestyle habits below to simulate how sleep, hydration, and caffeine impact your cramp severity and energy levels.")
+    
+    with st.form("habit_analysis_form"):
+        col1, col2 = st.columns(2)
+        with col1:
+            sleep_hrs = st.slider("Sleep Duration (Hours)", 3.0, 12.0, 7.0, 0.5)
+            water_intake = st.slider("Water Intake (Litres)", 0.5, 5.0, 2.0, 0.5)
+        with col2:
+            activity_level = st.selectbox("Physical Activity Level", ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"])
+            caffeine_cups = st.slider("Caffeine Intake (Cups)", 0, 6, 1)
+            
+        run_analysis = st.form_submit_button("Run Habit Impact Analysis")
+        
+        if run_analysis:
+            risk_score = 0
+            if sleep_hrs < 6.5: risk_score += 2
+            if water_intake < 2.0: risk_score += 2
+            if caffeine_cups > 3: risk_score += 1
+            if activity_level == "Sedentary": risk_score += 1
+            
+            st.markdown("---")
+            st.subheader("📊 Habit Impact Simulation Results")
+            if risk_score >= 4:
+                st.error(f"⚠️ **High Symptom Impact Predicted (Risk Score: {risk_score}/5):** Your current sleep ({sleep_hrs} hrs) and hydration ({water_intake} L) are strongly correlated with increased cramp severity and fatigue. Recommendation: Increase water intake and aim for at least 7.5 hours of consistent sleep.")
+            elif risk_score >= 2:
+                st.warning(f"⚡ **Moderate Impact (Risk Score: {risk_score}/5):** Minor lifestyle adjustments—such as increasing hydration or reducing evening caffeine—can noticeably improve your cycle comfort.")
+            else:
+                st.success(f"✅ **Optimal Habit Balance (Risk Score: {risk_score}/5):** Excellent! Your current lifestyle habits are well-balanced to keep cramp intensity low and energy levels stable.")
 
 elif app_mode == "Emergency & Clinics":
     st.title("🚨 Emergency Services & Live Clinic Finder")
