@@ -119,7 +119,21 @@ LANG_DICT = {
         "save_entry": "Save Daily Entry",
         "save_success": "Daily health log successfully saved to secure storage!",
         "recent_history": "Recent Log History",
-        "no_logs": "No entries logged yet."
+        "no_logs": "No entries logged yet.",
+
+        "em_heading": "Emergency & Clinics",
+        "em_sub": "Access 24/7 National Emergency Helplines or locate nearby women's hospitals.",
+        "india_helplines": "All-India Emergency Helplines",
+        "gps_tracker": "Live GPS Location & Hospital Tracker",
+        "detect_gps": "Detect My Live GPS Location",
+        "city_search": "Or Search by City Name",
+        "city_input": "Enter City/Area Name:",
+        "maps_link": "Click here to find Women's Hospitals near",
+        "helpline_1": "National Emergency Number",
+        "helpline_2": "National Women Helpline",
+        "helpline_3": "National Medical Ambulance",
+        "helpline_4": "Women Helpline (NCW)",
+        "helpline_5": "KIRAN Mental Health Helpline"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -164,7 +178,21 @@ LANG_DICT = {
         "save_entry": "రోజువారీ ఎంట్రీని సేవ్ చేయండి",
         "save_success": "రోజువారీ ఆరోగ్య లాగ్ సురక్షితంగా సేవ్ చేయబడింది!",
         "recent_history": "ఇటీవలి లాగ్ చరిత్ర",
-        "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు."
+        "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు.",
+
+        "em_heading": "అత్యవసర & క్లినిక్‌లు",
+        "em_sub": "24/7 జాతీయ అత్యవసర హెల్ప్‌లైన్‌లను యాక్సెస్ చేయండి లేదా సమీపంలోని మహిళా ఆసుపత్రులను కనుగొనండి.",
+        "india_helplines": "అన్ని భారతదేశ అత్యవసర హెల్ప్‌లైన్‌లు",
+        "gps_tracker": "లైవ్ GPS స్థానం & ఆసుపత్రి ట్రాకర్",
+        "detect_gps": "నా లైవ్ GPS స్థానాన్ని గుర్తించండి",
+        "city_search": "లేదా నగరం పేరు ద్వారా వెతకండి",
+        "city_input": "నగరం/ప్రాంతం పేరును నమోదు చేయండి:",
+        "maps_link": "సమీపంలోని మహిళా ఆసుపత్రులను కనుగొనడానికి ఇక్కడ క్లిక్ చేయండి",
+        "helpline_1": "జాతీయ అత్యవసర సంఖ్య",
+        "helpline_2": "జాతీయ మహిళా హెల్ప్‌లైన్",
+        "helpline_3": "జాతీయ వైద్య అంబులెన్స్",
+        "helpline_4": "మహిళా హెల్ప్‌లైన్ (NCW)",
+        "helpline_5": "కిరణ్ మానసిక ఆరోగ్య హెల్ప్‌లైన్"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -209,7 +237,21 @@ LANG_DICT = {
         "save_entry": "दैनिक प्रविष्टि सहेजें",
         "save_success": "दैनिक स्वास्थ्य लॉग सुरक्षित रूप से सहेज लिया गया!",
         "recent_history": "हाल का लॉग इतिहास",
-        "no_logs": "अभी तक कोई प्रविष्टि दर्ज नहीं की गई है।"
+        "no_logs": "अभी तक कोई प्रविष्टि दर्ज नहीं की गई है.",
+
+        "em_heading": "आपातकाल और क्लीनिक",
+        "em_sub": "24/7 राष्ट्रीय आपातकालीन हेल्पलाइन तक पहुंचें या नजदीकी महिला अस्पताल खोजें।",
+        "india_helplines": "अखिल भारतीय आपातकालीन हेल्पलाइन",
+        "gps_tracker": "लाइव जीपीएस स्थान और अस्पताल ट्रैकर",
+        "detect_gps": "मेरा लाइव जीपीएस स्थान का पता लगाएं",
+        "city_search": "या शहर के नाम से खोजें",
+        "city_input": "शहर/क्षेत्र का नाम दर्ज करें:",
+        "maps_link": "महिला अस्पताल खोजने के लिए यहां क्लिक करें",
+        "helpline_1": "राष्ट्रीय आपातकालीन नंबर",
+        "helpline_2": "राष्ट्रीय महिला हेल्पलाइन",
+        "helpline_3": "राष्ट्रीय चिकित्सा एम्बुलेंस",
+        "helpline_4": "महिला हेल्पलाइन (NCW)",
+        "helpline_5": "किरण मानसिक स्वास्थ्य हेल्पलाइन"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -254,7 +296,21 @@ LANG_DICT = {
         "save_entry": "தினசரி பதிவை சேமி",
         "save_success": "தினசரி சுகாதாரப் பதிவு வெற்றிகரமாக சேமிக்கப்பட்டது!",
         "recent_history": "சமீபத்திய பதிவு வரலாறு",
-        "no_logs": "பதிவுகள் எதுவும் இல்லை."
+        "no_logs": "பதிவுகள் எதுவும் இல்லை.",
+
+        "em_heading": "அவசரநிலை & கிளினிக்குகள்",
+        "em_sub": "24/7 தேசிய அவசர உதவி எண்களை அணுகவும் அல்லது அருகில் உள்ள மருத்துவமனைகளைக் கண்டறியவும்.",
+        "india_helplines": "அகில இந்திய அவசர உதவி எண்கள்",
+        "gps_tracker": "நேரலை GPS இருப்பிடம் & மருத்துவமனை கண்காணிப்பு",
+        "detect_gps": "எனது நேரலை GPS இருப்பிடத்தைக் கண்டறி",
+        "city_search": "அல்லது நகரத்தின் பெயரால் தேடவும்",
+        "city_input": "நகரம்/பகுதி பெயரை உள்ளிடவும்:",
+        "maps_link": "பெண்கள் மருத்துவமனைகளைக் கண்டுபிடிக்க இங்கே கிளிக் செய்யவும்",
+        "helpline_1": "தேசிய அவசர எண்",
+        "helpline_2": "தேசிய பெண்கள் உதவி எண்",
+        "helpline_3": "தேசிய மருத்துவ ஆம்புலன்ஸ்",
+        "helpline_4": "பெண்கள் உதவி மையம் (NCW)",
+        "helpline_5": "கிரண் மனநல உதவி மையம்"
     }
 }
 
@@ -582,49 +638,49 @@ else:
                     st.success(f"✅ **Optimal Habit Balance (Risk Score: {risk_score}/5):** Excellent! Your current lifestyle habits are well-balanced to keep cramp intensity low and energy levels stable.")
 
     elif app_mode == "Emergency & Clinics":
-        st.title(f"🚨 {t['nav_emergency']}")
-        st.write(t["emergency_desc"])
+        st.title(f"🚨 {t['em_heading']}")
+        st.write(t["em_sub"])
         
         col_a, col_b = st.columns(2)
         
         with col_a:
-            st.markdown("### 🇮🇳 All-India Emergency Helplines")
-            st.markdown("- **National Emergency Number:** `112` (24/7 Medical / Police)")
-            st.markdown("- **National Women Helpline:** `1091`")
-            st.markdown("- **National Medical Ambulance:** `108`")
-            st.markdown("- **Women Helpline (NCW):** `7827170170`")
-            st.markdown("- **KIRAN Mental Health Helpline:** `1800-599-0019`")
+            st.markdown(f"### 🇮🇳 {t['india_helplines']}")
+            st.markdown(f"- **{t['helpline_1']}:** `112` (24/7 Medical / Police)")
+            st.markdown(f"- **{t['helpline_2']}:** `1091`")
+            st.markdown(f"- **{t['helpline_3']}:** `108`")
+            st.markdown(f"- **{t['helpline_4']}:** `7827170170`")
+            st.markdown(f"- **{t['helpline_5']}:** `1800-599-0019`")
             
         with col_b:
-            st.markdown("### 📍 Live GPS Location & Hospital Tracker")
+            st.markdown(f"### 📍 {t['gps_tracker']}")
             
-            loc_html = """
+            loc_html = f"""
             <script>
-            function getLocation() {
-                if (navigator.geolocation) {
+            function getLocation() {{
+                if (navigator.geolocation) {{
                     navigator.geolocation.getCurrentPosition(showPosition, showError);
-                } else {
+                }} else {{
                     document.getElementById("status").innerHTML = "Geolocation is not supported by this browser.";
-                }
-            }
-            function showPosition(position) {
+                }}
+            }}
+            function showPosition(position) {{
                 var lat = position.coords.latitude;
                 var lon = position.coords.longitude;
                 var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
                 document.getElementById("status").innerHTML = "<b>✅ Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#dc2626; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
-            }
-            function showError(error) {
+            }}
+            function showError(error) {{
                 document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
-            }
+            }}
             </script>
-            <button onclick="getLocation()" style="background-color:#dc2626; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
+            <button onclick="getLocation()" style="background-color:#dc2626; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 {t['detect_gps']}</button>
             <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
             """
             components.html(loc_html, height=140)
             
             st.markdown("---")
-            st.markdown("### 🏙️ Or Search by City Name")
-            user_city = st.text_input("Enter City/Area Name:", "Hyderabad")
+            st.markdown(f"### 🏙️ {t['city_search']}")
+            user_city = st.text_input(t["city_input"], "Hyderabad")
             
             city_coords = {
                 "hyderabad": (17.3850, 78.4867),
@@ -652,7 +708,7 @@ else:
             
             encoded_city = user_city.replace(" ", "+")
             gmaps_url = f"https://www.google.com/maps/search/gynaecologist+womens+hospital+near+{encoded_city}"
-            st.markdown(f"[👉 Click here to find Women's Hospitals near **{user_city}** on Google Maps]({gmaps_url})")
+            st.markdown(f"[👉 {t['maps_link']} **{user_city}** on Google Maps]({gmaps_url})")
 
     elif app_mode == "Language & Accessibility":
         st.title(f"🌐 {t['nav_lang']}")
