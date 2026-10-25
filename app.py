@@ -141,7 +141,18 @@ LANG_DICT = {
         "activity_lvl": "Physical Activity Level",
         "caffeine_intake": "Caffeine Intake (Cups)",
         "run_habit": "Run Habit Impact Analysis",
-        "habit_results": "Habit Impact Simulation Results"
+        "habit_results": "Habit Impact Simulation Results",
+
+        "med_heading": "Medication Tracker",
+        "med_name": "Medication / Supplement Name",
+        "rem_time": "Reminder Time",
+        "set_rem": "Set Reminder",
+        "rem_success": "Reminder set successfully for",
+
+        "comp_heading": "AI Health Companion",
+        "comp_query_label": "Ask a specific question",
+        "comp_query_placeholder": "e.g., 'Why do I get migraines before my period?', 'How can I reduce bloating?'",
+        "comp_analysis": "AI Companion Analysis"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -208,7 +219,18 @@ LANG_DICT = {
         "activity_lvl": "శారీరక శ్రమ స్థాయి",
         "caffeine_intake": "కెఫిన్ తీసుకోవడం (కప్పులు)",
         "run_habit": "అలవాటు ప్రభావ విశ్లేషణను అమలు చేయండి",
-        "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు"
+        "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు",
+
+        "med_heading": "మందుల ట్రాకర్",
+        "med_name": "మందు / సప్లిమెంట్ పేరు",
+        "rem_time": "జ్ఞాపిక సమయం",
+        "set_rem": "జ్ఞాపికను సెట్ చేయి",
+        "rem_success": "దీని కోసం జ్ఞాపిక విజయవంతంగా సెట్ చేయబడింది",
+
+        "comp_heading": "AI ఆరోగ్య సహచరుడు",
+        "comp_query_label": "నిర్దిష్ట ప్రశ్నను అడగండి",
+        "comp_query_placeholder": "ఉదా., 'నా నెలసరి రాకముందు మైగ్రేన్ ఎందుకు వస్తుంది?', 'బ్లోటింగ్ తగ్గించుకోవడం ఎలా?'",
+        "comp_analysis": "AI సహచర విశ్లేషణ"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -275,7 +297,18 @@ LANG_DICT = {
         "activity_lvl": "शारीरिक गतिविधि का स्तर",
         "caffeine_intake": "कैफीन का सेवन (कप)",
         "run_habit": "आदत प्रभाव विश्लेषण चलाएं",
-        "habit_results": "आदत प्रभाव सिमुलेशन परिणाम"
+        "habit_results": "आदत प्रभाव सिमुलेशन परिणाम",
+
+        "med_heading": "दवा ट्रैकर",
+        "med_name": "दवा / पूरक का नाम",
+        "rem_time": "रिमाइंडर का समय",
+        "set_rem": "रिमाइंडर सेट करें",
+        "rem_success": "इसके लिए रिमाइंडर सफलतापूर्वक सेट किया गया",
+
+        "comp_heading": "एआई स्वास्थ्य साथी",
+        "comp_query_label": "एक विशिष्ट प्रश्न पूछें",
+        "comp_query_placeholder": "उदा., 'मासिक धर्म से पहले मुझे माइग्रेन क्यों होता है?', 'ब्लोटिंग कैसे कम करें?'",
+        "comp_analysis": "एआई साथी विश्लेषण"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -342,7 +375,18 @@ LANG_DICT = {
         "activity_lvl": "உடற்பயிற்சி நிலை",
         "caffeine_intake": "காஃபின் உட்கொள்ளல் (கோப்பைகள்)",
         "run_habit": "பழக்கவழக்க தாக்க பகுப்பாய்வை இயக்கு",
-        "habit_results": "பழக்கவழக்க தாக்க உருவகப்படுத்துதல் முடிவுகள்"
+        "habit_results": "பழக்கவழக்க தாக்க உருவகப்படுத்துதல் முடிவுகள்",
+
+        "med_heading": "மருந்து கண்காணிப்பு",
+        "med_name": "மருந்து / சப்ளிமெண்ட் பெயர்",
+        "rem_time": "நினைவூட்டல் நேரம்",
+        "set_rem": "நினைவூட்டலை அமைக்கவும்",
+        "rem_success": "இதற்காக நினைவூட்டல் வெற்றிகரமாக அமைக்கப்பட்டது",
+
+        "comp_heading": "AI சுகாதார தோழன்",
+        "comp_query_label": "ஒரு குறிப்பிட்ட கேள்வைக் கேளுங்கள்",
+        "comp_query_placeholder": "எ.கா., 'மாதவிடாய்க்கு முன் எனக்கு ஏன் தலைவலி வருகிறது?', 'வயிறு உப்புசத்தை எவ்வாறு குறைப்பது?'",
+        "comp_analysis": "AI தோழன் பகுப்பாய்வு"
     }
 }
 
@@ -584,10 +628,10 @@ else:
             st.warning("No data available to generate medical report.")
 
     elif app_mode == "AI Health Companion":
-        st.title(f"🤖 {t['nav_companion']}")
+        st.title(f"🤖 {t['comp_heading']}")
         st.write(t["companion_desc"])
         
-        user_query = st.text_input("Ask a specific question (e.g., 'Why do I get migraines before my period?', 'How can I reduce bloating?')")
+        user_query = st.text_input(t["comp_query_label"], placeholder=t["comp_query_placeholder"])
         
         if user_query:
             q = user_query.lower()
@@ -610,7 +654,7 @@ else:
             else:
                 ans = f"Regarding your question about *'{user_query}'*: Every individual's hormonal and physiological profile is unique. Based on clinical guidelines, keeping consistent daily symptom logs and discussing persistent concerns with a certified healthcare specialist is recommended."
 
-            st.success(f"🤖 **AI Companion Analysis:** {ans}")
+            st.success(f"🤖 **{t['comp_analysis']}:** {ans}")
 
     elif app_mode == "PCOS Risk Screener":
         st.title(f"🩺 {t['nav_screener']}")
@@ -631,12 +675,12 @@ else:
                 st.success(f"✅ **Low Risk Score ({score}/6):** Continue tracking your cycle regularly!")
 
     elif app_mode == "Medication Tracker":
-        st.title(f"💊 {t['nav_meds']}")
+        st.title(f"💊 {t['med_heading']}")
         st.write(t["meds_desc"])
-        med_name = st.text_input("Medication / Supplement Name")
-        med_time = st.time_input("Reminder Time")
-        if st.button("Set Reminder"):
-            st.success(f"Reminder set successfully for {med_name} at {med_time}!")
+        med_name = st.text_input(t["med_name"])
+        med_time = st.time_input(t["rem_time"])
+        if st.button(t["set_rem"]):
+            st.success(f"{t['rem_success']} {med_name} at {med_time}!")
 
     elif app_mode == "Habit Correlation":
         st.title(f"🔄 {t['habit_heading']}")
