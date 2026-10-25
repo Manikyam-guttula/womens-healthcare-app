@@ -237,7 +237,7 @@ LANG_DICT = {
         "comp_query_placeholder": "ఉదా., 'నా నెలసరి రాకముందు మైగ్రేన్ ఎందుకు వస్తుంది?', 'బ్లోటింగ్ తగ్గించుకోవడం ఎలా?'",
         "comp_analysis": "AI సహచర విశ్లేషణ",
 
-        "pcos_q1": "గత 6 నెలల్లో અનియమిత నెలసరి చక్రాలు?",
+        "pcos_q1": "గత 6 నెలల్లో అనియమిత నెలసరి చక్రాలు?",
         "pcos_q2": "కారణం తెలియని బరువు పెరుగుట లేదా బరువు తగ్గడంలో ఇబ్బంది?",
         "pcos_q3": "అదనపు ముఖ లేదా శరీర వెంట్రుకల పెరుగుదల (హిర్సుటిజం)?",
         "pcos_q4": "నిరంతర వయోజన మొటిమలు లేదా జుట్టు పల్చబడటం?",
@@ -434,7 +434,7 @@ LANG_DICT = {
 current_l = st.session_state["lang"]
 t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
-# --- SIDEBAR AUTHENTICATION LOCK (UNIVERSAL LOGIN) ---
+# --- SIDEBAR AUTHENTICATION LOCK (ORIGINAL LOGIN DESIGN) ---
 st.sidebar.markdown("### 🔒 Security Vault Login")
 
 if not st.session_state["vault_unlocked"]:
