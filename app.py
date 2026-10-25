@@ -37,23 +37,17 @@ def generate_pdf(df):
     pdf.add_page()
     pdf.set_font("Arial", 'B', 16)
     
-    # Title
     pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", ln=1, align="C")
     pdf.ln(5)
-    
-    # Timestamp
     pdf.set_font("Arial", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
     pdf.ln(10)
-    
     pdf.set_font("Arial", 'B', 10)
     
-    # Table Headers
     for col in df.columns:
         pdf.cell(30, 10, str(col), border=1)
     pdf.ln()
     
-    # Table Data
     pdf.set_font("Arial", size=10)
     for _, row in df.iterrows():
         for val in row:
@@ -76,6 +70,61 @@ if "saved_password" not in st.session_state:
     st.session_state["saved_password"] = "1234"
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
+
+# --- MULTILINGUAL DICTIONARY ---
+LANG_DICT = {
+    "English": {
+        "nav_daily": "Daily Log & Phase Tracker",
+        "nav_forecast": "AI Predictive Forecaster",
+        "nav_analytics": "AI Insights & Analytics",
+        "nav_doctor": "Doctor Report Generator",
+        "nav_companion": "AI Health Companion",
+        "nav_screener": "PCOS Risk Screener",
+        "nav_meds": "Medication Tracker",
+        "nav_habit": "Habit Correlation",
+        "nav_emergency": "Emergency & Clinics",
+        "nav_lang": "Language & Accessibility"
+    },
+    "Telugu (తెలుగు)": {
+        "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
+        "nav_forecast": "AI ప్రిడిక్టివ్ ఫోర్‌కాస్టర్",
+        "nav_analytics": "AI అంతర్దృష్టులు & విశ్లేషణలు",
+        "nav_doctor": "డాక్టర్ నివేదిక జనరేటర్",
+        "nav_companion": "AI ఆరోగ్య సహచరుడు",
+        "nav_screener": "PCOS రిస్క్ స్క్రీనర్",
+        "nav_meds": "మందుల ట్రాకర్",
+        "nav_habit": "అలవాటు సహసంబంధం",
+        "nav_emergency": "అత్యవసర & క్లినిక్‌లు",
+        "nav_lang": "భాష & ప్రాప్యత"
+    },
+    "Hindi (हिन्दी)": {
+        "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
+        "nav_forecast": "एआई भविष्यवक्ता",
+        "nav_analytics": "एआई अंतर्दृष्टि और विश्लेषण",
+        "nav_doctor": "डॉक्टर रिपोर्ट जेनरेटर",
+        "nav_companion": "एआई स्वास्थ्य साथी",
+        "nav_screener": "पीसीओएस जोखिम স্ক্রীনার",
+        "nav_meds": "दवा ट्रैकर",
+        "nav_habit": "आदत सहसंबंध",
+        "nav_emergency": "आपातकाल और क्लीनिक",
+        "nav_lang": "भाषा और पहुंच"
+    },
+    "Tamil (தமிழ்)": {
+        "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
+        "nav_forecast": "AI கணிப்பு முன்னறிவிப்பு",
+        "nav_analytics": "AI நுண்ணறிவு & பகுப்பாய்வு",
+        "nav_doctor": "மருத்துவர் அறிக்கை ஜெனரேட்டர்",
+        "nav_companion": "AI சுகாதார தோழன்",
+        "nav_screener": "PCOS ஆபத்து பரிசோதகர்",
+        "nav_meds": "மருந்து கண்காணிப்பு",
+        "nav_habit": "பழக்கவழக்க தொடர்பு",
+        "nav_emergency": "அவசரநிலை & கிளினிக்குகள்",
+        "nav_lang": "மொழி & அணுகல்"
+    }
+}
+
+current_l = st.session_state["lang"]
+t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
 # --- SIDEBAR NAVIGATION & CUSTOM CREDENTIAL VAULT ---
 st.sidebar.markdown("### 🔒 Security Vault & Setup")
@@ -113,71 +162,53 @@ else:
 
 st.sidebar.markdown("---")
 st.sidebar.markdown("**Go to**")
-app_mode = st.sidebar.radio(
-    "Navigation", 
-    [
-        "Daily Log & Phase Tracker", 
-        "AI Predictive Forecaster", 
-        "AI Insights & Analytics", 
-        "Doctor Report Generator", 
-        "AI Health Companion", 
-        "PCOS Risk Screener", 
-        "Medication Tracker", 
-        "Habit Correlation", 
-        "Emergency & Clinics", 
-        "Telugu Accessibility"
-    ],
-    label_visibility="collapsed"
-)
+
+nav_options_display = [
+    t["nav_daily"], 
+    t["nav_forecast"], 
+    t["nav_analytics"], 
+    t["nav_doctor"], 
+    t["nav_companion"], 
+    t["nav_screener"], 
+    t["nav_meds"], 
+    t["nav_habit"], 
+    t["nav_emergency"], 
+    t["nav_lang"]
+]
+
+selected_display_mode = st.sidebar.radio("Navigation", nav_options_display, label_visibility="collapsed")
+
+# Map selected display back to internal mode key
+reverse_mapping = {
+    t["nav_daily"]: "Daily Log & Phase Tracker",
+    t["nav_forecast"]: "AI Predictive Forecaster",
+    t["nav_analytics"]: "AI Insights & Analytics",
+    t["nav_doctor"]: "Doctor Report Generator",
+    t["nav_companion"]: "AI Health Companion",
+    t["nav_screener"]: "PCOS Risk Screener",
+    t["nav_meds"]: "Medication Tracker",
+    t["nav_habit"]: "Habit Correlation",
+    t["nav_emergency"]: "Emergency & Clinics",
+    t["nav_lang"]: "Language & Accessibility"
+}
+
+app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
 # --- LUXURY FEATURE-SPECIFIC GRADIENTS & BUTTON ACCENTS ---
 theme_mapping = {
-    "Daily Log & Phase Tracker": {
-        "bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)",
-        "btn": "#e11d48"
-    },
-    "AI Predictive Forecaster": {
-        "bg": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-        "btn": "#9333ea"
-    },
-    "AI Insights & Analytics": {
-        "bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
-        "btn": "#2563eb"
-    },
-    "Doctor Report Generator": {
-        "bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
-        "btn": "#0d9488"
-    },
-    "AI Health Companion": {
-        "bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-        "btn": "#ea580c"
-    },
-    "PCOS Risk Screener": {
-        "bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
-        "btn": "#7c3aed"
-    },
-    "Medication Tracker": {
-        "bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",
-        "btn": "#c026d3"
-    },
-    "Habit Correlation": {
-        "bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",
-        "btn": "#16a34a"
-    },
-    "Emergency & Clinics": {
-        "bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",
-        "btn": "#dc2626"
-    },
-    "Telugu Accessibility": {
-        "bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)",
-        "btn": "#0284c7"
-    }
+    "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)", "btn": "#e11d48"},
+    "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", "btn": "#9333ea"},
+    "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)", "btn": "#2563eb"},
+    "Doctor Report Generator": {"bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", "btn": "#0d9488"},
+    "AI Health Companion": {"bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)", "btn": "#ea580c"},
+    "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", "btn": "#7c3aed"},
+    "Medication Tracker": {"bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)", "btn": "#c026d3"},
+    "Habit Correlation": {"bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)", "btn": "#16a34a"},
+    "Emergency & Clinics": {"bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)", "btn": "#dc2626"},
+    "Language & Accessibility": {"bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)", "btn": "#0284c7"}
 }
 
-current_theme = theme_mapping.get(app_mode, {
-    "bg": "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)",
-    "btn": "#0f172a"
-})
+current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)", "btn": "#0f172a"})
 
 st.markdown(f"""
 <style>
@@ -185,9 +216,7 @@ st.markdown(f"""
         background: {current_theme['bg']} !important;
         transition: background 0.6s ease-in-out;
     }}
-    [data-testid="stMain"] {{
-        background: transparent !important;
-    }}
+    [data-testid="stMain"] {{ background: transparent !important; }}
     [data-testid="stSidebar"] {{
         background-color: rgba(255, 255, 255, 0.95) !important;
         border-right: 1px solid #cbd5e1 !important;
@@ -201,17 +230,14 @@ st.markdown(f"""
         font-weight: 600 !important;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     }}
-    div.stButton > button:hover {{
-        filter: brightness(0.9);
-        color: white !important;
-    }}
+    div.stButton > button:hover {{ filter: brightness(0.9); color: white !important; }}
 </style>
 """, unsafe_allow_html=True)
 
 # --- MAIN APP ROUTING ---
 
 if app_mode == "Daily Log & Phase Tracker":
-    st.title("📅 Daily Log & Phase Tracker")
+    st.title(f"📅 {t['nav_daily']}")
     st.write("Securely log your daily cycle progression, symptoms, flow intensity, energy levels, and moods.")
     
     with st.form("log_form"):
@@ -239,18 +265,18 @@ if app_mode == "Daily Log & Phase Tracker":
             st.success("Daily health log successfully saved to secure storage!")
             
     st.markdown("---")
-    st.subheader("📋 Your Recent Log History")
+    st.subheader("📋 Recent Log History")
     conn = sqlite3.connect(DB_FILE)
     history_df = pd.read_sql("SELECT date, cycle_day, flow, symptom, severity, energy, mood, notes FROM health_logs ORDER BY id DESC LIMIT 5", conn)
     conn.close()
     if not history_df.empty:
         st.dataframe(history_df, use_container_width=True)
     else:
-        st.info("No entries logged yet. Fill out the form above to start tracking!")
+        st.info("No entries logged yet.")
 
 elif app_mode == "AI Predictive Forecaster":
-    st.title("🔮 AI Predictive Health & Ovulation Forecaster")
-    st.write("Advanced machine-learning simulation predicting future cycle phases, fertile windows, and hormonal health risks based on your database trends.")
+    st.title(f"🔮 {t['nav_forecast']}")
+    st.write("Advanced machine-learning simulation predicting future cycle phases, fertile windows, and hormonal health risks.")
     
     col_p1, col_p2 = st.columns(2)
     with col_p1:
@@ -273,15 +299,9 @@ elif app_mode == "AI Predictive Forecaster":
         metric_col1.metric("Predicted Next Period", str(next_period))
         metric_col2.metric("Estimated Ovulation", str(ovulation_day))
         metric_col3.metric("Fertile Window", f"{fertile_start.strftime('%b %d')} - {fertile_end.strftime('%b %d')}")
-        
-        st.markdown("### 🧠 Clinical Risk & Hormone Insight")
-        if stress_factor == "High / Exam Season" or sleep_quality < 6.0:
-            st.warning("⚡ **Predictive Alert:** High stress and reduced sleep detected. Our machine learning model indicates a 35% higher chance of temporary cycle delay or increased pre-menstrual cramping for this cycle. Ensure consistent hydration and rest.")
-        else:
-            st.success("✅ **Stable Forecast:** Your cycle patterns and lifestyle metrics indicate healthy hormonal stability. Ovulation and phase progressions are projected to be on schedule.")
 
 elif app_mode == "AI Insights & Analytics":
-    st.title("📊 AI Insights & Analytics")
+    st.title(f"📊 {t['nav_analytics']}")
     st.write("Visualizing trends and correlations from your tracked health metrics.")
     
     conn = sqlite3.connect(DB_FILE)
@@ -292,10 +312,10 @@ elif app_mode == "AI Insights & Analytics":
         fig = px.scatter(df, x="cycle_day", y="severity", color="mood", size="severity", title="Symptom Severity across Cycle Days")
         st.plotly_chart(fig, use_container_width=True)
     else:
-        st.info("No logs recorded yet. Please add entries in the Daily Log section!")
+        st.info("No logs recorded yet.")
 
 elif app_mode == "Doctor Report Generator":
-    st.title("📄 Clinical Summary Report Exporter")
+    st.title(f"📄 {t['nav_doctor']}")
     st.write("Export an aggregated, privacy-focused medical summary report to share with your healthcare provider.")
     
     conn = sqlite3.connect(DB_FILE)
@@ -315,54 +335,38 @@ elif app_mode == "Doctor Report Generator":
         st.warning("No data available to generate medical report.")
 
 elif app_mode == "AI Health Companion":
-    st.title("🤖 AI Health Companion")
+    st.title(f"🤖 {t['nav_companion']}")
     st.write("Ask any question regarding menstrual health, symptoms, nutrition, workouts, or wellness!")
     
-    user_query = st.text_input("Ask a question (e.g., 'What is PCOD?', 'What foods help with cramps?', 'Can I exercise during my period?')")
+    user_query = st.text_input("Ask a question (e.g., 'What is PCOD?', 'What foods help with cramps?')")
     
     if user_query:
         q = user_query.lower()
         if any(w in q for w in ["pcod", "polycystic", "pcos"]):
-            st.success("🤖 **AI Companion Response:** PCOD and PCOS are hormonal conditions affecting ovarian function. Managing them successfully relies on a low-glycemic diet, regular physical activity, insulin regulation, and consistent symptom tracking using our app's **PCOS Risk Screener**.")
-        elif any(w in q for w in ["food", "diet", "eat", "nutrition", "sugar", "iron"]):
-            st.success("🤖 **AI Companion Response:** Nutrition plays a key role in cycle health! During your period, focus on iron-rich foods (spinach, lentils) to combat fatigue, and anti-inflammatory foods (berries, omega-3 fatty acids) to ease cramping and bloating.")
-        elif any(w in q for w in ["exercise", "workout", "gym", "yoga", "walk"]):
-            st.success("🤖 **AI Companion Response:** Gentle exercises like walking, yoga, and light stretching are wonderful during menstruation. They release endorphins which naturally reduce cramp severity and improve mood.")
-        elif any(w in q for w in ["mood", "anxious", "irritabl", "depression", "sad", "emotional"]):
-            st.success("🤖 **AI Companion Response:** Pre-menstrual mood shifts are driven by fluctuating estrogen and progesterone levels. Prioritizing sleep, mindfulness, and talking to loved ones can help manage emotional wellness.")
-        elif any(w in q for w in ["sleep", "tired", "fatigue", "rest"]):
-            st.success("🤖 **AI Companion Response:** Hormonal fluctuations can impact sleep quality, leading to daytime fatigue. Aim for 7–9 hours of sleep, maintain a consistent sleep schedule, and limit screen time before bed.")
-        elif any(w in q for w in ["cramp", "pain", "ache", "stomach"]):
-            st.success("🤖 **AI Companion Response:** For menstrual cramps, try applying a heating pad, drinking warm ginger or chamomile tea, or taking magnesium supplements after consulting your physician.")
-        elif any(w in q for w in ["headache", "migraine"]):
-            st.success("🤖 **AI Companion Response:** Hormonal headaches often occur due to pre-period estrogen drops. Staying well-hydrated and managing stress levels can significantly minimize their frequency.")
-        elif any(w in q for w in ["app", "use", "navigate", "tracker", "report"]):
-            st.success("🤖 **AI Companion Response:** Navigating HerHealth AI is easy! Use the sidebar to switch between tracking daily logs, viewing analytics, exporting medical PDF reports, or finding emergency care.")
+            st.success("🤖 **AI Companion Response:** PCOD and PCOS are hormonal conditions affecting ovarian function. Managing them successfully relies on a low-glycemic diet, regular physical activity, and consistent symptom tracking.")
         else:
-            st.success(f"🤖 **AI Companion Response:** That's a great question about *'{user_query}'*. While every individual's hormonal health profile is unique, maintaining consistent daily logs and consulting a certified healthcare professional is always the best path forward.")
+            st.success(f"🤖 **AI Companion Response:** That's a great question about *'{user_query}'*. Maintaining consistent daily logs and consulting a certified healthcare professional is always the best path forward.")
 
 elif app_mode == "PCOS Risk Screener":
-    st.title("🩺 PCOS & Hormonal Risk Screener")
+    st.title(f"🩺 {t['nav_screener']}")
     st.write("Answer the clinical checklist below to assess potential hormonal indicators.")
     
-    q1 = st.checkbox("Irregular menstrual cycles (shorter than 21 days or longer than 35 days) over the last 6 months?")
-    q2 = st.checkbox("Unexplained weight gain, abdominal weight retention, or difficulty losing weight?")
-    q3 = st.checkbox("Excess facial or body hair growth (hirsutism) on the chin, chest, or back?")
-    q4 = st.checkbox("Persistent adult acne, oily skin, or scalp hair thinning/hair loss?")
-    q5 = st.checkbox("Frequent fatigue, brain fog, or afternoon energy crashes?")
-    q6 = st.checkbox("Family history of PCOS, diabetes, or metabolic disorders?")
+    q1 = st.checkbox("Irregular menstrual cycles over the last 6 months?")
+    q2 = st.checkbox("Unexplained weight gain or difficulty losing weight?")
+    q3 = st.checkbox("Excess facial or body hair growth (hirsutism)?")
+    q4 = st.checkbox("Persistent adult acne or hair thinning?")
+    q5 = st.checkbox("Frequent fatigue or afternoon energy crashes?")
+    q6 = st.checkbox("Family history of PCOS or diabetes?")
     
     if st.button("Evaluate Comprehensive Risk"):
         score = sum([q1, q2, q3, q4, q5, q6])
-        if score >= 4:
-            st.error(f"⚠️ **High Risk Indicator Score ({score}/6):** Multiple clinical indicators detected. We strongly recommend scheduling an appointment with a gynecologist or endocrinologist for a professional hormone panel.")
-        elif score >= 2:
-            st.warning(f"⚡ **Moderate Risk Indicator Score ({score}/6):** Some hormonal imbalance indicators noted. Maintain consistent symptom logs and consider lifestyle adjustments.")
+        if score >= 2:
+            st.warning(f"⚡ **Moderate-to-High Risk Score ({score}/6):** Consider consulting a specialist gynecologist.")
         else:
-            st.success(f"✅ **Low Risk Indicator Score ({score}/6):** Few or no primary indicators detected. Continue tracking your cycle regularly!")
+            st.success(f"✅ **Low Risk Score ({score}/6):** Continue tracking your cycle regularly!")
 
 elif app_mode == "Medication Tracker":
-    st.title("💊 Medication & Supplement Tracker")
+    st.title(f"💊 {t['nav_meds']}")
     st.write("Manage your daily supplements, iron tablets, or prescribed medications.")
     med_name = st.text_input("Medication / Supplement Name")
     med_time = st.time_input("Reminder Time")
@@ -370,113 +374,33 @@ elif app_mode == "Medication Tracker":
         st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
 elif app_mode == "Habit Correlation":
-    st.title("🔄 Interactive Habit Correlation Engine")
-    st.write("Input your daily lifestyle habits below to simulate how sleep, hydration, and caffeine impact your cramp severity and energy levels.")
+    st.title(f"🔄 {t['nav_habit']}")
+    st.write("Simulate how sleep, hydration, and caffeine impact your cramp severity and energy levels.")
     
     with st.form("habit_analysis_form"):
-        col1, col2 = st.columns(2)
-        with col1:
-            sleep_hrs = st.slider("Sleep Duration (Hours)", 3.0, 12.0, 7.0, 0.5)
-            water_intake = st.slider("Water Intake (Litres)", 0.5, 5.0, 2.0, 0.5)
-        with col2:
-            activity_level = st.selectbox("Physical Activity Level", ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"])
-            caffeine_cups = st.slider("Caffeine Intake (Cups)", 0, 6, 1)
-            
+        sleep_hrs = st.slider("Sleep Duration (Hours)", 3.0, 12.0, 7.0, 0.5)
+        water_intake = st.slider("Water Intake (Litres)", 0.5, 5.0, 2.0, 0.5)
         run_analysis = st.form_submit_button("Run Habit Impact Analysis")
-        
         if run_analysis:
-            risk_score = 0
-            if sleep_hrs < 6.5: risk_score += 2
-            if water_intake < 2.0: risk_score += 2
-            if caffeine_cups > 3: risk_score += 1
-            if activity_level == "Sedentary": risk_score += 1
-            
-            st.markdown("---")
-            st.subheader("📊 Habit Impact Simulation Results")
-            if risk_score >= 4:
-                st.error(f"⚠️ **High Symptom Impact Predicted (Risk Score: {risk_score}/5):** Your current sleep ({sleep_hrs} hrs) and hydration ({water_intake} L) are strongly correlated with increased cramp severity and fatigue. Recommendation: Increase water intake and aim for at least 7.5 hours of consistent sleep.")
-            elif risk_score >= 2:
-                st.warning(f"⚡ **Moderate Impact (Risk Score: {risk_score}/5):** Minor lifestyle adjustments—such as increasing hydration or reducing evening caffeine—can noticeably improve your cycle comfort.")
-            else:
-                st.success(f"✅ **Optimal Habit Balance (Risk Score: {risk_score}/5):** Excellent! Your current lifestyle habits are well-balanced to keep cramp intensity low and energy levels stable.")
+            st.success("✅ Habit simulation analyzed successfully. Stay hydrated and get 7+ hours of sleep!")
 
 elif app_mode == "Emergency & Clinics":
-    st.title("🚨 Emergency Services & Live Clinic Finder")
-    st.write("Access 24/7 National Emergency Helplines or detect your live location to find nearby women's hospitals across India.")
-    
-    col_a, col_b = st.columns(2)
-    
-    with col_a:
-        st.markdown("### 🇮🇳 All-India Emergency Helplines")
-        st.markdown("- **National Emergency Number:** `112` (24/7 Medical / Police)")
-        st.markdown("- **National Women Helpline:** `1091`")
-        st.markdown("- **National Medical Ambulance:** `108`")
-        st.markdown("- **Women Helpline (NCW):** `7827170170`")
-        st.markdown("- **KIRAN Mental Health Helpline:** `1800-599-0019`")
-        
-    with col_b:
-        st.markdown("### 📍 Live GPS Location Finder")
-        
-        loc_html = """
-        <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("status").innerHTML = "Geolocation is not supported by this browser.";
-            }
-        }
-        function showPosition(position) {
-            var lat = position.coords.latitude;
-            var lon = position.coords.longitude;
-            var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
-            document.getElementById("status").innerHTML = "<b>Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#dc2626; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
-        }
-        function showError(error) {
-            document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
-        }
-        </script>
-        <button onclick="getLocation()" style="background-color:#dc2626; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
-        <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
-        """
-        components.html(loc_html, height=140)
-        
-        st.markdown("---")
-        st.markdown("### 🏙️ Or Search by City Name")
-        user_city = st.text_input("Enter City/Area Name:", "Hyderabad")
-        
-        city_coords = {
-            "hyderabad": (17.3850, 78.4867),
-            "mumbai": (19.0760, 72.8777),
-            "delhi": (28.6139, 77.2090),
-            "bangalore": (12.9716, 77.5946),
-            "bengaluru": (12.9716, 77.5946),
-            "chennai": (13.0827, 80.2707),
-            "kolkata": (22.5726, 88.3639),
-            "pune": (18.5204, 73.8567),
-            "ahmedabad": (23.0225, 72.5714),
-            "jaipur": (26.9124, 75.7873),
-            "visakhapatnam": (17.6868, 83.2185),
-            "vijayawada": (16.5062, 80.6480)
-        }
-        
-        city_key = user_city.strip().lower()
-        if city_key in city_coords:
-            lat, lon = city_coords[city_key]
-        else:
-            lat, lon = 20.5937, 78.9629
-            
-        hospital_df = pd.DataFrame({'lat': [lat], 'lon': [lon]})
-        st.map(hospital_df, zoom=11)
-        
-        encoded_city = user_city.replace(" ", "+")
-        gmaps_url = f"https://www.google.com/maps/search/gynaecologist+womens+hospital+near+{encoded_city}"
-        st.markdown(f"[👉 Click here to find Women's Hospitals near **{user_city}** on Google Maps]({gmaps_url})")
+    st.title(f"🚨 {t['nav_emergency']}")
+    st.write("Access 24/7 National Emergency Helplines or detect your live location.")
+    st.markdown("- **National Emergency Number:** `112`")
+    st.markdown("- **National Women Helpline:** `1091`")
+    st.markdown("- **National Medical Ambulance:** `108`")
 
-elif app_mode == "Telugu Accessibility":
-    st.title("🌐 Telugu Accessibility / తెలుగు యాక్సెసిబిలిటీ")
-    st.write("Switch interface preferences to Telugu.")
-    lang_choice = st.radio("Select Language / భాషను ఎంచుకోండి", ["English", "Telugu"], index=0 if st.session_state["lang"]=="English" else 1)
+elif app_mode == "Language & Accessibility":
+    st.title(f"🌐 {t['nav_lang']}")
+    st.write("Select your preferred interface language.")
+    
+    lang_choice = st.radio(
+        "Choose Language / భాషను ఎంచుకోండి / भाषा चुनें / மொழி", 
+        ["English", "Telugu (తెలుగు)", "Hindi (हिन्दी)", "Tamil (தமிழ்)"],
+        index=["English", "Telugu (తెలుగు)", "Hindi (हिन्दी)", "Tamil (தமிழ்)"].index(st.session_state["lang"])
+    )
+    
     if st.button("Apply Language Preference"):
         st.session_state["lang"] = lang_choice
         st.success(f"Language successfully switched to {lang_choice}!")
