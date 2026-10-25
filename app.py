@@ -21,6 +21,12 @@ def init_db():
             mood TEXT
         )
     ''')
+    # Safely add new columns if upgrading from previous version
+    for col, col_type in [("flow", "TEXT"), ("energy", "INTEGER"), ("notes", "TEXT")]:
+        try:
+            c.execute(f"ALTER TABLE health_logs ADD COLUMN {col} {col_type}")
+        except sqlite3.OperationalError:
+            pass
     conn.commit()
     conn.close()
 
@@ -45,14 +51,14 @@ def generate_pdf(df):
     
     # Table Headers
     for col in df.columns:
-        pdf.cell(35, 10, str(col), border=1)
+        pdf.cell(30, 10, str(col), border=1)
     pdf.ln()
     
     # Table Data
     pdf.set_font("Arial", size=10)
     for _, row in df.iterrows():
         for val in row:
-            pdf.cell(35, 10, str(val), border=1)
+            pdf.cell(30, 10, str(val), border=1)
         pdf.ln()
         
     output = pdf.output(dest='S')
@@ -127,39 +133,39 @@ app_mode = st.sidebar.radio(
 # --- LUXURY FEATURE-SPECIFIC GRADIENTS & BUTTON ACCENTS ---
 theme_mapping = {
     "Daily Log & Phase Tracker": {
-        "bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)",  # Rose Quartz & Peach
+        "bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)",
         "btn": "#e11d48"
     },
     "AI Insights & Analytics": {
-        "bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",             # Sapphire Ocean Mist
+        "bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)",
         "btn": "#2563eb"
     },
     "Doctor Report Generator": {
-        "bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",             # Mint Emerald Teal
+        "bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)",
         "btn": "#0d9488"
     },
     "AI Health Companion": {
-        "bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",             # Warm Sunrise Gold
+        "bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
         "btn": "#ea580c"
     },
     "PCOS Risk Screener": {
-        "bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",              # Lavender Violet Glow
+        "bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)",
         "btn": "#7c3aed"
     },
     "Medication Tracker": {
-        "bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",              # Electric Orchid Lilac
+        "bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)",
         "btn": "#c026d3"
     },
     "Habit Correlation": {
-        "bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",              # Neon Lime & Spring Sage
+        "bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)",
         "btn": "#16a34a"
     },
     "Emergency & Clinics": {
-        "bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",             # Urgent Crimson Alert
+        "bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)",
         "btn": "#dc2626"
     },
     "Telugu Accessibility": {
-        "bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)",             # Soft Cyber Cyan
+        "bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)",
         "btn": "#0284c7"
     }
 }
@@ -171,7 +177,6 @@ current_theme = theme_mapping.get(app_mode, {
 
 st.markdown(f"""
 <style>
-    /* Dynamic Feature Background Gradient */
     [data-testid="stAppViewContainer"] {{
         background: {current_theme['bg']} !important;
         transition: background 0.6s ease-in-out;
@@ -179,19 +184,10 @@ st.markdown(f"""
     [data-testid="stMain"] {{
         background: transparent !important;
     }}
-    
-    /* Clean white frosted sidebar */
     [data-testid="stSidebar"] {{
         background-color: rgba(255, 255, 255, 0.95) !important;
         border-right: 1px solid #cbd5e1 !important;
     }}
-    
-    /* Glassmorphism content cards for high contrast and readability */
-    div[data-testid="stForm"], div.stMarkdown, div[data-testid="stVerticalBlock"] > div {{
-        border-radius: 12px;
-    }}
-    
-    /* Feature-matching themed buttons */
     div.stButton > button {{
         background: {current_theme['btn']} !important;
         color: white !important;
@@ -212,27 +208,41 @@ st.markdown(f"""
 
 if app_mode == "Daily Log & Phase Tracker":
     st.title("📅 Daily Log & Phase Tracker")
-    st.write("Track your daily cycle days, symptoms, and moods securely.")
+    st.write("Securely log your daily cycle progression, symptoms, flow intensity, energy levels, and moods.")
     
     with st.form("log_form"):
         col1, col2 = st.columns(2)
         with col1:
             log_date = st.date_input("Date")
             cycle_day = st.number_input("Cycle Day", min_value=1, max_value=45, value=1)
+            flow = st.selectbox("Flow Intensity", ["None/Dry", "Spotting", "Light", "Medium", "Heavy"])
         with col2:
-            symptom = st.selectbox("Primary Symptom", ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue"])
-            severity = st.slider("Severity Level", 1, 5, 1)
-            mood = st.selectbox("Mood", ["Happy", "Calm", "Anxious", "Irritable", "Tired"])
+            symptom = st.selectbox("Primary Symptom", ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue", "Bloating"])
+            severity = st.slider("Symptom Severity Level", 1, 5, 1)
+            energy = st.slider("Energy Level (1=Low, 5=High)", 1, 5, 3)
+            mood = st.selectbox("Mood", ["Happy", "Calm", "Anxious", "Irritable", "Tired", "Energetic"])
         
-        submit_log = st.form_submit_button("Save Entry")
+        notes = st.text_area("Personal Journal / Custom Notes", placeholder="Add any extra notes about how you feel today...")
+        
+        submit_log = st.form_submit_button("Save Daily Entry")
         if submit_log:
             conn = sqlite3.connect(DB_FILE)
             c = conn.cursor()
-            c.execute("INSERT INTO health_logs (date, cycle_day, symptom, severity, mood) VALUES (?, ?, ?, ?, ?)",
-                      (str(log_date), cycle_day, symptom, severity, mood))
+            c.execute("INSERT INTO health_logs (date, cycle_day, symptom, severity, mood, flow, energy, notes) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                      (str(log_date), cycle_day, symptom, severity, mood, flow, energy, notes))
             conn.commit()
             conn.close()
-            st.success("Health log successfully saved to secure storage!")
+            st.success("Daily health log successfully saved to secure storage!")
+            
+    st.markdown("---")
+    st.subheader("📋 Your Recent Log History")
+    conn = sqlite3.connect(DB_FILE)
+    history_df = pd.read_sql("SELECT date, cycle_day, flow, symptom, severity, energy, mood, notes FROM health_logs ORDER BY id DESC LIMIT 5", conn)
+    conn.close()
+    if not history_df.empty:
+        st.dataframe(history_df, use_container_width=True)
+    else:
+        st.info("No entries logged yet. Fill out the form above to start tracking!")
 
 elif app_mode == "AI Insights & Analytics":
     st.title("📊 AI Insights & Analytics")
@@ -270,35 +280,51 @@ elif app_mode == "Doctor Report Generator":
 
 elif app_mode == "AI Health Companion":
     st.title("🤖 AI Health Companion")
-    st.write("Ask questions regarding menstrual health, cycle symptoms, wellness tips, or app navigation.")
+    st.write("Ask any question regarding menstrual health, symptoms, nutrition, workouts, or wellness!")
     
-    user_query = st.text_input("How can I help you today? (e.g., 'How to ease cramps?', 'Why am I fatigued?', 'How do I use the tracker?')")
+    user_query = st.text_input("Ask a question (e.g., 'What is PCOD?', 'What foods help with cramps?', 'Can I exercise during my period?')")
     
     if user_query:
-        query_lower = user_query.lower()
-        if "cramp" in query_lower or "pain" in query_lower:
-            st.success("🤖 **AI Companion Response:** For cramp relief, try applying a heating pad to your lower abdomen, drinking warm chamomile or ginger tea, and engaging in light stretching or yoga.")
-        elif "fatigue" in query_lower or "tired" in query_lower:
-            st.success("🤖 **AI Companion Response:** Fatigue during certain cycle phases is common due to changing hormone levels. Focus on iron-rich foods, stay well-hydrated, and aim for 7-9 hours of consistent sleep.")
-        elif "pcos" in query_lower:
-            st.success("🤖 **AI Companion Response:** Managing PCOS often involves balancing blood sugar through a low-glycemic diet, regular physical activity, and stress management. Try using our built-in **PCOS Risk Screener**.")
-        elif "navigation" in query_lower or "use" in query_lower or "app" in query_lower:
-            st.success("🤖 **AI Companion Response:** You can navigate HerHealth AI using the sidebar! Record symptoms in **Daily Log**, view insights in **Analytics**, and export your report from the **Doctor Report Generator**.")
+        q = user_query.lower()
+        
+        if any(w in q for w in ["pcod", "polycystic", "pcos"]):
+            st.success("🤖 **AI Companion Response:** PCOD and PCOS are hormonal conditions affecting ovarian function. Managing them successfully relies on a low-glycemic diet, regular physical activity, insulin regulation, and consistent symptom tracking using our app's **PCOS Risk Screener**.")
+        elif any(w in q for w in ["food", "diet", "eat", "nutrition", "sugar", "iron"]):
+            st.success("🤖 **AI Companion Response:** Nutrition plays a key role in cycle health! During your period, focus on iron-rich foods (spinach, lentils) to combat fatigue, and anti-inflammatory foods (berries, omega-3 fatty acids) to ease cramping and bloating.")
+        elif any(w in q for w in ["exercise", "workout", "gym", "yoga", "walk"]):
+            st.success("🤖 **AI Companion Response:** Gentle exercises like walking, yoga, and light stretching are wonderful during menstruation. They release endorphins which naturally reduce cramp severity and improve mood.")
+        elif any(w in q for w in ["mood", "anxious", "irritabl", "depression", "sad", "emotional"]):
+            st.success("🤖 **AI Companion Response:** Pre-menstrual mood shifts are driven by fluctuating estrogen and progesterone levels. Prioritizing sleep, mindfulness, and talking to loved ones can help manage emotional wellness.")
+        elif any(w in q for w in ["sleep", "tired", "fatigue", "rest"]):
+            st.success("🤖 **AI Companion Response:** Hormonal fluctuations can impact sleep quality, leading to daytime fatigue. Aim for 7–9 hours of sleep, maintain a consistent sleep schedule, and limit screen time before bed.")
+        elif any(w in q for w in ["cramp", "pain", "ache", "stomach"]):
+            st.success("🤖 **AI Companion Response:** For menstrual cramps, try applying a heating pad, drinking warm ginger or chamomile tea, or taking magnesium supplements after consulting your physician.")
+        elif any(w in q for w in ["headache", "migraine"]):
+            st.success("🤖 **AI Companion Response:** Hormonal headaches often occur due to pre-period estrogen drops. Staying well-hydrated and managing stress levels can significantly minimize their frequency.")
+        elif any(w in q for w in ["app", "use", "navigate", "tracker", "report"]):
+            st.success("🤖 **AI Companion Response:** Navigating HerHealth AI is easy! Use the sidebar to switch between tracking daily logs, viewing analytics, exporting medical PDF reports, or finding emergency care.")
         else:
-            st.success(f"🤖 **AI Companion Response:** Thank you for asking about *'{user_query}'*. Maintaining a balanced diet, tracking symptoms consistently, and staying hydrated are key to overall hormonal balance.")
+            st.success(f"🤖 **AI Companion Response:** That's a great question about *'{user_query}'*. While every individual's hormonal health profile is unique, maintaining consistent daily logs and consulting a certified healthcare professional is always the best path forward.")
 
 elif app_mode == "PCOS Risk Screener":
-    st.title("🩺 PCOS Risk Screener")
-    st.write("Answer a few quick questions to assess potential hormonal indicators.")
-    q1 = st.checkbox("Irregular menstrual cycles over the last 6 months?")
-    q2 = st.checkbox("Unexplained weight changes or difficulty losing weight?")
-    q3 = st.checkbox("Excess facial or body hair growth?")
-    if st.button("Evaluate Risk"):
-        score = sum([q1, q2, q3])
-        if score >= 2:
-            st.error("Moderate-to-High indicator score detected. Consider consulting a specialist gynecologist for clinical evaluation.")
+    st.title("🩺 PCOS & Hormonal Risk Screener")
+    st.write("Answer the clinical checklist below to assess potential hormonal indicators.")
+    
+    q1 = st.checkbox("Irregular menstrual cycles (shorter than 21 days or longer than 35 days) over the last 6 months?")
+    q2 = st.checkbox("Unexplained weight gain, abdominal weight retention, or difficulty losing weight?")
+    q3 = st.checkbox("Excess facial or body hair growth (hirsutism) on the chin, chest, or back?")
+    q4 = st.checkbox("Persistent adult acne, oily skin, or scalp hair thinning/hair loss?")
+    q5 = st.checkbox("Frequent fatigue, brain fog, or afternoon energy crashes?")
+    q6 = st.checkbox("Family history of PCOS, diabetes, or metabolic disorders?")
+    
+    if st.button("Evaluate Comprehensive Risk"):
+        score = sum([q1, q2, q3, q4, q5, q6])
+        if score >= 4:
+            st.error(f"⚠️ **High Risk Indicator Score ({score}/6):** Multiple clinical indicators detected. We strongly recommend scheduling an appointment with a gynecologist or endocrinologist for a professional hormone panel.")
+        elif score >= 2:
+            st.warning(f"⚡ **Moderate Risk Indicator Score ({score}/6):** Some hormonal imbalance indicators noted. Maintain consistent symptom logs and consider lifestyle adjustments.")
         else:
-            st.success("Low indicator score detected. Continue tracking your cycle regularly!")
+            st.success(f"✅ **Low Risk Indicator Score ({score}/6):** Few or no primary indicators detected. Continue tracking your cycle regularly!")
 
 elif app_mode == "Medication Tracker":
     st.title("💊 Medication & Supplement Tracker")
