@@ -97,7 +97,15 @@ LANG_DICT = {
         "meds_desc": "Manage your daily supplements, iron tablets, or prescribed medications.",
         "habit_desc": "Input your daily lifestyle habits below to simulate how sleep, hydration, and caffeine impact your cramp severity and energy levels.",
         "emergency_desc": "Access 24/7 National Emergency Helplines or detect your live GPS location to find nearby women's hospitals across India.",
-        "lang_desc": "Select your preferred interface language."
+        "lang_desc": "Select your preferred interface language.",
+
+        "avg_cycle": "Average Cycle Length (Days)",
+        "last_period": "Start Date of Last Period",
+        "run_forecast": "Run AI Predictive Forecast",
+        "forecast_results": "AI Prediction Results",
+        "next_period": "Predicted Next Period",
+        "est_ovulation": "Estimated Ovulation",
+        "fertile_window": "Fertile Window"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -120,7 +128,15 @@ LANG_DICT = {
         "meds_desc": "మీ రోజువారీ సప్లిమెంట్లు, ఇనుము మాత్రలు లేదా సూచించిన మందులను నిర్వహించండి.",
         "habit_desc": "నిద్ర, ఆర్ద్రీకరణ మరియు కెఫిన్ మీ తిమ్మిరి తీవ్రత మరియు శక్తి స్థాయిలను ఎలా ప్రభావితం చేస్తాయో అనుకరించండి.",
         "emergency_desc": "24/7 జాతీయ అత్యవసర హెల్ప్‌లైన్‌లను యాక్సెస్ చేయండి లేదా సమీపంలోని మహిళా ఆసుపత్రులను కనుగొనండి.",
-        "lang_desc": "మీకు ఇష్టమైన ఇంటర్‌ఫేస్ భాషను ఎంచుకోండి."
+        "lang_desc": "మీకు ఇష్టమైన ఇంటర్‌ఫేస్ భాషను ఎంచుకోండి.",
+
+        "avg_cycle": "సగటు చక్రం పొడవు (రోజులు)",
+        "last_period": "చివరి నెలసరి ప్రారంభ తేదీ",
+        "run_forecast": "AI అంచనాను అమలు చేయండి",
+        "forecast_results": "AI అంచనా ఫలితాలు",
+        "next_period": "అంచనా వేసిన తదుపరి నెలసరి",
+        "est_ovulation": "అంచనా వేసిన అండోత్సర్గము",
+        "fertile_window": "ఫలదీకరణ విండో"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -143,7 +159,15 @@ LANG_DICT = {
         "meds_desc": "अपने दैनिक पूरक, आयरन की गोलियाँ या निर्धारित दवाएं प्रबंधित करें।",
         "habit_desc": "अनुकरण करें कि नींद, जलयोजन और कैफीन आपके ऐंठन की गंभीरता और ऊर्जा के स्तर को कैसे प्रभावित करते हैं।",
         "emergency_desc": "24/7 राष्ट्रीय आपातकालीन हेल्पलाइन तक पहुंचें या नजदीकी महिला अस्पताल खोजें।",
-        "lang_desc": "अपनी पसंदीदा इंटरफ़ेस भाषा चुनें।"
+        "lang_desc": "अपनी पसंदीदा इंटरफ़ेस भाषा चुनें.",
+
+        "avg_cycle": "औसत चक्र लंबाई (दिन)",
+        "last_period": "अंतिम माहवारी की शुरुआत की तारीख",
+        "run_forecast": "एआई पूर्वानुमान चलाएं",
+        "forecast_results": "एआई पूर्वानुमान परिणाम",
+        "next_period": "अनुमानित अगली माहवारी",
+        "est_ovulation": "अनुमानित ओव्यूलेशन",
+        "fertile_window": "उपजाऊ खिड़की"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -166,18 +190,25 @@ LANG_DICT = {
         "meds_desc": "உங்கள் தினசரி சப்ளிமெண்ட்ஸ் மற்றும் பரிந்துரைக்கப்பட்ட மருந்துகளை நிர்வகிக்கவும்.",
         "habit_desc": "தூக்கம் மற்றும் நீரேற்றம் எவ்வாறு உங்கள் தசைப்பிடிப்பு தீவிரத்தை பாதிக்கிறது என்பதை உருவகப்படுத்துங்கள்.",
         "emergency_desc": "24/7 தேசிய அவசர உதவி எண்களை அணுகவும் அல்லது அருகில் உள்ள மருத்துவமனைகளைக் கண்டறியவும்.",
-        "lang_desc": "உங்களுக்கு பிடித்த இடைமுக மொழியைத் தேர்ந்தெடுக்கவும்."
+        "lang_desc": "உங்களுக்கு பிடித்த இடைமுக மொழியைத் தேர்ந்தெடுக்கவும்.",
+
+        "avg_cycle": "சராசரி சுழற்சி நீளம் (நாட்கள்)",
+        "last_period": "கடைசி மாதவிடாய் தொடக்க தேதி",
+        "run_forecast": "AI முன்னறிவிப்பை இயக்கு",
+        "forecast_results": "AI கணிப்பு முடிவுகள்",
+        "next_period": "கணிக்கப்பட்ட அடுத்த மாதவிடாய்",
+        "est_ovulation": "மதிப்பிடப்பட்ட அண்டவிடுப்பின்",
+        "fertile_window": "கருத்தரிக்கும் காலம்"
     }
 }
 
 current_l = st.session_state["lang"]
 t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
-# --- SIDEBAR AUTHENTICATION LOCK (CREATE VAULT FIRST) ---
+# --- SIDEBAR AUTHENTICATION LOCK ---
 st.sidebar.markdown("### 🔒 Security Vault & Setup")
 
 if not st.session_state["vault_unlocked"]:
-    # ORDER REVERSED: "Create Vault" is placed first
     tab_create, tab_login = st.sidebar.tabs(["Create Vault", "Login"])
     
     with tab_create:
@@ -188,7 +219,7 @@ if not st.session_state["vault_unlocked"]:
             if new_user and new_pass:
                 conn = sqlite3.connect(DB_FILE)
                 c = conn.cursor()
-                c.execute("DELETE FROM vault_creds")  # Keep only active credentials
+                c.execute("DELETE FROM vault_creds")
                 c.execute("INSERT INTO vault_creds (username, password) VALUES (?, ?)", (new_user, new_pass))
                 conn.commit()
                 conn.close()
@@ -206,7 +237,6 @@ if not st.session_state["vault_unlocked"]:
             saved_cred = c.fetchone()
             conn.close()
             
-            # Default fallback if no custom vault was created yet
             s_user = saved_cred[0] if saved_cred else "admin"
             s_pass = saved_cred[1] if saved_cred else "1234"
             
@@ -310,25 +340,25 @@ else:
         
         col_p1, col_p2 = st.columns(2)
         with col_p1:
-            avg_cycle_len = st.number_input("Average Cycle Length (Days)", min_value=21, max_value=45, value=28)
-            last_period_start = st.date_input("Start Date of Last Period")
+            avg_cycle_len = st.number_input(t["avg_cycle"], min_value=21, max_value=45, value=28)
+            last_period_start = st.date_input(t["last_period"])
         with col_p2:
             stress_factor = st.selectbox("Current Stress Level", ["Low", "Moderate", "High / Exam Season"])
             sleep_quality = st.slider("Average Sleep (Hours/Night)", 4.0, 10.0, 7.5)
             
-        if st.button("Run AI Predictive Forecast"):
+        if st.button(t["run_forecast"]):
             next_period = last_period_start + pd.Timedelta(days=avg_cycle_len)
             ovulation_day = last_period_start + pd.Timedelta(days=(avg_cycle_len - 14))
             fertile_start = ovulation_day - pd.Timedelta(days=3)
             fertile_end = ovulation_day + pd.Timedelta(days=1)
             
             st.markdown("---")
-            st.subheader("📊 AI Prediction Results")
+            st.subheader(f"📊 {t['forecast_results']}")
             
             metric_col1, metric_col2, metric_col3 = st.columns(3)
-            metric_col1.metric("Predicted Next Period", str(next_period))
-            metric_col2.metric("Estimated Ovulation", str(ovulation_day))
-            metric_col3.metric("Fertile Window", f"{fertile_start.strftime('%b %d')} - {fertile_end.strftime('%b %d')}")
+            metric_col1.metric(t["next_period"], str(next_period))
+            metric_col2.metric(t["est_ovulation"], str(ovulation_day))
+            metric_col3.metric(t["fertile_window"], f"{fertile_start.strftime('%b %d')} - {fertile_end.strftime('%b %d')}")
 
     elif app_mode == "AI Insights & Analytics":
         st.title(f"📊 {t['nav_analytics']}")
