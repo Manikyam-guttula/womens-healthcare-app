@@ -108,7 +108,7 @@ LANG_DICT = {
         "nav_emergency": "అత్యవసర & క్లినిక్‌లు",
         "nav_lang": "భాష & ప్రాప్యత",
         
-        "daily_desc": "మీ రోజువారీ చక్రం పురోగతి, లక్షణాలు, ప్రవాహ తీవ్రత, శక్తి స్థాయిలు మరియు మానసిక స్థితిని సురక్షితವಾಗಿ లాగ్ చేయండి.",
+        "daily_desc": "మీ రోజువారీ చక్రం పురోగతి, లక్షణాలు, ప్రవాహ తీవ్రత, శక్తి స్థాయిలు మరియు మానసిక స్థితిని సురక్షితంగా లాగ్ చేయండి.",
         "forecast_desc": "భవిష్యత్ చక్ర దశలు, ఫలదీకరణ విండోలు మరియు హార్మోన్ల ఆరోగ్య రిస్క్‌లను అంచనా వేసే అధునాతన సిమ్యులేషన్.",
         "analytics_desc": "మీ ట్రాక్ చేసిన ఆరోగ్య కొలమానాల నుండి ట్రెండ్‌లు మరియు పరస్పర సంబంధాలను విజువలైజ్ చేస్తోంది.",
         "doctor_desc": "మీ ఆరోగ్య సంరక్షణ ప్రదాతతో భాగస్వామ్యం చేయడానికి వైద్య సారాంశ నివేదికను ఎగుమతి చేయండి.",
@@ -246,30 +246,31 @@ else:
 
     app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
-    # --- THEMES WITH WATERMARK BACKGROUND ---
-    svg_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='0.4' stroke-linecap='round' stroke-linejoin='round' opacity='0.12'><path d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z'/><path d='M12 6v6l4 2'/></svg>\")"
+    # --- LIGHT BACKGROUND WITH ELEGANT WOMAN LINE-DRAWING SVG VECTOR WATERMARK ---
+    # Soft pastel light gradient background paired with a fine minimalist line-art woman silhouette vector
+    svg_woman_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 24 24' fill='none' stroke='%23e11d48' stroke-width='0.35' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z'/><path d='M9 21h6'/><path d='M10 24h4'/></svg>\")"
 
     theme_mapping = {
-        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)", "btn": "#e11d48"},
-        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", "btn": "#9333ea"},
-        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)", "btn": "#2563eb"},
-        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", "btn": "#0d9488"},
-        "AI Health Companion": {"bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)", "btn": "#ea580c"},
-        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", "btn": "#7c3aed"},
-        "Medication Tracker": {"bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)", "btn": "#c026d3"},
-        "Habit Correlation": {"bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)", "btn": "#16a34a"},
-        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)", "btn": "#dc2626"},
-        "Language & Accessibility": {"bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)", "btn": "#0284c7"}
+        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%)", "btn": "#e11d48"},
+        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%)", "btn": "#9333ea"},
+        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)", "btn": "#16a34a"},
+        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%)", "btn": "#0d9488"},
+        "AI Health Companion": {"bg": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)", "btn": "#d97706"},
+        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 50%, #f5d0fe 100%)", "btn": "#c026d3"},
+        "Medication Tracker": {"bg": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)", "btn": "#2563eb"},
+        "Habit Correlation": {"bg": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)", "btn": "#059669"},
+        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #fff5f5 0%, #fed7d7 50%, #feb2b2 100%)", "btn": "#dc2626"},
+        "Language & Accessibility": {"bg": "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)", "btn": "#0284c7"}
     }
 
-    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)", "btn": "#0f172a"})
+    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", "btn": "#0f172a"})
 
     st.markdown(f"""
     <style>
         [data-testid="stAppViewContainer"] {{
-            background-image: {svg_watermark}, {current_theme['bg']} !important;
+            background-image: {svg_woman_watermark}, {current_theme['bg']} !important;
             background-repeat: repeat, no-repeat !important;
-            background-size: 300px 300px, cover !important;
+            background-size: 350px 350px, cover !important;
             background-position: center, center !important;
             transition: background 0.6s ease-in-out;
         }}
