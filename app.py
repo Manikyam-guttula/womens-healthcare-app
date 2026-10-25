@@ -114,6 +114,20 @@ LANG_DICT = {
         "sleep_hours": "Average Sleep (Hours/Night)",
         "stress_options": ["Low", "Moderate", "High / Exam Season"],
 
+        # Doctor Report strings
+        "doc_download_btn": "Download Medical PDF Report",
+        "doc_no_data": "No data available to generate medical report.",
+        "col_date": "Date",
+        "col_cycle_day": "Cycle Day",
+        "col_symptom": "Symptom",
+        "col_severity": "Severity",
+        "col_mood": "Mood",
+
+        # Analytics strings
+        "analytics_chart_title": "Symptom Severity across Cycle Days",
+        "analytics_xaxis": "Cycle Day",
+        "analytics_yaxis": "Severity",
+
         "date": "Date",
         "cycle_day": "Cycle Day",
         "flow_intensity": "Flow Intensity",
@@ -240,6 +254,20 @@ LANG_DICT = {
         "stress_level": "ప్రస్తుత ఒత్తిడి స్థాయి",
         "sleep_hours": "సగటు నిద్ర (గంటలు/రాత్రి)",
         "stress_options": ["తక్కువ", "మధ్యస్థం", "ఎక్కువ / పరీక్షల సమయం"],
+
+        # Doctor Report strings
+        "doc_download_btn": "వైద్య PDF నివేదికను డౌన్‌లోడ్ చేయండి",
+        "doc_no_data": "వైద్య నివేదికను రూపొందించడానికి డేటా అందుబాటులో లేదు.",
+        "col_date": "తేదీ",
+        "col_cycle_day": "చక్రపు రోజు",
+        "col_symptom": "లక్షణం",
+        "col_severity": "తీవ్రత",
+        "col_mood": "మానసిక స్థితి",
+
+        # Analytics strings
+        "analytics_chart_title": "చక్రపు రోజులలో లక్షణాల తీవ్రత",
+        "analytics_xaxis": "చక్రపు రోజు",
+        "analytics_yaxis": "తీవ్రత",
 
         "date": "తేదీ",
         "cycle_day": "చక్రపు రోజు",
@@ -368,6 +396,20 @@ LANG_DICT = {
         "sleep_hours": "औसत नींद (घंटे/रात)",
         "stress_options": ["कम", "मध्यम", "उच्च / परीक्षा का मौसम"],
 
+        # Doctor Report strings
+        "doc_download_btn": "मेडिकल पीडीएफ रिपोर्ट डाउनलोड करें",
+        "doc_no_data": "मेडिकल रिपोर्ट तैयार करने के लिए कोई डेटा उपलब्ध नहीं है।",
+        "col_date": "तारीख",
+        "col_cycle_day": "चक्र का दिन",
+        "col_symptom": "लक्षण",
+        "col_severity": "गंभीरता",
+        "col_mood": "मनोदशा",
+
+        # Analytics strings
+        "analytics_chart_title": "चक्र के दिनों में लक्षण की गंभीरता",
+        "analytics_xaxis": "चक्र का दिन",
+        "analytics_yaxis": "गंभीरता",
+
         "date": "तारीख",
         "cycle_day": "चक्र का दिन",
         "flow_intensity": "प्रवाह की तीव्रता",
@@ -494,6 +536,20 @@ LANG_DICT = {
         "stress_level": "தற்போதைய மன அழுத்த நிலை",
         "sleep_hours": "சராசரி தூக்கம் (மணிநேரம்/இரவு)",
         "stress_options": ["குறைவு", "மிதமானது", "அதிகம் / தேர்வு காலம்"],
+
+        # Doctor Report strings
+        "doc_download_pdf": "மருத்துவ PDF அறிக்கையைப் பதிவிறக்குக",
+        "doc_no_data": "மருத்துவ அறிக்கையை உருவாக்க தரவு எதுவும் இல்லை.",
+        "col_date": "தேதி",
+        "col_cycle_day": "சுழற்சி நாள்",
+        "col_symptom": "அறிகுறி",
+        "col_severity": "தீவிரம்",
+        "col_mood": "மனநிலை",
+
+        # Analytics strings
+        "analytics_chart_title": "சுழற்சி நாட்களில் அறிகுறி தீவிரம்",
+        "analytics_xaxis": "சுழற்சி நாள்",
+        "analytics_yaxis": "தீவிரம்",
 
         "date": "தேதி",
         "cycle_day": "சுழற்சி நாள்",
@@ -803,7 +859,15 @@ else:
         conn.close()
         
         if not df.empty:
-            fig = px.scatter(df, x="cycle_day", y="severity", color="mood", size="severity", title="Symptom Severity across Cycle Days")
+            fig = px.scatter(
+                df, 
+                x="cycle_day", 
+                y="severity", 
+                color="mood", 
+                size="severity", 
+                title=t["analytics_chart_title"],
+                labels={"cycle_day": t["analytics_xaxis"], "severity": t["analytics_yaxis"]}
+            )
             st.plotly_chart(fig, use_container_width=True)
         else:
             st.info(t["no_logs"])
@@ -817,16 +881,17 @@ else:
         conn.close()
         
         if not df.empty:
+            df.columns = [t["col_date"], t["col_cycle_day"], t["col_symptom"], t["col_severity"], t["col_mood"]]
             st.dataframe(df, use_container_width=True)
             pdf_bytes = generate_pdf(df)
             st.download_button(
-                label="Download Medical PDF Report",
+                label=t["doc_download_pdf"],
                 data=pdf_bytes,
                 file_name="HerHealth_AI_Medical_Report.pdf",
                 mime="application/pdf"
             )
         else:
-            st.warning("No data available to generate medical report.")
+            st.warning(t["doc_no_data"])
 
     elif app_mode == "Complete Health Report":
         st.title(f"📦 {t['cr_title']}")
