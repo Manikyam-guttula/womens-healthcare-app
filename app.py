@@ -80,7 +80,7 @@ if "vault_unlocked" not in st.session_state:
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
 
-# --- COMPREHENSIVE MULTILINGUAL DICTIONARY (FULLY CORRECTED TELUGU) ---
+# --- COMPREHENSIVE MULTILINGUAL DICTIONARY ---
 LANG_DICT = {
     "English": {
         "nav_daily": "Daily Log & Phase Tracker",
@@ -226,7 +226,12 @@ LANG_DICT = {
         "cr_view_rem": "View reminder history",
         "cr_review_text": "Review the filtered records above before downloading the PDF or ZIP report.",
         "cr_dl_zip": "📥 Download Complete Report (ZIP)",
-        "cr_dl_pdf": "📥 Download Complete Report (PDF)"
+        "cr_dl_pdf": "📥 Download Complete Report (PDF)",
+        "cr_no_symp_range": "No symptom records found for this date range.",
+        "cr_no_sev_range": "No severity records found.",
+        "cr_no_rem_history": "No reminder history available.",
+        "cr_chart_symp_freq": "Symptom Frequency",
+        "cr_chart_rec_sev": "Recorded Symptom Severity"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -305,7 +310,7 @@ LANG_DICT = {
         "recent_history": "ఇటీవలి లాగ్ చరిత్ర",
         "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు.",
 
-        # Dropdown options (FULLY CORRECTED TELUGU)
+        # Dropdown options
         "flow_options": ["ఏదీ లేదు/పొడిగా", "స్పాటింగ్ (చుక్కలు)", "తేలికపాటి (Light)", "మధ్యస్థం (Medium)", "అధిక (Heavy)"],
         "symptom_options": ["ఏదీ లేదు", "తిమ్మిరి / పొత్తికడుపు నొప్పి", "తలనొప్పి / మైగ్రేన్", "మూడ్ స్వింగ్స్ / ఆందోళన", "తీవ్రమైన అలసట", "బ్లోటింగ్ (ఉబ్బు)"],
         "mood_options": ["సంతోషంగా", "ప్రశాంతంగా", "ఆందోళనగా", "చికాకుగా", "అలసిపోయినట్లు", "శక్తివంతంగా"],
@@ -340,7 +345,7 @@ LANG_DICT = {
         "pcos_q3": "అదనపు ముఖ లేదా శరీర వెంట్రుకల పెరుగుదల (హిర్సుటిజం)?",
         "pcos_q4": "నిరంతర వయోజన మొటిమలు లేదా జుట్టు పల్చబడటం?",
         "pcos_q5": "తరచుగా అలసట లేదా మధ్యాహ్నం శక్తి పడిపోవడం?",
-        "pcos_q6": "PCOS లేదా మధుమేహం యొక్క కుటుంబ చరిత్ర?",
+        "pcos_q6": "PCOS లేదా నీరిழிவு యొక్క కుటుంబ చరిత్ర?",
         "pcos_btn": "సమగ్ర రిస్క్‌ను అంచనా వేయండి",
         "pcos_high": "మధ్యస్థ నుండి అధిక రిస్క్ స్కోర్",
         "pcos_high_msg": "నిపుణడైన గైనకాలజిస్ట్‌ను సంప్రదించడాన్ని పరిగణించండి.",
@@ -372,7 +377,12 @@ LANG_DICT = {
         "cr_view_rem": "జ్ఞాపిక చరిత్రను వీక్షించండి",
         "cr_review_text": "PDF లేదా ZIP నివేదికను డౌన్‌లోడ్ చేయడానికి ముందు పైన ఫిల్టర్ చేసిన రికార్డులను సమీక్షించండి.",
         "cr_dl_zip": "📥 పూర్తి నివేదికను డౌన్‌లోడ్ చేయండి (ZIP)",
-        "cr_dl_pdf": "📥 పూర్తి నివేదికను డౌన్‌లోడ్ చేయండి (PDF)"
+        "cr_dl_pdf": "📥 పూర్తి నివేదికను డౌన్‌లోడ్ చేయండి (PDF)",
+        "cr_no_symp_range": "ఈ తేదీ శ్రేణికి లక్షణ రికార్డులు ఏవీ కనుగొనబడలేదు.",
+        "cr_no_sev_range": "తీవ్రత రికార్డులు ఏవీ కనుగొనబడలేదు.",
+        "cr_no_rem_history": "జ్ఞాపిక చరిత్ర అందుబాటులో లేదు.",
+        "cr_chart_symp_freq": "లక్షణాల ఫ్రీక్వెన్సీ",
+        "cr_chart_rec_sev": "నమోదైన లక్షణ తీవ్రత"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -518,7 +528,12 @@ LANG_DICT = {
         "cr_view_rem": "अनुस्मारक इतिहास देखें",
         "cr_review_text": "PDF या ZIP रिपोर्ट डाउनलोड करने से पहले ऊपर दिए गए फ़िल्टर किए गए रिकॉर्ड की समीक्षा करें।",
         "cr_dl_zip": "📥 पूर्ण रिपोर्ट डाउनलोड करें (ZIP)",
-        "cr_dl_pdf": "📥 पूर्ण रिपोर्ट डाउनलोड करें (PDF)"
+        "cr_dl_pdf": "📥 पूर्ण रिपोर्ट डाउनलोड करें (PDF)",
+        "cr_no_symp_range": "इस तिथि सीमा के लिए कोई लक्षण रिकॉर्ड नहीं मिला।",
+        "cr_no_sev_range": "कोई गंभीरता रिकॉर्ड नहीं मिला।",
+        "cr_no_rem_history": "कोई अनुस्मारक इतिहास उपलब्ध नहीं है।",
+        "cr_chart_symp_freq": "लक्षण आवृत्ति",
+        "cr_chart_rec_sev": "दर्ज की गई लक्षण गंभीरता"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -641,6 +656,7 @@ LANG_DICT = {
         "pcos_q4": "தொடர்ச்சியான பருக்கள் அல்லது முடி மெலிந்து போதல்?",
         "pcos_q5": "அடிக்கடி சோர்வு அல்லது மதிய நேர ஆற்றல் குறைவு?",
         "pcos_q6": "PCOS அல்லது நீரிழிவு நோயின் குடும்ப வரலாறு?",
+        "pcos_q3": "அதிகப்படியான முக அல்லது உடல் முடி வளர்ச்சி (ஹிர்சுட்டிசம்)?",
         "pcos_btn": "விரிவான ஆபத்தை மதிப்பிடுக",
         "pcos_high": "மிதமான முதல் உயர் ஆபத்து மதிப்பெண்",
         "pcos_high_msg": "சிறப்பு மகளிர் மருத்துவ நிபுணரை அணுகுவதைக் கருத்தில் கொள்ளவும்.",
@@ -672,7 +688,12 @@ LANG_DICT = {
         "cr_view_rem": "நினைவூட்டல் வரலாற்றைக் காண்க",
         "cr_review_text": "PDF அல்லது ZIP அறிக்கையைப் பதிவிறக்குவதற்கு முன் மேலே உள்ள வடிகட்டப்பட்ட பதிவுகளை மதிப்பாய்வு செய்யவும்.",
         "cr_dl_zip": "📥 முழு அறிக்கையைப் பதிவிறக்குக (ZIP)",
-        "cr_dl_pdf": "📥 முழு அறிக்கையைப் பதிவிறக்குக (PDF)"
+        "cr_dl_pdf": "📥 முழு அறிக்கையைப் பதிவிறக்குக (PDF)",
+        "cr_no_symp_range": "இந்த தேதி வரம்பிற்கு எந்த அறிகுறி பதிவுகளும் கிடைக்கவில்லை.",
+        "cr_no_sev_range": "தீவிர பதிவுகள் எதுவும் கிடைக்கவில்லை.",
+        "cr_no_rem_history": "நினைவூட்டல் வரலாறு எதுவும் கிடைக்கவில்லை.",
+        "cr_chart_symp_freq": "அறிகுறி அதிர்வெண்",
+        "cr_chart_rec_sev": "பதிவு செய்யப்பட்ட அறிகுறி தீவிரம்"
     }
 }
 
@@ -975,20 +996,20 @@ else:
             if not filtered_df.empty and total_symp > 0:
                 symp_counts = filtered_df[filtered_df['symptom'] != 'None']['symptom'].value_counts().reset_index()
                 symp_counts.columns = ['Symptom', 'Count']
-                fig_bar = px.bar(symp_counts, x='Symptom', y='Count', title="Symptom Frequency")
+                fig_bar = px.bar(symp_counts, x='Symptom', y='Count', title=t["cr_chart_symp_freq"])
                 st.plotly_chart(fig_bar, use_container_width=True)
             else:
-                st.info("No symptom records found for this date range.")
+                st.info(t["cr_no_symp_range"])
                 
         with col_c2:
             st.markdown(f"**{t['cr_sev_dist']}**")
             if not filtered_df.empty and total_symp > 0:
                 sev_counts = filtered_df[filtered_df['severity'] > 0]['severity'].value_counts().reset_index()
                 sev_counts.columns = ['Severity', 'Count']
-                fig_pie = px.pie(sev_counts, values='Count', names='Severity', title="Recorded Symptom Severity", hole=0.4)
+                fig_pie = px.pie(sev_counts, values='Count', names='Severity', title=t["cr_chart_rec_sev"], hole=0.4)
                 st.plotly_chart(fig_pie, use_container_width=True)
             else:
-                st.info("No severity records found.")
+                st.info(t["cr_no_sev_range"])
 
         st.markdown(f"### {t['cr_rep_preview']}")
         with st.expander(t["cr_view_symp"]):
@@ -996,7 +1017,7 @@ else:
         with st.expander(t["cr_view_cycle"]):
             st.dataframe(filtered_df[['date', 'cycle_day', 'flow']] if not filtered_df.empty else pd.DataFrame(columns=["No data"]))
         with st.expander(t["cr_view_rem"]):
-            st.write("No reminder history available.")
+            st.write(t["cr_no_rem_history"])
             
         st.markdown(t["cr_review_text"])
         
