@@ -3,6 +3,8 @@ import pandas as pd
 import plotly.express as px
 from fpdf import FPDF
 import sqlite3
+import io
+import zipfile
 import streamlit.components.v1 as components
 
 # --- DATABASE SETUP ---
@@ -44,7 +46,7 @@ def generate_pdf(df):
     pdf.add_page()
     pdf.set_font("Arial", 'B', 16)
     
-    pdf.cell(0, 10, "HerHealth AI - Medical Summary Report", ln=1, align="C")
+    pdf.cell(0, 10, "HerHealth AI - Complete Health Summary Report", ln=1, align="C")
     pdf.ln(5)
     pdf.set_font("Arial", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
@@ -81,6 +83,7 @@ LANG_DICT = {
         "nav_forecast": "AI Predictive Forecaster",
         "nav_analytics": "AI Insights & Analytics",
         "nav_doctor": "Doctor Report Generator",
+        "nav_complete": "Complete Health Report",
         "nav_companion": "AI Health Companion",
         "nav_screener": "PCOS Risk Screener",
         "nav_meds": "Medication Tracker",
@@ -92,6 +95,7 @@ LANG_DICT = {
         "forecast_desc": "Advanced machine-learning simulation predicting future cycle phases, fertile windows, and hormonal health risks.",
         "analytics_desc": "Visualizing trends and correlations from your tracked health metrics.",
         "doctor_desc": "Export an aggregated, privacy-focused medical summary report to share with your healthcare provider.",
+        "complete_desc": "Download your symptom history, period history, reminder history, and health summary.",
         "companion_desc": "Ask any question regarding menstrual health, symptoms, nutrition, workouts, or wellness!",
         "screener_desc": "Answer the clinical checklist below to assess potential hormonal indicators.",
         "meds_desc": "Manage your daily supplements, iron tablets, or prescribed medications.",
@@ -171,6 +175,7 @@ LANG_DICT = {
         "nav_forecast": "AI ప్రిడిక్టివ్ ఫోర్‌కాస్టర్",
         "nav_analytics": "AI అంతర్దృష్టులు & విశ్లేషణలు",
         "nav_doctor": "డాక్టర్ నివేదిక జనరేటర్",
+        "nav_complete": "সম্পूर्ण ఆరోగ్య నివేదిక (Complete Health Report)",
         "nav_companion": "AI ఆరోగ్య సహచరుడు",
         "nav_screener": "PCOS రిస్క్ స్క్రీనర్",
         "nav_meds": "మందుల ట్రాకర్",
@@ -182,6 +187,7 @@ LANG_DICT = {
         "forecast_desc": "భవిష్యత్ చక్ర దశలు, ఫలదీకరణ విండోలు మరియు హార్మోన్ల ఆరోగ్య రిస్క్‌లను అంచనా వేసే అధునాతన సిమ్యులేషన్.",
         "analytics_desc": "మీ ట్రాక్ చేసిన ఆరోగ్య కొలమానాల నుండి ట్రెండ్‌లు మరియు పరస్పర సంబంధాలను విజువలైజ్ చేస్తోంది.",
         "doctor_desc": "మీ ఆరోగ్య సంరక్షణ ప్రదాతతో భాగస్వామ్యం చేయడానికి వైద్య సారాంశ నివేదికను ఎగుమతి చేయండి.",
+        "complete_desc": "మీ లక్షణ చరిత్ర, పీరియడ్ చరిత్ర మరియు ఆరోగ్య సారాంశాన్ని డౌన్‌లోడ్ చేయండి.",
         "companion_desc": "ఋతు ఆరోగ్యం, లక్షణాలు, పోషకాహారం, వ్యాయామాలు లేదా వెల్నెస్ గురించి ఏదైనా ప్రశ్న అడగండి!",
         "screener_desc": "సంభావ్య హార్మోన్ల సూచికలను అంచనా వేయడానికి క్రింది క్లినికల్ చెక్‌లిస్ట్‌కు సమాధానం ఇవ్వండి.",
         "meds_desc": "మీ రోజువారీ సప్లిమెంట్లు, ఇనుము మాత్రలు లేదా సూచించిన మందులను నిర్వహించండి.",
@@ -261,6 +267,7 @@ LANG_DICT = {
         "nav_forecast": "एआई भविष्यवक्ता",
         "nav_analytics": "एआई अंतर्दृष्टि और विश्लेषण",
         "nav_doctor": "डॉक्टर रिपोर्ट जेनरेटर",
+        "nav_complete": "पूर्ण स्वास्थ्य रिपोर्ट (Complete Health Report)",
         "nav_companion": "एआई स्वास्थ्य साथी",
         "nav_screener": "पीसीओएस जोखिम स्क्रीनर",
         "nav_meds": "दवा ट्रैकर",
@@ -272,6 +279,7 @@ LANG_DICT = {
         "forecast_desc": "भविष्य के चक्र चरणों, उपजाऊ खिड़कियों और हार्मोनल स्वास्थ्य जोखिमों की भविष्यवाणी करने वाला उन्नत सिम्युलेटर।",
         "analytics_desc": "आपके ट्रैक किए गए स्वास्थ्य मीट्रिक्स से रुझानों की विजुअलाइज़ेशन।",
         "doctor_desc": "अपने स्वास्थ्य सेवा प्रदाता के साथ साझा करने के लिए एक समेकित मेडिकल सारांश रिपोर्ट निर्यात करें।",
+        "complete_desc": "अपना लक्षण इतिहास, अवधि इतिहास और स्वास्थ्य सारांश डाउनलोड करें।",
         "companion_desc": "मासिक धर्म स्वास्थ्य, लक्षणों, पोषण, वर्कआउट या कल्याण के बारे में कोई भी प्रश्न पूछें!",
         "screener_desc": "संभावित हार्मोनल संकेतकों का आकलन करने के लिए नीचे दी गई नैदानिक चेकलिस्ट का उत्तर दें।",
         "meds_desc": "अपने दैनिक पूरक, आयरन की गोलियाँ या निर्धारित दवाएं प्रबंधित करें।",
@@ -351,6 +359,7 @@ LANG_DICT = {
         "nav_forecast": "AI கணிப்பு முன்னறிவிப்பு",
         "nav_analytics": "AI நுண்ணறிவு & பகுப்பாய்வு",
         "nav_doctor": "மருத்துவர் அறிக்கை ஜெனரேட்டர்",
+        "nav_complete": "முழுமையான சுகாதார அறிக்கை (Complete Health Report)",
         "nav_companion": "AI சுகாதார தோழன்",
         "nav_screener": "PCOS ஆபத்து பரிசோதகர்",
         "nav_meds": "மருந்து கண்காணிப்பு",
@@ -362,6 +371,7 @@ LANG_DICT = {
         "forecast_desc": "எதிர்கால சுழற்சி கட்டங்கள் மற்றும் ஹார்மோன் ஆரோக்கிய அபாயங்களை கணிக்கக்கூடிய மேம்பட்ட இயந்திர கற்றல் உருவகப்படுத்துதல்.",
         "analytics_desc": "உங்கள் கண்காணிக்கப்பட்ட சுகாதார அளவீடுகளிலிருந்து போக்குகளை காட்சிப்படுத்துதல்.",
         "doctor_desc": "உங்கள் சுகாதார வழங்குநருடன் பகிர்ந்து கொள்ள மருத்துவ சுருக்க அறிக்கையை ஏற்றுமதி செய்யுங்கள்.",
+        "complete_desc": "உங்கள் அறிகுறி வரலாறு, மாதவிடாய் வரலாறு மற்றும் சுகாதார சுருக்கத்தைப் பதிவிறக்கவும்.",
         "companion_desc": "மாதவிடாய் சுகாதாரம், அறிகுறிகள், ஊட்டச்சத்து அல்லது ஆரோக்கியம் பற்றிய எந்த கேள்வியையும் கேளுங்கள்!",
         "screener_desc": "சாத்தியமான ஹார்மோன் குறிகாட்டிகளை மதிப்பிட கீழே உள்ள மருத்துவ சோதனையை முடிக்கவும்.",
         "meds_desc": "உங்கள் தினசரி சப்ளிமெண்ட்ஸ் மற்றும் பரிந்துரைக்கப்பட்ட மருந்துகளை நிர்வகிக்கவும்.",
@@ -505,6 +515,7 @@ else:
         t["nav_forecast"], 
         t["nav_analytics"], 
         t["nav_doctor"], 
+        t["nav_complete"],
         t["nav_companion"], 
         t["nav_screener"], 
         t["nav_meds"], 
@@ -520,6 +531,7 @@ else:
         t["nav_forecast"]: "AI Predictive Forecaster",
         t["nav_analytics"]: "AI Insights & Analytics",
         t["nav_doctor"]: "Doctor Report Generator",
+        t["nav_complete"]: "Complete Health Report",
         t["nav_companion"]: "AI Health Companion",
         t["nav_screener"]: "PCOS Risk Screener",
         t["nav_meds"]: "Medication Tracker",
@@ -538,6 +550,7 @@ else:
         "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%)", "btn": "#9333ea"},
         "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)", "btn": "#16a34a"},
         "Doctor Report Generator": {"bg": "linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%)", "btn": "#0d9488"},
+        "Complete Health Report": {"bg": "linear-gradient(135deg, #faf5ff 0%, #ede9fe 50%, #ddd6fe 100%)", "btn": "#7c3aed"},
         "AI Health Companion": {"bg": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)", "btn": "#d97706"},
         "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 50%, #f5d0fe 100%)", "btn": "#c026d3"},
         "Medication Tracker": {"bg": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)", "btn": "#2563eb"},
@@ -674,6 +687,105 @@ else:
             )
         else:
             st.warning("No data available to generate medical report.")
+
+    elif app_mode == "Complete Health Report":
+        st.title("📦 Complete Health Report")
+        st.write(t["complete_desc"])
+        
+        st.markdown("### Filter Report by Date")
+        col_d1, col_d2 = st.columns(2)
+        with col_d1:
+            start_date = st.date_input("Start date", value=pd.to_datetime("2026-10-01"))
+        with col_d2:
+            end_date = st.date_input("End date", value=pd.to_datetime("2026-10-25"))
+            
+        conn = sqlite3.connect(DB_FILE)
+        df_all = pd.read_sql("SELECT * FROM health_logs", conn)
+        conn.close()
+        
+        if not df_all.empty:
+            df_all['date_parsed'] = pd.to_datetime(df_all['date'], errors='coerce')
+            filtered_df = df_all[(df_all['date_parsed'] >= pd.to_datetime(start_date)) & (df_all['date_parsed'] <= pd.to_datetime(end_date))]
+        else:
+            filtered_df = pd.DataFrame(columns=['date', 'cycle_day', 'symptom', 'severity', 'mood', 'flow', 'energy', 'notes'])
+            
+        st.markdown("### Health Summary")
+        m1, m2, m3 = st.columns(3)
+        total_symp = len(filtered_df[filtered_df['symptom'] != 'None'])
+        total_periods = len(filtered_df[filtered_df['flow'].isin(['Light', 'Medium', 'Heavy'])])
+        total_reminders = 0
+        
+        m1.metric("Symptom Records", total_symp)
+        m2.metric("Period Dates", total_periods)
+        m3.metric("Reminders", total_reminders)
+        
+        summary_table = pd.DataFrame({
+            "Metric": ["Total symptom records", "Severe symptom records", "Period start dates recorded", "Total reminders", "Completed reminders"],
+            "Value": [
+                total_symp, 
+                len(filtered_df[filtered_df['severity'] >= 4]), 
+                total_periods, 
+                total_reminders, 
+                0
+            ]
+        })
+        st.dataframe(summary_table, use_container_width=True, hide_index=True)
+        
+        st.markdown("### Symptom Analysis")
+        col_c1, col_c2 = st.columns(2)
+        with col_c1:
+            st.markdown("**Most Frequently Recorded Symptoms**")
+            if not filtered_df.empty and total_symp > 0:
+                symp_counts = filtered_df[filtered_df['symptom'] != 'None']['symptom'].value_counts().reset_index()
+                symp_counts.columns = ['Symptom', 'Count']
+                fig_bar = px.bar(symp_counts, x='Symptom', y='Count', title="Symptom Frequency")
+                st.plotly_chart(fig_bar, use_container_width=True)
+            else:
+                st.info("No symptom records found for this date range.")
+                
+        with col_c2:
+            st.markdown("**Severity Distribution**")
+            if not filtered_df.empty and total_symp > 0:
+                sev_counts = filtered_df[filtered_df['severity'] > 0]['severity'].value_counts().reset_index()
+                sev_counts.columns = ['Severity', 'Count']
+                fig_pie = px.pie(sev_counts, values='Count', names='Severity', title="Recorded Symptom Severity", hole=0.4)
+                st.plotly_chart(fig_pie, use_container_width=True)
+            else:
+                st.info("No severity records found.")
+
+        st.markdown("### Report Preview")
+        with st.expander("View symptom records"):
+            st.dataframe(filtered_df if not filtered_df.empty else pd.DataFrame(columns=["No data"]))
+        with st.expander("View menstrual cycle history"):
+            st.dataframe(filtered_df[['date', 'cycle_day', 'flow']] if not filtered_df.empty else pd.DataFrame(columns=["No data"]))
+        with st.expander("View reminder history"):
+            st.write("No reminder history available.")
+            
+        st.markdown("Review the filtered records above before downloading the PDF or ZIP report.")
+        
+        # ZIP Generator
+        zip_buffer = io.BytesIO()
+        with zipfile.ZipFile(zip_buffer, "w") as zf:
+            csv_data = filtered_df.to_csv(index=False) if not filtered_df.empty else "No data"
+            zf.writestr("health_logs_export.csv", csv_data)
+        zip_data = zip_buffer.getvalue()
+        
+        col_dl1, col_dl2 = st.columns(2)
+        with col_dl1:
+            st.download_button(
+                label="📥 Download Complete Report (ZIP)",
+                data=zip_data,
+                file_name="HerHealth_Complete_Report.zip",
+                mime="application/zip"
+            )
+        with col_dl2:
+            pdf_bytes = generate_pdf(filtered_df if not filtered_df.empty else pd.DataFrame([["No data"]]))
+            st.download_button(
+                label="📥 Download Complete Report (PDF)",
+                data=pdf_bytes,
+                file_name="HerHealth_Complete_Report.pdf",
+                mime="application/pdf"
+            )
 
     elif app_mode == "AI Health Companion":
         st.title(f"🤖 {t['comp_heading']}")
