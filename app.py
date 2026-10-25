@@ -21,13 +21,6 @@ def init_db():
             mood TEXT
         )
     ''')
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS vault_creds (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT,
-            password TEXT
-        )
-    ''')
     for col, col_type in [("flow", "TEXT"), ("energy", "INTEGER"), ("notes", "TEXT")]:
         try:
             c.execute(f"ALTER TABLE health_logs ADD COLUMN {col} {col_type}")
@@ -152,7 +145,19 @@ LANG_DICT = {
         "comp_heading": "AI Health Companion",
         "comp_query_label": "Ask a specific question",
         "comp_query_placeholder": "e.g., 'Why do I get migraines before my period?', 'How can I reduce bloating?'",
-        "comp_analysis": "AI Companion Analysis"
+        "comp_analysis": "AI Companion Analysis",
+
+        "pcos_q1": "Irregular menstrual cycles over the last 6 months?",
+        "pcos_q2": "Unexplained weight gain or difficulty losing weight?",
+        "pcos_q3": "Excess facial or body hair growth (hirsutism)?",
+        "pcos_q4": "Persistent adult acne or hair thinning?",
+        "pcos_q5": "Frequent fatigue or afternoon energy crashes?",
+        "pcos_q6": "Family history of PCOS or diabetes?",
+        "pcos_btn": "Evaluate Comprehensive Risk",
+        "pcos_high": "Moderate-to-High Risk Score",
+        "pcos_high_msg": "Consider consulting a specialist gynecologist.",
+        "pcos_low": "Low Risk Score",
+        "pcos_low_msg": "Continue tracking your cycle regularly!"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -230,7 +235,19 @@ LANG_DICT = {
         "comp_heading": "AI ఆరోగ్య సహచరుడు",
         "comp_query_label": "నిర్దిష్ట ప్రశ్నను అడగండి",
         "comp_query_placeholder": "ఉదా., 'నా నెలసరి రాకముందు మైగ్రేన్ ఎందుకు వస్తుంది?', 'బ్లోటింగ్ తగ్గించుకోవడం ఎలా?'",
-        "comp_analysis": "AI సహచర విశ్లేషణ"
+        "comp_analysis": "AI సహచర విశ్లేషణ",
+
+        "pcos_q1": "గత 6 నెలల్లో અનియమిత నెలసరి చక్రాలు?",
+        "pcos_q2": "కారణం తెలియని బరువు పెరుగుట లేదా బరువు తగ్గడంలో ఇబ్బంది?",
+        "pcos_q3": "అదనపు ముఖ లేదా శరీర వెంట్రుకల పెరుగుదల (హిర్సుటిజం)?",
+        "pcos_q4": "నిరంతర వయోజన మొటిమలు లేదా జుట్టు పల్చబడటం?",
+        "pcos_q5": "తరచుగా అలసట లేదా మధ్యాహ్నం శక్తి పడిపోవడం?",
+        "pcos_q6": "PCOS లేదా మధుమేహం యొక్క కుటుంబ చరిత్ర?",
+        "pcos_btn": "సమగ్ర రిస్క్‌ను అంచనా వేయండి",
+        "pcos_high": "మధ్యస్థ నుండి అధిక రిస్క్ స్కోర్",
+        "pcos_high_msg": "నిపుణుడైన గైనకాలజిస్ట్‌ను సంప్రదించడాన్ని పరిగణించండి.",
+        "pcos_low": "తక్కువ రిస్క్ స్కోర్",
+        "pcos_low_msg": "మీ చక్రం క్రమం తప్పకుండా ట్రాక్ చేయడాన్ని కొనసాగించండి!"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -308,7 +325,19 @@ LANG_DICT = {
         "comp_heading": "एआई स्वास्थ्य साथी",
         "comp_query_label": "एक विशिष्ट प्रश्न पूछें",
         "comp_query_placeholder": "उदा., 'मासिक धर्म से पहले मुझे माइग्रेन क्यों होता है?', 'ब्लोटिंग कैसे कम करें?'",
-        "comp_analysis": "एआई साथी विश्लेषण"
+        "comp_analysis": "एआई साथी विश्लेषण",
+
+        "pcos_q1": "पिछले 6 महीनों में अनियमित मासिक धर्म?",
+        "pcos_q2": "अस्पष्ट वजन बढ़ना या वजन घटाने में कठिनाई?",
+        "pcos_q3": "अतिरिक्त चेहरे या शरीर के बालों का बढ़ना (हर्सुटिज़्म)?",
+        "pcos_q4": "लगातार वयस्क मुँहासे या बाल पतले होना?",
+        "pcos_q5": "बार-बार थकान या दोपहर में ऊर्जा की कमी?",
+        "pcos_q6": "पीसीओएस या मधुमेह का पारिवारिक इतिहास?",
+        "pcos_btn": "व्यापक जोखिम का मूल्यांकन करें",
+        "pcos_high": "मध्यम से उच्च जोखिम स्कोर",
+        "pcos_high_msg": "विशेषज्ञ स्त्री रोग विशेषज्ञ से परामर्श करने पर विचार करें।",
+        "pcos_low": "कम जोखिम स्कोर",
+        "pcos_low_msg": "नियमित रूप से अपने चक्र को ट्रैक करना जारी रखें!"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -386,61 +415,45 @@ LANG_DICT = {
         "comp_heading": "AI சுகாதார தோழன்",
         "comp_query_label": "ஒரு குறிப்பிட்ட கேள்வைக் கேளுங்கள்",
         "comp_query_placeholder": "எ.கா., 'மாதவிடாய்க்கு முன் எனக்கு ஏன் தலைவலி வருகிறது?', 'வயிறு உப்புசத்தை எவ்வாறு குறைப்பது?'",
-        "comp_analysis": "AI தோழன் பகுப்பாய்வு"
+        "comp_analysis": "AI தோழன் பகுப்பாய்வு",
+
+        "pcos_q1": "கடந்த 6 மாதங்களில் ஒழுங்கற்ற மாதவிடாய் சுழற்சிகள்?",
+        "pcos_q2": "விவரிக்க முடியாத எடை அதிகரிப்பு அல்லது எடையைக் குறைப்பதில் சிரமம்?",
+        "pcos_q3": "அதிகப்படியான முக அல்லது உடல் முடி வளர்ச்சி (ஹிர்சுட்டிசம்)?",
+        "pcos_q4": "தொடர்ச்சியான பருக்கள் அல்லது முடி மெலிந்து போதல்?",
+        "pcos_q5": "அடிக்கடி சோர்வு அல்லது மதிய நேர ஆற்றல் குறைவு?",
+        "pcos_q6": "PCOS அல்லது நீரிழிவு நோயின் குடும்ப வரலாறு?",
+        "pcos_btn": "விரிவான ஆபத்தை மதிப்பிடுக",
+        "pcos_high": "மிதமான முதல் உயர் ஆபத்து மதிப்பெண்",
+        "pcos_high_msg": "சிறப்பு மகளிர் மருத்துவ நிபுணரை அணுகுவதைக் கருத்தில் கொள்ளவும்.",
+        "pcos_low": "குறைந்த ஆபத்து மதிப்பெண்",
+        "pcos_low_msg": "உங்கள் சுழற்சியை தொடர்ந்து கண்காணிக்கவும்!"
     }
 }
 
 current_l = st.session_state["lang"]
 t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
-# --- SIDEBAR AUTHENTICATION LOCK ---
-st.sidebar.markdown("### 🔒 Security Vault & Setup")
+# --- SIDEBAR AUTHENTICATION LOCK (UNIVERSAL LOGIN) ---
+st.sidebar.markdown("### 🔒 Security Vault Login")
 
 if not st.session_state["vault_unlocked"]:
-    tab_create, tab_login = st.sidebar.tabs(["Create Vault", "Login"])
-    
-    with tab_create:
-        st.markdown("Set custom credentials:")
-        new_user = st.text_input("New Username", key="new_u")
-        new_pass = st.text_input("New Password", type="password", key="new_p")
-        if st.button("Save New Credentials"):
-            if new_user and new_pass:
-                conn = sqlite3.connect(DB_FILE)
-                c = conn.cursor()
-                c.execute("DELETE FROM vault_creds")
-                c.execute("INSERT INTO vault_creds (username, password) VALUES (?, ?)", (new_user, new_pass))
-                conn.commit()
-                conn.close()
-                st.success("Vault credentials created successfully! You can now log in.")
-            else:
-                st.warning("Please enter both username and password.")
-                
-    with tab_login:
-        login_user = st.text_input("Username", key="login_u")
-        login_pass = st.text_input("Password", type="password", key="login_p")
-        if st.button("Unlock Vault"):
-            conn = sqlite3.connect(DB_FILE)
-            c = conn.cursor()
-            c.execute("SELECT username, password FROM vault_creds")
-            saved_cred = c.fetchone()
-            conn.close()
-            
-            s_user = saved_cred[0] if saved_cred else "admin"
-            s_pass = saved_cred[1] if saved_cred else "1234"
-            
-            if login_user == s_user and login_pass == s_pass:
-                st.session_state["vault_unlocked"] = True
-                st.success("Vault Unlocked!")
-                st.rerun()
-            else:
-                st.error("Invalid Username or Password")
+    login_user = st.sidebar.text_input("Username", key="login_u")
+    login_pass = st.sidebar.text_input("Password", type="password", key="login_p")
+    if st.sidebar.button("Unlock Vault"):
+        if login_user.strip() != "":
+            st.session_state["vault_unlocked"] = True
+            st.success("Vault Unlocked!")
+            st.rerun()
+        else:
+            st.error("Please enter a valid username.")
 
     st.title("🩺 Welcome to HerHealth AI")
-    st.info("🔒 **Vault Locked:** Please create your secure vault credentials or log in using the sidebar to access your private health dashboard.")
+    st.info("🔒 **Vault Locked:** Please enter any username (e.g. `durga`) in the sidebar to access your private health dashboard.")
     st.markdown("""
     ---
     ### 🛡️ Why Security Matters:
-    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar tabs to set up your vault.
+    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar to log in to your vault.
     """)
 
 else:
@@ -660,19 +673,19 @@ else:
         st.title(f"🩺 {t['nav_screener']}")
         st.write(t["screener_desc"])
         
-        q1 = st.checkbox("Irregular menstrual cycles over the last 6 months?")
-        q2 = st.checkbox("Unexplained weight gain or difficulty losing weight?")
-        q3 = st.checkbox("Excess facial or body hair growth (hirsutism)?")
-        q4 = st.checkbox("Persistent adult acne or hair thinning?")
-        q5 = st.checkbox("Frequent fatigue or afternoon energy crashes?")
-        q6 = st.checkbox("Family history of PCOS or diabetes?")
+        q1 = st.checkbox(t["pcos_q1"])
+        q2 = st.checkbox(t["pcos_q2"])
+        q3 = st.checkbox(t["pcos_q3"])
+        q4 = st.checkbox(t["pcos_q4"])
+        q5 = st.checkbox(t["pcos_q5"])
+        q6 = st.checkbox(t["pcos_q6"])
         
-        if st.button("Evaluate Comprehensive Risk"):
+        if st.button(t["pcos_btn"]):
             score = sum([q1, q2, q3, q4, q5, q6])
             if score >= 2:
-                st.warning(f"⚡ **Moderate-to-High Risk Score ({score}/6):** Consider consulting a specialist gynecologist.")
+                st.warning(f"⚡ **{t['pcos_high']} ({score}/6):** {t['pcos_high_msg']}")
             else:
-                st.success(f"✅ **Low Risk Score ({score}/6):** Continue tracking your cycle regularly!")
+                st.success(f"✅ **{t['pcos_low']} ({score}/6):** {t['pcos_low_msg']}")
 
     elif app_mode == "Medication Tracker":
         st.title(f"💊 {t['med_heading']}")
