@@ -175,7 +175,7 @@ LANG_DICT = {
         "nav_forecast": "AI ప్రిడిక్టివ్ ఫోర్‌కాస్టర్",
         "nav_analytics": "AI అంతర్దృష్టులు & విశ్లేషణలు",
         "nav_doctor": "డాక్టర్ నివేదిక జనరేటర్",
-        "nav_complete": "সম্পूर्ण ఆరోగ్య నివేదిక (Complete Health Report)",
+        "nav_complete": "సంపూర్ణ ఆరోగ్య నివేదిక (Complete Health Report)",
         "nav_companion": "AI ఆరోగ్య సహచరుడు",
         "nav_screener": "PCOS రిస్క్ స్క్రీనర్",
         "nav_meds": "మందుల ట్రాకర్",
@@ -542,33 +542,33 @@ else:
 
     app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
-    # --- LIGHT BACKGROUND WITH ELEGANT WOMAN LINE-DRAWING SVG VECTOR WATERMARK ---
-    svg_woman_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 24 24' fill='none' stroke='%23e11d48' stroke-width='0.35' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z'/><path d='M9 21h6'/><path d='M10 24h4'/></svg>\")"
+    # --- CUSTOM BACKGROUND IMAGE URL WITH READABILITY OVERLAY ---
+    custom_bg_image_url = "https://share.google/Fj6ohZqJlI7m8OH9x"
 
     theme_mapping = {
-        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%)", "btn": "#e11d48"},
-        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%)", "btn": "#9333ea"},
-        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)", "btn": "#16a34a"},
-        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%)", "btn": "#0d9488"},
-        "Complete Health Report": {"bg": "linear-gradient(135deg, #faf5ff 0%, #ede9fe 50%, #ddd6fe 100%)", "btn": "#7c3aed"},
-        "AI Health Companion": {"bg": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)", "btn": "#d97706"},
-        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 50%, #f5d0fe 100%)", "btn": "#c026d3"},
-        "Medication Tracker": {"bg": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)", "btn": "#2563eb"},
-        "Habit Correlation": {"bg": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)", "btn": "#059669"},
-        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #fff5f5 0%, #fed7d7 50%, #feb2b2 100%)", "btn": "#dc2626"},
-        "Language & Accessibility": {"bg": "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)", "btn": "#0284c7"}
+        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, rgba(255,241,242,0.92) 0%, rgba(255,228,230,0.92) 50%, rgba(254,205,211,0.92) 100%)", "btn": "#e11d48"},
+        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, rgba(250,245,255,0.92) 0%, rgba(243,232,255,0.92) 50%, rgba(233,213,255,0.92) 100%)", "btn": "#9333ea"},
+        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, rgba(240,253,244,0.92) 0%, rgba(220,252,231,0.92) 50%, rgba(187,247,208,0.92) 100%)", "btn": "#16a34a"},
+        "Doctor Report Generator": {"bg": "linear-gradient(135deg, rgba(240,253,250,0.92) 0%, rgba(204,251,241,0.92) 50%, rgba(153,246,228,0.92) 100%)", "btn": "#0d9488"},
+        "Complete Health Report": {"bg": "linear-gradient(135deg, rgba(250,245,255,0.92) 0%, rgba(237,233,254,0.92) 50%, rgba(221,214,254,0.92) 100%)", "btn": "#7c3aed"},
+        "AI Health Companion": {"bg": "linear-gradient(135deg, rgba(255,251,235,0.92) 0%, rgba(254,243,199,0.92) 50%, rgba(253,230,138,0.92) 100%)", "btn": "#d97706"},
+        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, rgba(253,244,255,0.92) 0%, rgba(250,232,255,0.92) 50%, rgba(245,208,254,0.92) 100%)", "btn": "#c026d3"},
+        "Medication Tracker": {"bg": "linear-gradient(135deg, rgba(239,246,255,0.92) 0%, rgba(219,234,254,0.92) 50%, rgba(191,219,254,0.92) 100%)", "btn": "#2563eb"},
+        "Habit Correlation": {"bg": "linear-gradient(135deg, rgba(236,253,245,0.92) 0%, rgba(209,250,229,0.92) 50%, rgba(167,243,208,0.92) 100%)", "btn": "#059669"},
+        "Emergency & Clinics": {"bg": "linear-gradient(135deg, rgba(255,245,245,0.92) 0%, rgba(254,215,215,0.92) 50%, rgba(254,178,178,0.92) 100%)", "btn": "#dc2626"},
+        "Language & Accessibility": {"bg": "linear-gradient(135deg, rgba(240,249,255,0.92) 0%, rgba(224,242,254,0.92) 50%, rgba(186,230,253,0.92) 100%)", "btn": "#0284c7"}
     }
 
-    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", "btn": "#0f172a"})
+    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, rgba(248,250,252,0.92) 0%, rgba(241,245,249,0.92) 100%)", "btn": "#0f172a"})
 
     st.markdown(f"""
     <style>
         [data-testid="stAppViewContainer"] {{
-            background-image: {svg_woman_watermark}, {current_theme['bg']} !important;
-            background-repeat: repeat, no-repeat !important;
-            background-size: 350px 350px, cover !important;
-            background-position: center, center !important;
-            transition: background 0.6s ease-in-out;
+            background-image: {current_theme['bg']}, url("{custom_bg_image_url}") !important;
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-attachment: fixed !important;
         }}
         [data-testid="stMain"] {{ background: transparent !important; }}
         [data-testid="stSidebar"] {{
