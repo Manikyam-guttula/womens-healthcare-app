@@ -40,7 +40,7 @@ def init_db():
 
 init_db()
 
-# --- SAFE PDF GENERATOR (FIXED UNICODE ERROR) ---
+# --- SAFE PDF GENERATOR ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -53,7 +53,6 @@ def generate_pdf(df):
     pdf.ln(10)
     pdf.set_font("Arial", 'B', 9)
     
-    # Calculate column widths dynamically based on table size
     col_width = 190 / max(len(df.columns), 1)
     
     for col in df.columns:
@@ -81,7 +80,7 @@ if "vault_unlocked" not in st.session_state:
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
 
-# --- COMPREHENSIVE MULTILINGUAL DICTIONARY ---
+# --- COMPREHENSIVE MULTILINGUAL DICTIONARY (FULLY CORRECTED TELUGU) ---
 LANG_DICT = {
     "English": {
         "nav_daily": "Daily Log & Phase Tracker",
@@ -273,7 +272,7 @@ LANG_DICT = {
         "caffeine_intake": "కెఫిన్ తీసుకోవడం (కప్పులు)",
         "run_habit": "అలవాటు ప్రభావ విశ్లేషణను అమలు చేయండి",
         "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు",
-        "activity_options": ["కదలిక లేని (Sedentary)", "తేలికపాటి నడక", "मध्यम వ్యాయామాలు", "అధిక తీవ్రత / జిమ్"],
+        "activity_options": ["కదలిక లేని (Sedentary)", "తేలికపాటి నడక", "మధ్యస్థ వ్యాయామాలు", "అధిక తీవ్రత / జిమ్"],
         "habit_high_risk": "⚠️ **అధిక లక్షణ ప్రభావం ఊహించబడింది (రిస్క్ స్కోర్: {score}/5):** మీ ప్రస్తుత నిద్ర ({sleep} గంటలు) మరియు ఆర్ద్రీకరణ ({water} లీటర్లు) పెరిగిన తిమ్మిరి తీవ్రత మరియు అలసటతో గట్టిగా ముడిపడి ఉన్నాయి. సిఫార్సు: నీటి వినియోగాన్ని పెంచండి మరియు కనీసం 7.5 గంటల నిద్రను లక్ష్యంగా పెట్టుకోండి.",
         "habit_mod_risk": "⚡ **మధ్యస్థ ప్రభావం (రిస్క్ స్కోర్: {score}/5):** చిన్న జీవనశైలి సర్దుబాట్లు—నీటి వినియోగాన్ని పెంచడం లేదా సాయంత్రం కెఫిన్‌ను తగ్గించడం వంటివి—మీ చక్ర సౌకర్యాన్ని గణనీయంగా మెరుగుపరుస్తాయి.",
         "habit_low_risk": "✅ **అనుకూల అలవాటు సమతుల్యత (రిస్క్ స్కోర్: {score}/5):** చాలా బాగుంది! తిమ్మిరి తీవ్రతను తక్కువగా మరియు శక్తి స్థాయిలను స్థిరంగా ఉంచడానికి మీ ప్రస్తుత జీవనశైలి అలవాట్లు బాగా సమతుల్యంగా ఉన్నాయి.",
@@ -306,8 +305,8 @@ LANG_DICT = {
         "recent_history": "ఇటీవలి లాగ్ చరిత్ర",
         "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు.",
 
-        # Dropdown options
-        "flow_options": ["ఏదీ లేదు/పొడిగా", "స్పాటింగ్ (చుక్కలు)", "తేలికపాటి (Light)", "मध्यम (Medium)", "అధిక (Heavy)"],
+        # Dropdown options (FULLY CORRECTED TELUGU)
+        "flow_options": ["ఏదీ లేదు/పొడిగా", "స్పాటింగ్ (చుక్కలు)", "తేలికపాటి (Light)", "మధ్యస్థం (Medium)", "అధిక (Heavy)"],
         "symptom_options": ["ఏదీ లేదు", "తిమ్మిరి / పొత్తికడుపు నొప్పి", "తలనొప్పి / మైగ్రేన్", "మూడ్ స్వింగ్స్ / ఆందోళన", "తీవ్రమైన అలసట", "బ్లోటింగ్ (ఉబ్బు)"],
         "mood_options": ["సంతోషంగా", "ప్రశాంతంగా", "ఆందోళనగా", "చికాకుగా", "అలసిపోయినట్లు", "శక్తివంతంగా"],
 
