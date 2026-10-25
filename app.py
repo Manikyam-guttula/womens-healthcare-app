@@ -133,7 +133,15 @@ LANG_DICT = {
         "helpline_2": "National Women Helpline",
         "helpline_3": "National Medical Ambulance",
         "helpline_4": "Women Helpline (NCW)",
-        "helpline_5": "KIRAN Mental Health Helpline"
+        "helpline_5": "KIRAN Mental Health Helpline",
+
+        "habit_heading": "Habit Correlation",
+        "sleep_dur": "Sleep Duration (Hours)",
+        "water_intake": "Water Intake (Litres)",
+        "activity_lvl": "Physical Activity Level",
+        "caffeine_intake": "Caffeine Intake (Cups)",
+        "run_habit": "Run Habit Impact Analysis",
+        "habit_results": "Habit Impact Simulation Results"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -192,7 +200,15 @@ LANG_DICT = {
         "helpline_2": "జాతీయ మహిళా హెల్ప్‌లైన్",
         "helpline_3": "జాతీయ వైద్య అంబులెన్స్",
         "helpline_4": "మహిళా హెల్ప్‌లైన్ (NCW)",
-        "helpline_5": "కిరణ్ మానసిక ఆరోగ్య హెల్ప్‌లైన్"
+        "helpline_5": "కిరణ్ మానసిక ఆరోగ్య హెల్ప్‌లైన్",
+
+        "habit_heading": "అలవాటు సహసంబంధం",
+        "sleep_dur": "నిద్ర వ్యవధి (గంటలు)",
+        "water_intake": "నీటి వినియోగం (లీటర్లు)",
+        "activity_lvl": "శారీరక శ్రమ స్థాయి",
+        "caffeine_intake": "కెఫిన్ తీసుకోవడం (కప్పులు)",
+        "run_habit": "అలవాటు ప్రభావ విశ్లేషణను అమలు చేయండి",
+        "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -251,7 +267,15 @@ LANG_DICT = {
         "helpline_2": "राष्ट्रीय महिला हेल्पलाइन",
         "helpline_3": "राष्ट्रीय चिकित्सा एम्बुलेंस",
         "helpline_4": "महिला हेल्पलाइन (NCW)",
-        "helpline_5": "किरण मानसिक स्वास्थ्य हेल्पलाइन"
+        "helpline_5": "किरण मानसिक स्वास्थ्य हेल्पलाइन",
+
+        "habit_heading": "आदत सहसंबंध",
+        "sleep_dur": "नींद की अवधि (घंटे)",
+        "water_intake": "पानी का सेवन (लीटर)",
+        "activity_lvl": "शारीरिक गतिविधि का स्तर",
+        "caffeine_intake": "कैफीन का सेवन (कप)",
+        "run_habit": "आदत प्रभाव विश्लेषण चलाएं",
+        "habit_results": "आदत प्रभाव सिमुलेशन परिणाम"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -310,7 +334,15 @@ LANG_DICT = {
         "helpline_2": "தேசிய பெண்கள் உதவி எண்",
         "helpline_3": "தேசிய மருத்துவ ஆம்புலன்ஸ்",
         "helpline_4": "பெண்கள் உதவி மையம் (NCW)",
-        "helpline_5": "கிரண் மனநல உதவி மையம்"
+        "helpline_5": "கிரண் மனநல உதவி மையம்",
+
+        "habit_heading": "பழக்கவழக்க தொடர்பு",
+        "sleep_dur": "தூக்க காலம் (மணிநேரம்)",
+        "water_intake": "தண்ணீர் நுகர்வு (லிட்டர்)",
+        "activity_lvl": "உடற்பயிற்சி நிலை",
+        "caffeine_intake": "காஃபின் உட்கொள்ளல் (கோப்பைகள்)",
+        "run_habit": "பழக்கவழக்க தாக்க பகுப்பாய்வை இயக்கு",
+        "habit_results": "பழக்கவழக்க தாக்க உருவகப்படுத்துதல் முடிவுகள்"
     }
 }
 
@@ -607,19 +639,19 @@ else:
             st.success(f"Reminder set successfully for {med_name} at {med_time}!")
 
     elif app_mode == "Habit Correlation":
-        st.title(f"🔄 {t['nav_habit']}")
+        st.title(f"🔄 {t['habit_heading']}")
         st.write(t["habit_desc"])
         
         with st.form("habit_analysis_form"):
             col1, col2 = st.columns(2)
             with col1:
-                sleep_hrs = st.slider("Sleep Duration (Hours)", 3.0, 12.0, 7.0, 0.5)
-                water_intake = st.slider("Water Intake (Litres)", 0.5, 5.0, 2.0, 0.5)
+                sleep_hrs = st.slider(t["sleep_dur"], 3.0, 12.0, 7.0, 0.5)
+                water_intake = st.slider(t["water_intake"], 0.5, 5.0, 2.0, 0.5)
             with col2:
-                activity_level = st.selectbox("Physical Activity Level", ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"])
-                caffeine_cups = st.slider("Caffeine Intake (Cups)", 0, 6, 1)
+                activity_level = st.selectbox(t["activity_lvl"], ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"])
+                caffeine_cups = st.slider(t["caffeine_intake"], 0, 6, 1)
                 
-            run_analysis = st.form_submit_button("Run Habit Impact Analysis")
+            run_analysis = st.form_submit_button(t["run_habit"])
             
             if run_analysis:
                 risk_score = 0
@@ -629,7 +661,7 @@ else:
                 if activity_level == "Sedentary": risk_score += 1
                 
                 st.markdown("---")
-                st.subheader("📊 Habit Impact Simulation Results")
+                st.subheader(f"📊 {t['habit_results']}")
                 if risk_score >= 4:
                     st.error(f"⚠️ **High Symptom Impact Predicted (Risk Score: {risk_score}/5):** Your current sleep ({sleep_hrs} hrs) and hydration ({water_intake} L) are strongly correlated with increased cramp severity and fatigue. Recommendation: Increase water intake and aim for at least 7.5 hours of consistent sleep.")
                 elif risk_score >= 2:
