@@ -105,7 +105,21 @@ LANG_DICT = {
         "forecast_results": "AI Prediction Results",
         "next_period": "Predicted Next Period",
         "est_ovulation": "Estimated Ovulation",
-        "fertile_window": "Fertile Window"
+        "fertile_window": "Fertile Window",
+
+        "date": "Date",
+        "cycle_day": "Cycle Day",
+        "flow_intensity": "Flow Intensity",
+        "primary_symptom": "Primary Symptom",
+        "severity_level": "Symptom Severity Level",
+        "energy_level": "Energy Level (1=Low, 5=High)",
+        "mood": "Mood",
+        "notes": "Personal Journal / Custom Notes",
+        "notes_placeholder": "Add any extra notes about how you feel today...",
+        "save_entry": "Save Daily Entry",
+        "save_success": "Daily health log successfully saved to secure storage!",
+        "recent_history": "Recent Log History",
+        "no_logs": "No entries logged yet."
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
@@ -136,7 +150,21 @@ LANG_DICT = {
         "forecast_results": "AI అంచనా ఫలితాలు",
         "next_period": "అంచనా వేసిన తదుపరి నెలసరి",
         "est_ovulation": "అంచనా వేసిన అండోత్సర్గము",
-        "fertile_window": "ఫలదీకరణ విండో"
+        "fertile_window": "ఫలదీకరణ విండో",
+
+        "date": "తేదీ",
+        "cycle_day": "చక్రపు రోజు",
+        "flow_intensity": "ప్రవాహ తీవ్రత",
+        "primary_symptom": "ప్రధాన లక్షణం",
+        "severity_level": "లక్షణం యొక్క తీవ్రత స్థాయి",
+        "energy_level": "శక్తి స్థాయి (1=తక్కువ, 5=ఎక్కువ)",
+        "mood": "మానసిక స్థితి",
+        "notes": "వ్యక్తిగత జర్నల్ / అనుకూల గమనికలు",
+        "notes_placeholder": "ఈరోజు మీకు ఎలా అనిపిస్తుందో ఇక్కడ వ్రాయండి...",
+        "save_entry": "రోజువారీ ఎంట్రీని సేవ్ చేయండి",
+        "save_success": "రోజువారీ ఆరోగ్య లాగ్ సురక్షితంగా సేవ్ చేయబడింది!",
+        "recent_history": "ఇటీవలి లాగ్ చరిత్ర",
+        "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు."
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
@@ -167,7 +195,21 @@ LANG_DICT = {
         "forecast_results": "एआई पूर्वानुमान परिणाम",
         "next_period": "अनुमानित अगली माहवारी",
         "est_ovulation": "अनुमानित ओव्यूलेशन",
-        "fertile_window": "उपजाऊ खिड़की"
+        "fertile_window": "उपजाऊ खिड़की",
+
+        "date": "तारीख",
+        "cycle_day": "चक्र का दिन",
+        "flow_intensity": "प्रवाह की तीव्रता",
+        "primary_symptom": "प्राथमिक लक्षण",
+        "severity_level": "लक्षण की गंभीरता का स्तर",
+        "energy_level": "ऊर्जा स्तर (1=कम, 5=अधिक)",
+        "mood": "मनोदशा",
+        "notes": "व्यक्तिगत जर्नल / कस्टम नोट्स",
+        "notes_placeholder": "आज आपको कैसा महसूस हो रहा है, इसके बारे में नोट्स जोड़ें...",
+        "save_entry": "दैनिक प्रविष्टि सहेजें",
+        "save_success": "दैनिक स्वास्थ्य लॉग सुरक्षित रूप से सहेज लिया गया!",
+        "recent_history": "हाल का लॉग इतिहास",
+        "no_logs": "अभी तक कोई प्रविष्टि दर्ज नहीं की गई है।"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
@@ -198,7 +240,21 @@ LANG_DICT = {
         "forecast_results": "AI கணிப்பு முடிவுகள்",
         "next_period": "கணிக்கப்பட்ட அடுத்த மாதவிடாய்",
         "est_ovulation": "மதிப்பிடப்பட்ட அண்டவிடுப்பின்",
-        "fertile_window": "கருத்தரிக்கும் காலம்"
+        "fertile_window": "கருத்தரிக்கும் காலம்",
+
+        "date": "தேதி",
+        "cycle_day": "சுழற்சி நாள்",
+        "flow_intensity": "இரத்தப்போக்கு தீவிரம்",
+        "primary_symptom": "முதன்மை அறிகுறி",
+        "severity_level": "அறிகுறி தீவிர நிலை",
+        "energy_level": "ஆற்றல் நிலை (1=குறைவு, 5=அதிகம்)",
+        "mood": "மனநிலை",
+        "notes": "தனிப்பட்ட குறிப்புகள்",
+        "notes_placeholder": "இன்று உங்களுக்கு எப்படி இருக்கிறது என்பதைப் பற்றி எழுதுங்கள்...",
+        "save_entry": "தினசரி பதிவை சேமி",
+        "save_success": "தினசரி சுகாதாரப் பதிவு வெற்றிகரமாக சேமிக்கப்பட்டது!",
+        "recent_history": "சமீபத்திய பதிவு வரலாறு",
+        "no_logs": "பதிவுகள் எதுவும் இல்லை."
     }
 }
 
@@ -294,6 +350,51 @@ else:
 
     app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
+    # --- LIGHT BACKGROUND WITH ELEGANT WOMAN LINE-DRAWING SVG VECTOR WATERMARK ---
+    svg_woman_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 24 24' fill='none' stroke='%23e11d48' stroke-width='0.35' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z'/><path d='M9 21h6'/><path d='M10 24h4'/></svg>\")"
+
+    theme_mapping = {
+        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%)", "btn": "#e11d48"},
+        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%)", "btn": "#9333ea"},
+        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)", "btn": "#16a34a"},
+        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%)", "btn": "#0d9488"},
+        "AI Health Companion": {"bg": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)", "btn": "#d97706"},
+        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 50%, #f5d0fe 100%)", "btn": "#c026d3"},
+        "Medication Tracker": {"bg": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)", "btn": "#2563eb"},
+        "Habit Correlation": {"bg": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)", "btn": "#059669"},
+        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #fff5f5 0%, #fed7d7 50%, #feb2b2 100%)", "btn": "#dc2626"},
+        "Language & Accessibility": {"bg": "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)", "btn": "#0284c7"}
+    }
+
+    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", "btn": "#0f172a"})
+
+    st.markdown(f"""
+    <style>
+        [data-testid="stAppViewContainer"] {{
+            background-image: {svg_woman_watermark}, {current_theme['bg']} !important;
+            background-repeat: repeat, no-repeat !important;
+            background-size: 350px 350px, cover !important;
+            background-position: center, center !important;
+            transition: background 0.6s ease-in-out;
+        }}
+        [data-testid="stMain"] {{ background: transparent !important; }}
+        [data-testid="stSidebar"] {{
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            border-right: 1px solid #cbd5e1 !important;
+        }}
+        div.stButton > button {{
+            background: {current_theme['btn']} !important;
+            color: white !important;
+            border-radius: 8px !important;
+            padding: 0.5rem 1.2rem !important;
+            border: none !important;
+            font-weight: 600 !important;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }}
+        div.stButton > button:hover {{ filter: brightness(0.9); color: white !important; }}
+    </style>
+    """, unsafe_allow_html=True)
+
     # --- FEATURE MODULE ROUTING ---
 
     if app_mode == "Daily Log & Phase Tracker":
@@ -303,18 +404,18 @@ else:
         with st.form("log_form"):
             col1, col2 = st.columns(2)
             with col1:
-                log_date = st.date_input("Date")
-                cycle_day = st.number_input("Cycle Day", min_value=1, max_value=45, value=1)
-                flow = st.selectbox("Flow Intensity", ["None/Dry", "Spotting", "Light", "Medium", "Heavy"])
+                log_date = st.date_input(t["date"])
+                cycle_day = st.number_input(t["cycle_day"], min_value=1, max_value=45, value=1)
+                flow = st.selectbox(t["flow_intensity"], ["None/Dry", "Spotting", "Light", "Medium", "Heavy"])
             with col2:
-                symptom = st.selectbox("Primary Symptom", ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue", "Bloating"])
-                severity = st.slider("Symptom Severity Level", 1, 5, 1)
-                energy = st.slider("Energy Level (1=Low, 5=High)", 1, 5, 3)
-                mood = st.selectbox("Mood", ["Happy", "Calm", "Anxious", "Irritable", "Tired", "Energetic"])
+                symptom = st.selectbox(t["primary_symptom"], ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue", "Bloating"])
+                severity = st.slider(t["severity_level"], 1, 5, 1)
+                energy = st.slider(t["energy_level"], 1, 5, 3)
+                mood = st.selectbox(t["mood"], ["Happy", "Calm", "Anxious", "Irritable", "Tired", "Energetic"])
             
-            notes = st.text_area("Personal Journal / Custom Notes", placeholder="Add any extra notes about how you feel today...")
+            notes = st.text_area(t["notes"], placeholder=t["notes_placeholder"])
             
-            submit_log = st.form_submit_button("Save Daily Entry")
+            submit_log = st.form_submit_button(t["save_entry"])
             if submit_log:
                 conn = sqlite3.connect(DB_FILE)
                 c = conn.cursor()
@@ -322,17 +423,17 @@ else:
                           (str(log_date), cycle_day, symptom, severity, mood, flow, energy, notes))
                 conn.commit()
                 conn.close()
-                st.success("Daily health log successfully saved to secure storage!")
+                st.success(t["save_success"])
                 
         st.markdown("---")
-        st.subheader("📋 Recent Log History")
+        st.subheader(f"📋 {t['recent_history']}")
         conn = sqlite3.connect(DB_FILE)
         history_df = pd.read_sql("SELECT date, cycle_day, flow, symptom, severity, energy, mood, notes FROM health_logs ORDER BY id DESC LIMIT 5", conn)
         conn.close()
         if not history_df.empty:
             st.dataframe(history_df, use_container_width=True)
         else:
-            st.info("No entries logged yet.")
+            st.info(t["no_logs"])
 
     elif app_mode == "AI Predictive Forecaster":
         st.title(f"🔮 {t['nav_forecast']}")
@@ -372,7 +473,7 @@ else:
             fig = px.scatter(df, x="cycle_day", y="severity", color="mood", size="severity", title="Symptom Severity across Cycle Days")
             st.plotly_chart(fig, use_container_width=True)
         else:
-            st.info("No logs recorded yet.")
+            st.info(t["no_logs"])
 
     elif app_mode == "Doctor Report Generator":
         st.title(f"📄 {t['nav_doctor']}")
