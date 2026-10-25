@@ -40,32 +40,38 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR ---
+# --- PDF GENERATOR (FIXED FOR UNICODE / MULTILINGUAL SUPPORT) ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", 'B', 16)
+    pdf.set_font("Arial", 'B', 14)
     
     pdf.cell(0, 10, "HerHealth AI - Complete Health Summary Report", ln=1, align="C")
     pdf.ln(5)
     pdf.set_font("Arial", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
     pdf.ln(10)
-    pdf.set_font("Arial", 'B', 10)
+    pdf.set_font("Arial", 'B', 9)
+    
+    # Calculate column widths dynamically based on number of columns
+    num_cols = len(df.columns)
+    col_width = min(40, max(25, int(190 / num_cols)))
     
     for col in df.columns:
-        pdf.cell(30, 10, str(col), border=1)
+        safe_col_name = str(col).encode('latin-1', 'replace').decode('latin-1')
+        pdf.cell(col_width, 8, safe_col_name, border=1)
     pdf.ln()
     
-    pdf.set_font("Arial", size=10)
+    pdf.set_font("Arial", size=9)
     for _, row in df.iterrows():
         for val in row:
-            pdf.cell(30, 10, str(val), border=1)
+            safe_val = str(val).encode('latin-1', 'replace').decode('latin-1')
+            pdf.cell(col_width, 8, safe_val, border=1)
         pdf.ln()
         
     output = pdf.output(dest='S')
     if isinstance(output, str):
-        return output.encode('latin1')
+        return output.encode('latin-1')
     return bytes(output)
 
 # --- APP CONFIG & SESSION STATES ---
@@ -115,7 +121,7 @@ LANG_DICT = {
         "stress_options": ["Low", "Moderate", "High / Exam Season"],
 
         # Doctor Report strings
-        "doc_download_btn": "Download Medical PDF Report",
+        "doc_download_pdf": "Download Medical PDF Report",
         "doc_no_data": "No data available to generate medical report.",
         "col_date": "Date",
         "col_cycle_day": "Cycle Day",
@@ -256,7 +262,7 @@ LANG_DICT = {
         "stress_options": ["తక్కువ", "మధ్యస్థం", "ఎక్కువ / పరీక్షల సమయం"],
 
         # Doctor Report strings
-        "doc_download_btn": "వైద్య PDF నివేదికను డౌన్‌లోడ్ చేయండి",
+        "doc_download_pdf": "వైద్య PDF నివేదికను డౌన్‌లోడ్ చేయండి",
         "doc_no_data": "వైద్య నివేదికను రూపొందించడానికి డేటా అందుబాటులో లేదు.",
         "col_date": "తేదీ",
         "col_cycle_day": "చక్రపు రోజు",
@@ -397,7 +403,7 @@ LANG_DICT = {
         "stress_options": ["कम", "मध्यम", "उच्च / परीक्षा का मौसम"],
 
         # Doctor Report strings
-        "doc_download_btn": "मेडिकल पीडीएफ रिपोर्ट डाउनलोड करें",
+        "doc_download_pdf": "मेडिकल पीडीएफ रिपोर्ट डाउनलोड करें",
         "doc_no_data": "मेडिकल रिपोर्ट तैयार करने के लिए कोई डेटा उपलब्ध नहीं है।",
         "col_date": "तारीख",
         "col_cycle_day": "चक्र का दिन",
@@ -881,9 +887,11 @@ else:
         conn.close()
         
         if not df.empty:
-            df.columns = [t["col_date"], t["col_cycle_day"], t["col_symptom"], t["col_severity"], t["col_mood"]]
-            st.dataframe(df, use_container_width=True)
-            pdf_bytes = generate_pdf(df)
+            display_df = df.copy()
+            display_df.columns = [t["col_date"], t["col_cycle_day"], t["col_symptom"], t["col_severity"], t["col_mood"]]
+            st.dataframe(display_df, use_container_width=True)
+            
+            pdf_bytes = generate_pdf(display_df)
             st.download_button(
                 label=t["doc_download_pdf"],
                 data=pdf_bytes,
