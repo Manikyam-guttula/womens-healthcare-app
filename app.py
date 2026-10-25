@@ -21,6 +21,13 @@ def init_db():
             mood TEXT
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS vault_creds (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT,
+            password TEXT
+        )
+    ''')
     for col, col_type in [("flow", "TEXT"), ("energy", "INTEGER"), ("notes", "TEXT")]:
         try:
             c.execute(f"ALTER TABLE health_logs ADD COLUMN {col} {col_type}")
@@ -64,10 +71,6 @@ st.set_page_config(page_title="HerHealth AI", page_icon="🩺", layout="wide")
 
 if "vault_unlocked" not in st.session_state:
     st.session_state["vault_unlocked"] = False
-if "saved_username" not in st.session_state:
-    st.session_state["saved_username"] = "admin"
-if "saved_password" not in st.session_state:
-    st.session_state["saved_password"] = "1234"
 if "lang" not in st.session_state:
     st.session_state["lang"] = "English"
 
@@ -108,7 +111,7 @@ LANG_DICT = {
         "nav_emergency": "అత్యవసర & క్లినిక్‌లు",
         "nav_lang": "భాష & ప్రాప్యత",
         
-        "daily_desc": "మీ రోజువారీ చక్రం పురోగతి, లక్షణాలు, ప్రవాహ తీవ్రత, శక్తి స్థాయిలు మరియు మానసిక స్థితిని సురక్షితವಾಗಿ లాగ్ చేయండి.",
+        "daily_desc": "మీ రోజువారీ చక్రం పురోగతి, లక్షణాలు, ప్రవాహ తీవ్రత, శక్తి స్థాయిలు మరియు మానసిక స్థితిని సురక్షితంగా లాగ్ చేయండి.",
         "forecast_desc": "భవిష్యత్ చక్ర దశలు, ఫలదీకరణ విండోలు మరియు హార్మోన్ల ఆరోగ్య రిస్క్‌లను అంచనా వేసే అధునాతన సిమ్యులేషన్.",
         "analytics_desc": "మీ ట్రాక్ చేసిన ఆరోగ్య కొలమానాల నుండి ట్రెండ్‌లు మరియు పరస్పర సంబంధాలను విజువలైజ్ చేస్తోంది.",
         "doctor_desc": "మీ ఆరోగ్య సంరక్షణ ప్రదాతతో భాగస్వామ్యం చేయడానికి వైద్య సారాంశ నివేదికను ఎగుమతి చేయండి.",
@@ -170,41 +173,56 @@ LANG_DICT = {
 current_l = st.session_state["lang"]
 t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
-# --- SIDEBAR AUTHENTICATION LOCK ---
+# --- SIDEBAR AUTHENTICATION LOCK (CREATE VAULT FIRST) ---
 st.sidebar.markdown("### 🔒 Security Vault & Setup")
 
 if not st.session_state["vault_unlocked"]:
-    tab_login, tab_create = st.sidebar.tabs(["Login", "Create Vault"])
+    # ORDER REVERSED: "Create Vault" is placed first
+    tab_create, tab_login = st.sidebar.tabs(["Create Vault", "Login"])
     
-    with tab_login:
-        login_user = st.text_input("Username", key="login_u")
-        login_pass = st.text_input("Password", type="password", key="login_p")
-        if st.button("Unlock Vault"):
-            if login_user == st.session_state["saved_username"] and login_pass == st.session_state["saved_password"]:
-                st.session_state["vault_unlocked"] = True
-                st.success("Vault Unlocked!")
-                st.rerun()
-            else:
-                st.error("Invalid Username or Password")
-                
     with tab_create:
         st.markdown("Set custom credentials:")
         new_user = st.text_input("New Username", key="new_u")
         new_pass = st.text_input("New Password", type="password", key="new_p")
         if st.button("Save New Credentials"):
             if new_user and new_pass:
-                st.session_state["saved_username"] = new_user
-                st.session_state["saved_password"] = new_pass
-                st.success("Credentials created successfully! You can now log in.")
+                conn = sqlite3.connect(DB_FILE)
+                c = conn.cursor()
+                c.execute("DELETE FROM vault_creds")  # Keep only active credentials
+                c.execute("INSERT INTO vault_creds (username, password) VALUES (?, ?)", (new_user, new_pass))
+                conn.commit()
+                conn.close()
+                st.success("Vault credentials created successfully! You can now log in.")
             else:
                 st.warning("Please enter both username and password.")
+                
+    with tab_login:
+        login_user = st.text_input("Username", key="login_u")
+        login_pass = st.text_input("Password", type="password", key="login_p")
+        if st.button("Unlock Vault"):
+            conn = sqlite3.connect(DB_FILE)
+            c = conn.cursor()
+            c.execute("SELECT username, password FROM vault_creds")
+            saved_cred = c.fetchone()
+            conn.close()
+            
+            # Default fallback if no custom vault was created yet
+            s_user = saved_cred[0] if saved_cred else "admin"
+            s_pass = saved_cred[1] if saved_cred else "1234"
+            
+            if login_user == s_user and login_pass == s_pass:
+                st.session_state["vault_unlocked"] = True
+                st.success("Vault Unlocked!")
+                st.rerun()
+            else:
+                st.error("Invalid Username or Password")
 
     st.title("🩺 Welcome to HerHealth AI")
-    st.info("🔒 **Vault Locked:** Please log in or set up your security credentials in the sidebar to access your private health dashboard and features.")
+    st.info("🔒 **Vault Locked:** Please create your secure vault credentials or log in using the sidebar to access your private health dashboard.")
     st.markdown("""
     ---
     ### 🛡️ Why Security Matters:
-    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar to log in or create your custom secure vault credentials.
+    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar tabs to set up your vault.
     """)
 
 else:
@@ -245,51 +263,6 @@ else:
     }
 
     app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
-
-    # --- THEMES WITH WATERMARK BACKGROUND ---
-    svg_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='0.4' stroke-linecap='round' stroke-linejoin='round' opacity='0.12'><path d='M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z'/><path d='M12 6v6l4 2'/></svg>\")"
-
-    theme_mapping = {
-        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)", "btn": "#e11d48"},
-        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", "btn": "#9333ea"},
-        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%)", "btn": "#2563eb"},
-        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%)", "btn": "#0d9488"},
-        "AI Health Companion": {"bg": "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)", "btn": "#ea580c"},
-        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%)", "btn": "#7c3aed"},
-        "Medication Tracker": {"bg": "linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%)", "btn": "#c026d3"},
-        "Habit Correlation": {"bg": "linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)", "btn": "#16a34a"},
-        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #ff0844 0%, #ffb199 100%)", "btn": "#dc2626"},
-        "Language & Accessibility": {"bg": "linear-gradient(135deg, #a8edf0 0%, #fed6e3 100%)", "btn": "#0284c7"}
-    }
-
-    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)", "btn": "#0f172a"})
-
-    st.markdown(f"""
-    <style>
-        [data-testid="stAppViewContainer"] {{
-            background-image: {svg_watermark}, {current_theme['bg']} !important;
-            background-repeat: repeat, no-repeat !important;
-            background-size: 300px 300px, cover !important;
-            background-position: center, center !important;
-            transition: background 0.6s ease-in-out;
-        }}
-        [data-testid="stMain"] {{ background: transparent !important; }}
-        [data-testid="stSidebar"] {{
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            border-right: 1px solid #cbd5e1 !important;
-        }}
-        div.stButton > button {{
-            background: {current_theme['btn']} !important;
-            color: white !important;
-            border-radius: 8px !important;
-            padding: 0.5rem 1.2rem !important;
-            border: none !important;
-            font-weight: 600 !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }}
-        div.stButton > button:hover {{ filter: brightness(0.9); color: white !important; }}
-    </style>
-    """, unsafe_allow_html=True)
 
     # --- FEATURE MODULE ROUTING ---
 
