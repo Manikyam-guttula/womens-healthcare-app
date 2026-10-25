@@ -110,6 +110,9 @@ LANG_DICT = {
         "next_period": "Predicted Next Period",
         "est_ovulation": "Estimated Ovulation",
         "fertile_window": "Fertile Window",
+        "stress_level": "Current Stress Level",
+        "sleep_hours": "Average Sleep (Hours/Night)",
+        "stress_options": ["Low", "Moderate", "High / Exam Season"],
 
         "date": "Date",
         "cycle_day": "Cycle Day",
@@ -234,6 +237,9 @@ LANG_DICT = {
         "next_period": "అంచనా వేసిన తదుపరి నెలసరి",
         "est_ovulation": "అంచనా వేసిన అండోత్సర్గము",
         "fertile_window": "ఫలదీకరణ విండో",
+        "stress_level": "ప్రస్తుత ఒత్తిడి స్థాయి",
+        "sleep_hours": "సగటు నిద్ర (గంటలు/రాత్రి)",
+        "stress_options": ["తక్కువ", "మధ్యస్థం", "ఎక్కువ / పరీక్షల సమయం"],
 
         "date": "తేదీ",
         "cycle_day": "చక్రపు రోజు",
@@ -358,6 +364,9 @@ LANG_DICT = {
         "next_period": "अनुमानित अगली माहवारी",
         "est_ovulation": "अनुमानित ओव्यूलेशन",
         "fertile_window": "उपजाऊ खिड़की",
+        "stress_level": "वर्तमान तनाव स्तर",
+        "sleep_hours": "औसत नींद (घंटे/रात)",
+        "stress_options": ["कम", "मध्यम", "उच्च / परीक्षा का मौसम"],
 
         "date": "तारीख",
         "cycle_day": "चक्र का दिन",
@@ -482,6 +491,9 @@ LANG_DICT = {
         "next_period": "கணிக்கப்பட்ட அடுத்த மாதவிடாய்",
         "est_ovulation": "மதிப்பிடப்பட்ட அண்டவிடுப்பின்",
         "fertile_window": "கருத்தரிக்கும் காலம்",
+        "stress_level": "தற்போதைய மன அழுத்த நிலை",
+        "sleep_hours": "சராசரி தூக்கம் (மணிநேரம்/இரவு)",
+        "stress_options": ["குறைவு", "மிதமானது", "அதிகம் / தேர்வு காலம்"],
 
         "date": "தேதி",
         "cycle_day": "சுழற்சி நாள்",
@@ -765,8 +777,8 @@ else:
             avg_cycle_len = st.number_input(t["avg_cycle"], min_value=21, max_value=45, value=28)
             last_period_start = st.date_input(t["last_period"])
         with col_p2:
-            stress_factor = st.selectbox("Current Stress Level", ["Low", "Moderate", "High / Exam Season"])
-            sleep_quality = st.slider("Average Sleep (Hours/Night)", 4.0, 10.0, 7.5)
+            stress_factor = st.selectbox(t["stress_level"], t["stress_options"])
+            sleep_quality = st.slider(t["sleep_hours"], 4.0, 10.0, 7.5)
             
         if st.button(t["run_forecast"]):
             next_period = last_period_start + pd.Timedelta(days=avg_cycle_len)
