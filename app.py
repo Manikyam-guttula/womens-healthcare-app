@@ -168,14 +168,41 @@ LANG_DICT = {
         "pcos_high": "Moderate-to-High Risk Score",
         "pcos_high_msg": "Consider consulting a specialist gynecologist.",
         "pcos_low": "Low Risk Score",
-        "pcos_low_msg": "Continue tracking your cycle regularly!"
+        "pcos_low_msg": "Continue tracking your cycle regularly!",
+
+        # Complete Health Report UI Strings
+        "cr_title": "Complete Health Report",
+        "cr_filter_title": "Filter Report by Date",
+        "cr_start_date": "Start date",
+        "cr_end_date": "End date",
+        "cr_summary_title": "Health Summary",
+        "cr_symp_recs": "Symptom Records",
+        "cr_period_dates": "Period Dates",
+        "cr_reminders": "Reminders",
+        "cr_metric_col": "Metric",
+        "cr_value_col": "Value",
+        "cr_total_symp_rec": "Total symptom records",
+        "cr_severe_symp_rec": "Severe symptom records",
+        "cr_period_start_rec": "Period start dates recorded",
+        "cr_total_rems": "Total reminders",
+        "cr_completed_rems": "Completed reminders",
+        "cr_symp_analysis": "Symptom Analysis",
+        "cr_freq_symp": "Most Frequently Recorded Symptoms",
+        "cr_sev_dist": "Severity Distribution",
+        "cr_rep_preview": "Report Preview",
+        "cr_view_symp": "View symptom records",
+        "cr_view_cycle": "View menstrual cycle history",
+        "cr_view_rem": "View reminder history",
+        "cr_review_text": "Review the filtered records above before downloading the PDF or ZIP report.",
+        "cr_dl_zip": "📥 Download Complete Report (ZIP)",
+        "cr_dl_pdf": "📥 Download Complete Report (PDF)"
     },
     "Telugu (తెలుగు)": {
         "nav_daily": "రోజువారీ లాగ్ & ఫేస్ ట్రాకర్",
         "nav_forecast": "AI ప్రిడిక్టివ్ ఫోర్‌కాస్టర్",
         "nav_analytics": "AI అంతర్దృష్టులు & విశ్లేషణలు",
         "nav_doctor": "డాక్టర్ నివేదిక జనరేటర్",
-        "nav_complete": "సంపూర్ణ ఆరోగ్య నివేదిక (Complete Health Report)",
+        "nav_complete": "సంపూర్ణ ఆరోగ్య నివేదిక",
         "nav_companion": "AI ఆరోగ్య సహచరుడు",
         "nav_screener": "PCOS రిస్క్ స్క్రీనర్",
         "nav_meds": "మందుల ట్రాకర్",
@@ -260,14 +287,41 @@ LANG_DICT = {
         "pcos_high": "మధ్యస్థ నుండి అధిక రిస్క్ స్కోర్",
         "pcos_high_msg": "నిపుణుడైన గైనకాలజిస్ట్‌ను సంప్రదించడాన్ని పరిగణించండి.",
         "pcos_low": "తక్కువ రిస్క్ స్కోర్",
-        "pcos_low_msg": "మీ చక్రం క్రమం తప్పకుండా ట్రాక్ చేయడాన్ని కొనసాగించండి!"
+        "pcos_low_msg": "మీ చక్రం క్రమం తప్పకుండా ట్రాక్ చేయడాన్ని కొనసాగించండి!",
+
+        # Complete Health Report UI Strings
+        "cr_title": "సంపూర్ణ ఆరోగ్య నివేదిక",
+        "cr_filter_title": "తేదీ వారీగా నివేదికను ఫిల్టర్ చేయండి",
+        "cr_start_date": "ప్రారంభ తేదీ",
+        "cr_end_date": "ముగింపు తేదీ",
+        "cr_summary_title": "ఆరోగ్య సారాంశం",
+        "cr_symp_recs": "లక్షణాల రికార్డులు",
+        "cr_period_dates": "పీరియడ్ తేదీలు",
+        "cr_reminders": "జ్ఞాపికలు",
+        "cr_metric_col": "మె్రిక్",
+        "cr_value_col": "విలువ",
+        "cr_total_symp_rec": "మొత్తం లక్షణ రికార్డులు",
+        "cr_severe_symp_rec": "తీవ్రమైన లక్షణ రికార్డులు",
+        "cr_period_start_rec": "నమోదు చేయబడిన పీరియడ్ ప్రారంభ తేదీలు",
+        "cr_total_rems": "మొత్తం జ్ఞాపికలు",
+        "cr_completed_rems": "పూర్తయిన జ్ఞాపికలు",
+        "cr_symp_analysis": "లక్షణాల విశ్లేషణ",
+        "cr_freq_symp": "అత్యంత తరచుగా నమోదైన లక్షణాలు",
+        "cr_sev_dist": "తీవ్రత పంపిణీ",
+        "cr_rep_preview": "నివేదిక ప్రివీయూ",
+        "cr_view_symp": "లక్షణ రికార్డులను వీక్షించండి",
+        "cr_view_cycle": "ఋతు చక్ర చరిత్రను వీక్షించండి",
+        "cr_view_rem": "జ్ఞాపిక చరిత్రను వీక్షించండి",
+        "cr_review_text": "PDF లేదా ZIP నివేదికను డౌన్‌లోడ్ చేయడానికి ముందు పైన ఫిల్టర్ చేసిన రికార్డులను సమీక్షించండి.",
+        "cr_dl_zip": "📥 పూర్తి నివేదికను డౌన్‌లోడ్ చేయండి (ZIP)",
+        "cr_dl_pdf": "📥 పూర్తి నివేదికను డౌన్‌లోడ్ చేయండి (PDF)"
     },
     "Hindi (हिन्दी)": {
         "nav_daily": "दैनिक लॉग और चरण ट्रैकर",
         "nav_forecast": "एआई भविष्यवक्ता",
         "nav_analytics": "एआई अंतर्दृष्टि और विश्लेषण",
         "nav_doctor": "डॉक्टर रिपोर्ट जेनरेटर",
-        "nav_complete": "पूर्ण स्वास्थ्य रिपोर्ट (Complete Health Report)",
+        "nav_complete": "पूर्ण स्वास्थ्य रिपोर्ट",
         "nav_companion": "एआई स्वास्थ्य साथी",
         "nav_screener": "पीसीओएस जोखिम स्क्रीनर",
         "nav_meds": "दवा ट्रैकर",
@@ -352,14 +406,41 @@ LANG_DICT = {
         "pcos_high": "मध्यम से उच्च जोखिम स्कोर",
         "pcos_high_msg": "विशेषज्ञ स्त्री रोग विशेषज्ञ से परामर्श करने पर विचार करें।",
         "pcos_low": "कम जोखिम स्कोर",
-        "pcos_low_msg": "नियमित रूप से अपने चक्र को ट्रैक करना जारी रखें!"
+        "pcos_low_msg": "नियमित रूप से अपने चक्र को ट्रैक करना जारी रखें!",
+
+        # Complete Health Report UI Strings
+        "cr_title": "पूर्ण स्वास्थ्य रिपोर्ट",
+        "cr_filter_title": "दिनांक के अनुसार रिपोर्ट फ़िल्टर करें",
+        "cr_start_date": "प्रारंभ तिथि",
+        "cr_end_date": "समाप्ति तिथि",
+        "cr_summary_title": "स्वास्थ्य सारांश",
+        "cr_symp_recs": "लक्षण रिकॉर्ड",
+        "cr_period_dates": "अवधि तिथियां",
+        "cr_reminders": "अनुस्मारक (Reminders)",
+        "cr_metric_col": "मीट्रिक",
+        "cr_value_col": "मान",
+        "cr_total_symp_rec": "कुल लक्षण रिकॉर्ड",
+        "cr_severe_symp_rec": "गंभीर लक्षण रिकॉर्ड",
+        "cr_period_start_rec": "दर्ज की गई अवधि प्रारंभ तिथियां",
+        "cr_total_rems": "कुल अनुस्मारक",
+        "cr_completed_rems": "पूर्ण किए गए अनुस्मारक",
+        "cr_symp_analysis": "लक्षण विश्लेषण",
+        "cr_freq_symp": "सबसे अधिक बार दर्ज किए गए लक्षण",
+        "cr_sev_dist": "गंभीरता वितरण",
+        "cr_rep_preview": "रिपोर्ट पूर्वावलोकन",
+        "cr_view_symp": "लक्षण रिकॉर्ड देखें",
+        "cr_view_cycle": "मासिक धर्म चक्र का इतिहास देखें",
+        "cr_view_rem": "अनुस्मारक इतिहास देखें",
+        "cr_review_text": "PDF या ZIP रिपोर्ट डाउनलोड करने से पहले ऊपर दिए गए फ़िल्टर किए गए रिकॉर्ड की समीक्षा करें।",
+        "cr_dl_zip": "📥 पूर्ण रिपोर्ट डाउनलोड करें (ZIP)",
+        "cr_dl_pdf": "📥 पूर्ण रिपोर्ट डाउनलोड करें (PDF)"
     },
     "Tamil (தமிழ்)": {
         "nav_daily": "தினசரி பதிவு & கட்டம் கண்காணிப்பு",
         "nav_forecast": "AI கணிப்பு முன்னறிவிப்பு",
         "nav_analytics": "AI நுண்ணறிவு & பகுப்பாய்வு",
         "nav_doctor": "மருத்துவர் அறிக்கை ஜெனரேட்டர்",
-        "nav_complete": "முழுமையான சுகாதார அறிக்கை (Complete Health Report)",
+        "nav_complete": "முழுமையான சுகாதார அறிக்கை",
         "nav_companion": "AI சுகாதார தோழன்",
         "nav_screener": "PCOS ஆபத்து பரிசோதகர்",
         "nav_meds": "மருந்து கண்காணிப்பு",
@@ -444,7 +525,34 @@ LANG_DICT = {
         "pcos_high": "மிதமான முதல் உயர் ஆபத்து மதிப்பெண்",
         "pcos_high_msg": "சிறப்பு மகளிர் மருத்துவ நிபுணரை அணுகுவதைக் கருத்தில் கொள்ளவும்.",
         "pcos_low": "குறைந்த ஆபத்து மதிப்பெண்",
-        "pcos_low_msg": "உங்கள் சுழற்சியை தொடர்ந்து கண்காணிக்கவும்!"
+        "pcos_low_msg": "உங்கள் சுழற்சியை தொடர்ந்து கண்காணிக்கவும்!",
+
+        # Complete Health Report UI Strings
+        "cr_title": "முழுமையான சுகாதார அறிக்கை",
+        "cr_filter_title": "தேதி வாரியாக அறிக்கையை வடிகட்டுக",
+        "cr_start_date": "தொடக்க தேதி",
+        "cr_end_date": "முடிவு தேதி",
+        "cr_summary_title": "சுகாதார சுருக்கம்",
+        "cr_symp_recs": "அறிகுறி பதிவுகள்",
+        "cr_period_dates": "மாதவிடாய் தேதிகள்",
+        "cr_reminders": "நினைவூட்டல்கள்",
+        "cr_metric_col": "அளவீடு",
+        "cr_value_col": "மதிப்பு",
+        "cr_total_symp_rec": "மொத்த அறிகுறி பதிவுகள்",
+        "cr_severe_symp_rec": "கடுமையான அறிகுறி பதிவுகள்",
+        "cr_period_start_rec": "பதிவு செய்யப்பட்ட மாதவிடாய் தொடக்க தேதிகள்",
+        "cr_total_rems": "மொத்த நினைவூட்டல்கள்",
+        "cr_completed_rems": "நிறைவு செய்யப்பட்ட நினைவூட்டல்கள்",
+        "cr_symp_analysis": "அறிகுறி பகுப்பாய்வு",
+        "cr_freq_symp": "அடிக்கடி பதிவு செய்யப்பட்ட அறிகுறிகள்",
+        "cr_sev_dist": "தீவிர பரவல்",
+        "cr_rep_preview": "அறிக்கை முன்னோட்டம்",
+        "cr_view_symp": "அறிகுறி பதிவுகளைக் காண்க",
+        "cr_view_cycle": "மாதவிடாய் சுழற்சி வரலாற்றைக் காண்க",
+        "cr_view_rem": "நினைவூட்டல் வரலாற்றைக் காண்க",
+        "cr_review_text": "PDF அல்லது ZIP அறிக்கையைப் பதிவிறக்குவதற்கு முன் மேலே உள்ள வடிகட்டப்பட்ட பதிவுகளை மதிப்பாய்வு செய்யவும்.",
+        "cr_dl_zip": "📥 முழு அறிக்கையைப் பதிவிறக்குக (ZIP)",
+        "cr_dl_pdf": "📥 முழு அறிக்கையைப் பதிவிறக்குக (PDF)"
     }
 }
 
@@ -689,15 +797,15 @@ else:
             st.warning("No data available to generate medical report.")
 
     elif app_mode == "Complete Health Report":
-        st.title("📦 Complete Health Report")
+        st.title(f"📦 {t['cr_title']}")
         st.write(t["complete_desc"])
         
-        st.markdown("### Filter Report by Date")
+        st.markdown(f"### {t['cr_filter_title']}")
         col_d1, col_d2 = st.columns(2)
         with col_d1:
-            start_date = st.date_input("Start date", value=pd.to_datetime("2026-10-01"))
+            start_date = st.date_input(t["cr_start_date"], value=pd.to_datetime("2026-10-01"))
         with col_d2:
-            end_date = st.date_input("End date", value=pd.to_datetime("2026-10-25"))
+            end_date = st.date_input(t["cr_end_date"], value=pd.to_datetime("2026-10-25"))
             
         conn = sqlite3.connect(DB_FILE)
         df_all = pd.read_sql("SELECT * FROM health_logs", conn)
@@ -709,19 +817,19 @@ else:
         else:
             filtered_df = pd.DataFrame(columns=['date', 'cycle_day', 'symptom', 'severity', 'mood', 'flow', 'energy', 'notes'])
             
-        st.markdown("### Health Summary")
+        st.markdown(f"### {t['cr_summary_title']}")
         m1, m2, m3 = st.columns(3)
         total_symp = len(filtered_df[filtered_df['symptom'] != 'None'])
         total_periods = len(filtered_df[filtered_df['flow'].isin(['Light', 'Medium', 'Heavy'])])
         total_reminders = 0
         
-        m1.metric("Symptom Records", total_symp)
-        m2.metric("Period Dates", total_periods)
-        m3.metric("Reminders", total_reminders)
+        m1.metric(t["cr_symp_recs"], total_symp)
+        m2.metric(t["cr_period_dates"], total_periods)
+        m3.metric(t["cr_reminders"], total_reminders)
         
         summary_table = pd.DataFrame({
-            "Metric": ["Total symptom records", "Severe symptom records", "Period start dates recorded", "Total reminders", "Completed reminders"],
-            "Value": [
+            t["cr_metric_col"]: [t["cr_total_symp_rec"], t["cr_severe_symp_rec"], t["cr_period_start_rec"], t["cr_total_rems"], t["cr_completed_rems"]],
+            t["cr_value_col"]: [
                 total_symp, 
                 len(filtered_df[filtered_df['severity'] >= 4]), 
                 total_periods, 
@@ -731,10 +839,10 @@ else:
         })
         st.dataframe(summary_table, use_container_width=True, hide_index=True)
         
-        st.markdown("### Symptom Analysis")
+        st.markdown(f"### {t['cr_symp_analysis']}")
         col_c1, col_c2 = st.columns(2)
         with col_c1:
-            st.markdown("**Most Frequently Recorded Symptoms**")
+            st.markdown(f"**{t['cr_freq_symp']}**")
             if not filtered_df.empty and total_symp > 0:
                 symp_counts = filtered_df[filtered_df['symptom'] != 'None']['symptom'].value_counts().reset_index()
                 symp_counts.columns = ['Symptom', 'Count']
@@ -744,7 +852,7 @@ else:
                 st.info("No symptom records found for this date range.")
                 
         with col_c2:
-            st.markdown("**Severity Distribution**")
+            st.markdown(f"**{t['cr_sev_dist']}**")
             if not filtered_df.empty and total_symp > 0:
                 sev_counts = filtered_df[filtered_df['severity'] > 0]['severity'].value_counts().reset_index()
                 sev_counts.columns = ['Severity', 'Count']
@@ -753,15 +861,15 @@ else:
             else:
                 st.info("No severity records found.")
 
-        st.markdown("### Report Preview")
-        with st.expander("View symptom records"):
+        st.markdown(f"### {t['cr_rep_preview']}")
+        with st.expander(t["cr_view_symp"]):
             st.dataframe(filtered_df if not filtered_df.empty else pd.DataFrame(columns=["No data"]))
-        with st.expander("View menstrual cycle history"):
+        with st.expander(t["cr_view_cycle"]):
             st.dataframe(filtered_df[['date', 'cycle_day', 'flow']] if not filtered_df.empty else pd.DataFrame(columns=["No data"]))
-        with st.expander("View reminder history"):
+        with st.expander(t["cr_view_rem"]):
             st.write("No reminder history available.")
             
-        st.markdown("Review the filtered records above before downloading the PDF or ZIP report.")
+        st.markdown(t["cr_review_text"])
         
         # ZIP Generator
         zip_buffer = io.BytesIO()
@@ -773,7 +881,7 @@ else:
         col_dl1, col_dl2 = st.columns(2)
         with col_dl1:
             st.download_button(
-                label="📥 Download Complete Report (ZIP)",
+                label=t["cr_dl_zip"],
                 data=zip_data,
                 file_name="HerHealth_Complete_Report.zip",
                 mime="application/zip"
@@ -781,7 +889,7 @@ else:
         with col_dl2:
             pdf_bytes = generate_pdf(filtered_df if not filtered_df.empty else pd.DataFrame([["No data"]]))
             st.download_button(
-                label="📥 Download Complete Report (PDF)",
+                label=t["cr_dl_pdf"],
                 data=pdf_bytes,
                 file_name="HerHealth_Complete_Report.pdf",
                 mime="application/pdf"
