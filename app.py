@@ -40,38 +40,32 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR (FIXED FOR UNICODE / MULTILINGUAL SUPPORT) ---
+# --- PDF GENERATOR ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", 'B', 14)
+    pdf.set_font("Arial", 'B', 16)
     
     pdf.cell(0, 10, "HerHealth AI - Complete Health Summary Report", ln=1, align="C")
     pdf.ln(5)
     pdf.set_font("Arial", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
     pdf.ln(10)
-    pdf.set_font("Arial", 'B', 9)
-    
-    # Calculate column widths dynamically based on number of columns
-    num_cols = len(df.columns)
-    col_width = min(40, max(25, int(190 / num_cols)))
+    pdf.set_font("Arial", 'B', 10)
     
     for col in df.columns:
-        safe_col_name = str(col).encode('latin-1', 'replace').decode('latin-1')
-        pdf.cell(col_width, 8, safe_col_name, border=1)
+        pdf.cell(30, 10, str(col), border=1)
     pdf.ln()
     
-    pdf.set_font("Arial", size=9)
+    pdf.set_font("Arial", size=10)
     for _, row in df.iterrows():
         for val in row:
-            safe_val = str(val).encode('latin-1', 'replace').decode('latin-1')
-            pdf.cell(col_width, 8, safe_val, border=1)
+            pdf.cell(30, 10, str(val), border=1)
         pdf.ln()
         
     output = pdf.output(dest='S')
     if isinstance(output, str):
-        return output.encode('latin-1')
+        return output.encode('latin1')
     return bytes(output)
 
 # --- APP CONFIG & SESSION STATES ---
@@ -120,6 +114,19 @@ LANG_DICT = {
         "sleep_hours": "Average Sleep (Hours/Night)",
         "stress_options": ["Low", "Moderate", "High / Exam Season"],
 
+        # Habit Correlation strings
+        "habit_heading": "Habit Correlation",
+        "sleep_dur": "Sleep Duration (Hours)",
+        "water_intake": "Water Intake (Litres)",
+        "activity_lvl": "Physical Activity Level",
+        "caffeine_intake": "Caffeine Intake (Cups)",
+        "run_habit": "Run Habit Impact Analysis",
+        "habit_results": "Habit Impact Simulation Results",
+        "activity_options": ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"],
+        "habit_high_risk": "⚠️ **High Symptom Impact Predicted (Risk Score: {score}/5):** Your current sleep ({sleep} hrs) and hydration ({water} L) are strongly correlated with increased cramp severity and fatigue. Recommendation: Increase water intake and aim for at least 7.5 hours of consistent sleep.",
+        "habit_mod_risk": "⚡ **Moderate Impact (Risk Score: {score}/5):** Minor lifestyle adjustments—such as increasing hydration or reducing evening caffeine—can noticeably improve your cycle comfort.",
+        "habit_low_risk": "✅ **Optimal Habit Balance (Risk Score: {score}/5):** Excellent! Your current lifestyle habits are well-balanced to keep cramp intensity low and energy levels stable.",
+
         # Doctor Report strings
         "doc_download_pdf": "Download Medical PDF Report",
         "doc_no_data": "No data available to generate medical report.",
@@ -166,14 +173,6 @@ LANG_DICT = {
         "helpline_3": "National Medical Ambulance",
         "helpline_4": "Women Helpline (NCW)",
         "helpline_5": "KIRAN Mental Health Helpline",
-
-        "habit_heading": "Habit Correlation",
-        "sleep_dur": "Sleep Duration (Hours)",
-        "water_intake": "Water Intake (Litres)",
-        "activity_lvl": "Physical Activity Level",
-        "caffeine_intake": "Caffeine Intake (Cups)",
-        "run_habit": "Run Habit Impact Analysis",
-        "habit_results": "Habit Impact Simulation Results",
 
         "med_heading": "Medication Tracker",
         "med_name": "Medication / Supplement Name",
@@ -261,6 +260,19 @@ LANG_DICT = {
         "sleep_hours": "సగటు నిద్ర (గంటలు/రాత్రి)",
         "stress_options": ["తక్కువ", "మధ్యస్థం", "ఎక్కువ / పరీక్షల సమయం"],
 
+        # Habit Correlation strings
+        "habit_heading": "అలవాటు సహసంబంధం",
+        "sleep_dur": "నిద్ర వ్యవధి (గంటలు)",
+        "water_intake": "నీటి వినియోగం (లీటర్లు)",
+        "activity_lvl": "శారీరక శ్రమ స్థాయి",
+        "caffeine_intake": "కెఫిన్ తీసుకోవడం (కప్పులు)",
+        "run_habit": "అలవాటు ప్రభావ విశ్లేషణను అమలు చేయండి",
+        "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు",
+        "activity_options": ["కదలిక లేని (Sedentary)", "తేలికపాటి నడక", "मध्यम వ్యాయామాలు", "అధిక తీవ్రత / జిమ్"],
+        "habit_high_risk": "⚠️ **అధిక లక్షణ ప్రభావం ఊహించబడింది (రిస్క్ స్కోర్: {score}/5):** మీ ప్రస్తుత నిద్ర ({sleep} గంటలు) మరియు ఆర్ద్రీకరణ ({water} లీటర్లు) పెరిగిన తిమ్మిరి తీవ్రత మరియు అలసటతో గట్టిగా ముడిపడి ఉన్నాయి. సిఫార్సు: నీటి వినియోగాన్ని పెంచండి మరియు కనీసం 7.5 గంటల నిద్రను లక్ష్యంగా పెట్టుకోండి.",
+        "habit_mod_risk": "⚡ **మధ్యస్థ ప్రభావం (రిస్క్ స్కోర్: {score}/5):** చిన్న జీవనశైలి సర్దుబాట్లు—నీటి వినియోగాన్ని పెంచడం లేదా సాయంత్రం కెఫిన్‌ను తగ్గించడం వంటివి—మీ చక్ర సౌకర్యాన్ని గణనీయంగా మెరుగుపరుస్తాయి.",
+        "habit_low_risk": "✅ **అనుకూల అలవాటు సమతుల్యత (రిస్క్ స్కోర్: {score}/5):** చాలా బాగుంది! తిమ్మిరి తీవ్రతను తక్కువగా మరియు శక్తి స్థాయిలను స్థిరంగా ఉంచడానికి మీ ప్రస్తుత జీవనశైలి అలవాట్లు బాగా సమతుల్యంగా ఉన్నాయి.",
+
         # Doctor Report strings
         "doc_download_pdf": "వైద్య PDF నివేదికను డౌన్‌లోడ్ చేయండి",
         "doc_no_data": "వైద్య నివేదికను రూపొందించడానికి డేటా అందుబాటులో లేదు.",
@@ -307,14 +319,6 @@ LANG_DICT = {
         "helpline_3": "జాతీయ వైద్య అంబులెన్స్",
         "helpline_4": "మహిళా హెల్ప్‌లైన్ (NCW)",
         "helpline_5": "కిరణ్ మానసిక ఆరోగ్య హెల్ప్‌లైన్",
-
-        "habit_heading": "అలవాటు సహసంబంధం",
-        "sleep_dur": "నిద్ర వ్యవధి (గంటలు)",
-        "water_intake": "నీటి వినియోగం (లీటర్లు)",
-        "activity_lvl": "శారీరక శ్రమ స్థాయి",
-        "caffeine_intake": "కెఫిన్ తీసుకోవడం (కప్పులు)",
-        "run_habit": "అలవాటు ప్రభావ విశ్లేషణను అమలు చేయండి",
-        "habit_results": "అలవాటు ప్రభావ అనుకరణ ఫలితాలు",
 
         "med_heading": "మందుల ట్రాకర్",
         "med_name": "మందు / సప్లిమెంట్ పేరు",
@@ -402,6 +406,19 @@ LANG_DICT = {
         "sleep_hours": "औसत नींद (घंटे/रात)",
         "stress_options": ["कम", "मध्यम", "उच्च / परीक्षा का मौसम"],
 
+        # Habit Correlation strings
+        "habit_heading": "आदत सहसंबंध",
+        "sleep_dur": "नींद की अवधि (घंटे)",
+        "water_intake": "पानी का सेवन (लीटर)",
+        "activity_lvl": "शारीरिक गतिविधि का स्तर",
+        "caffeine_intake": "कैफीन का सेवन (कप)",
+        "run_habit": "आदत प्रभाव विश्लेषण चलाएं",
+        "habit_results": "आदत प्रभाव सिमुलेशन परिणाम",
+        "activity_options": ["आरामदेह / सुस्त (Sedentary)", "हल्की सैर", "मध्यम व्यायाम", "उच्च तीव्रता / जिम"],
+        "habit_high_risk": "⚠️ **उच्च लक्षण प्रभाव अनुमानित (जोखिम स्कोर: {score}/5):** आपकी वर्तमान नींद ({sleep} घंटे) और जलयोजन ({water} लीटर) ऐंठन की गंभीरता और थकान से गहराई से जुड़े हुए हैं। सिफ़ारिश: पानी का सेवन बढ़ाएँ और कम से कम 7.5 घंटे की निरंतर नींद का लक्ष्य रखें।",
+        "habit_mod_risk": "⚡ **मध्यम प्रभाव (जोखिम स्कोर: {score}/5):** छोटे जीवनशैली समायोजन—जैसे पानी का सेवन बढ़ाना या शाम की कैफीन कम करना—आपके चक्र के आराम को काफी हद तक सुधार सकते हैं।",
+        "habit_low_risk": "✅ **इष्टतम आदत संतुलन (जोखिम स्कोर: {score}/5):** बहुत बढ़िया! ऐंठन की तीव्रता को कम और ऊर्जा के स्तर को स्थिर रखने के लिए आपकी वर्तमान जीवनशैली की आदतें अच्छी तरह से संतुलित हैं।",
+
         # Doctor Report strings
         "doc_download_pdf": "मेडिकल पीडीएफ रिपोर्ट डाउनलोड करें",
         "doc_no_data": "मेडिकल रिपोर्ट तैयार करने के लिए कोई डेटा उपलब्ध नहीं है।",
@@ -448,14 +465,6 @@ LANG_DICT = {
         "helpline_3": "राष्ट्रीय चिकित्सा एम्बुलेंस",
         "helpline_4": "महिला हेल्पलाइन (NCW)",
         "helpline_5": "किरण मानसिक स्वास्थ्य हेल्पलाइन",
-
-        "habit_heading": "आदत सहसंबंध",
-        "sleep_dur": "नींद की अवधि (घंटे)",
-        "water_intake": "पानी का सेवन (लीटर)",
-        "activity_lvl": "शारीरिक गतिविधि का स्तर",
-        "caffeine_intake": "कैफीन का सेवन (कप)",
-        "run_habit": "आदत प्रभाव विश्लेषण चलाएं",
-        "habit_results": "आदत प्रभाव सिमुलेशन परिणाम",
 
         "med_heading": "दवा ट्रैकर",
         "med_name": "दवा / पूरक का नाम",
@@ -542,6 +551,19 @@ LANG_DICT = {
         "stress_level": "தற்போதைய மன அழுத்த நிலை",
         "sleep_hours": "சராசரி தூக்கம் (மணிநேரம்/இரவு)",
         "stress_options": ["குறைவு", "மிதமானது", "அதிகம் / தேர்வு காலம்"],
+
+        # Habit Correlation strings
+        "habit_heading": "பழக்கவழக்க தொடர்பு",
+        "sleep_dur": "தூக்க காலம் (மணிநேரம்)",
+        "water_intake": "தண்ணீர் நுகர்வு (லிட்டர்)",
+        "activity_lvl": "உடற்பயிற்சி நிலை",
+        "caffeine_intake": "காஃபின் உட்கொள்ளல் (கோப்பைகள்)",
+        "run_habit": "பழக்கவழக்க தாக்க பகுப்பாய்வை இயக்கு",
+        "habit_results": "பழக்கவழக்க தாக்க உருவகப்படுத்துதல் முடிவுகள்",
+        "activity_options": ["செயல்பாடற்ற / உட்கார்ந்தே இருக்கும் நிலை", "இலேசான நடைப்பயிற்சி", "மிதமான உடற்பயிற்சி", "அதிக தீவிரம் / ஜிம்"],
+        "habit_high_risk": "⚠️ **அதிக அறிகுறி தாக்கம் கணிக்கப்பட்டுள்ளது (ஆபத்து மதிப்பெண்: {score}/5):** உங்கள் தற்போதைய தூக்கம் ({sleep} மணி நேரம்) மற்றும் நீரேற்றம் ({water} லிட்டர்) ஆகியவை அதிகரித்த தசைப்பிடிப்பு தீவிரம் மற்றும் சோர்வுடன் வலுவாக தொடர்புடையவை. பரிந்துரை: தண்ணீர் நுகர்வு அதிகரிக்கவும் மற்றும் குறைந்தது 7.5 மணி நேரம் தூங்கவும்.",
+        "habit_mod_risk": "⚡ **மிதமான தாக்கம் (ஆபத்து மதிப்பெண்: {score}/5):** சிறிய வாழ்க்கை முறை மாற்றங்கள்—தண்ணீர் குடிப்பதை அதிகரிப்பது அல்லது காஃபின் உட்கொள்வைக் குறைப்பது—உங்கள் சுழற்சி வசதியை மேம்படுத்தும்.",
+        "habit_low_risk": "✅ **உகந்த பழக்கவழக்க சமநிலை (ஆபத்து மதிப்பெண்: {score}/5):** அருமை! தசைப்பிடிப்பு தீவிரத்தை குறைவாகவும் ஆற்றல் நிலைகளை நிலையாகவும் வைத்திருக்க உங்கள் தற்போதைய வாழ்க்கை முறை பழக்கவழக்கங்கள் நன்றாக சமநிலையில் உள்ளன.",
 
         # Doctor Report strings
         "doc_download_pdf": "மருத்துவ PDF அறிக்கையைப் பதிவிறக்குக",
@@ -887,11 +909,9 @@ else:
         conn.close()
         
         if not df.empty:
-            display_df = df.copy()
-            display_df.columns = [t["col_date"], t["col_cycle_day"], t["col_symptom"], t["col_severity"], t["col_mood"]]
-            st.dataframe(display_df, use_container_width=True)
-            
-            pdf_bytes = generate_pdf(display_df)
+            df.columns = [t["col_date"], t["col_cycle_day"], t["col_symptom"], t["col_severity"], t["col_mood"]]
+            st.dataframe(df, use_container_width=True)
+            pdf_bytes = generate_pdf(df)
             st.download_button(
                 label=t["doc_download_pdf"],
                 data=pdf_bytes,
@@ -1065,7 +1085,7 @@ else:
                 sleep_hrs = st.slider(t["sleep_dur"], 3.0, 12.0, 7.0, 0.5)
                 water_intake = st.slider(t["water_intake"], 0.5, 5.0, 2.0, 0.5)
             with col2:
-                activity_level = st.selectbox(t["activity_lvl"], ["Sedentary", "Light Walking", "Moderate Exercise", "High Intensity / Gym"])
+                activity_level = st.selectbox(t["activity_lvl"], t["activity_options"])
                 caffeine_cups = st.slider(t["caffeine_intake"], 0, 6, 1)
                 
             run_analysis = st.form_submit_button(t["run_habit"])
@@ -1075,16 +1095,16 @@ else:
                 if sleep_hrs < 6.5: risk_score += 2
                 if water_intake < 2.0: risk_score += 2
                 if caffeine_cups > 3: risk_score += 1
-                if activity_level == "Sedentary": risk_score += 1
+                if activity_level in [t["activity_options"][0], "Sedentary"]: risk_score += 1
                 
                 st.markdown("---")
                 st.subheader(f"📊 {t['habit_results']}")
                 if risk_score >= 4:
-                    st.error(f"⚠️ **High Symptom Impact Predicted (Risk Score: {risk_score}/5):** Your current sleep ({sleep_hrs} hrs) and hydration ({water_intake} L) are strongly correlated with increased cramp severity and fatigue. Recommendation: Increase water intake and aim for at least 7.5 hours of consistent sleep.")
+                    st.error(t["habit_high_risk"].format(score=risk_score, sleep=sleep_hrs, water=water_intake))
                 elif risk_score >= 2:
-                    st.warning(f"⚡ **Moderate Impact (Risk Score: {risk_score}/5):** Minor lifestyle adjustments—such as increasing hydration or reducing evening caffeine—can noticeably improve your cycle comfort.")
+                    st.warning(t["habit_mod_risk"].format(score=risk_score))
                 else:
-                    st.success(f"✅ **Optimal Habit Balance (Risk Score: {risk_score}/5):** Excellent! Your current lifestyle habits are well-balanced to keep cramp intensity low and energy levels stable.")
+                    st.success(t["habit_low_risk"].format(score=risk_score))
 
     elif app_mode == "Emergency & Clinics":
         st.title(f"🚨 {t['em_heading']}")
