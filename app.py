@@ -31,7 +31,7 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR (ROBUST STREAMLIT COMPATIBLE) ---
+# --- PDF GENERATOR ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
@@ -103,7 +103,7 @@ LANG_DICT = {
         "nav_analytics": "एआई अंतर्दृष्टि और विश्लेषण",
         "nav_doctor": "डॉक्टर रिपोर्ट जेनरेटर",
         "nav_companion": "एआई स्वास्थ्य साथी",
-        "nav_screener": "पीसीओएस जोखिम স্ক্রীনার",
+        "nav_screener": "पीसीओएस जोखिम स्क्रीनर",
         "nav_meds": "दवा ट्रैकर",
         "nav_habit": "आदत सहसंबंध",
         "nav_emergency": "आपातकाल और क्लीनिक",
@@ -178,7 +178,6 @@ nav_options_display = [
 
 selected_display_mode = st.sidebar.radio("Navigation", nav_options_display, label_visibility="collapsed")
 
-# Map selected display back to internal mode key
 reverse_mapping = {
     t["nav_daily"]: "Daily Log & Phase Tracker",
     t["nav_forecast"]: "AI Predictive Forecaster",
@@ -194,7 +193,7 @@ reverse_mapping = {
 
 app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
-# --- LUXURY FEATURE-SPECIFIC GRADIENTS & BUTTON ACCENTS ---
+# --- GRADIENT THEMES ---
 theme_mapping = {
     "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #feada6 100%)", "btn": "#e11d48"},
     "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)", "btn": "#9333ea"},
@@ -234,7 +233,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-# --- MAIN APP ROUTING ---
+# --- MAIN ROUTING ---
 
 if app_mode == "Daily Log & Phase Tracker":
     st.title(f"📅 {t['nav_daily']}")
@@ -386,10 +385,76 @@ elif app_mode == "Habit Correlation":
 
 elif app_mode == "Emergency & Clinics":
     st.title(f"🚨 {t['nav_emergency']}")
-    st.write("Access 24/7 National Emergency Helplines or detect your live location.")
-    st.markdown("- **National Emergency Number:** `112`")
-    st.markdown("- **National Women Helpline:** `1091`")
-    st.markdown("- **National Medical Ambulance:** `108`")
+    st.write("Access 24/7 National Emergency Helplines or detect your live GPS location to find nearby women's hospitals across India.")
+    
+    col_a, col_b = st.columns(2)
+    
+    with col_a:
+        st.markdown("### 🇮🇳 All-India Emergency Helplines")
+        st.markdown("- **National Emergency Number:** `112` (24/7 Medical / Police)")
+        st.markdown("- **National Women Helpline:** `1091`")
+        st.markdown("- **National Medical Ambulance:** `108`")
+        st.markdown("- **Women Helpline (NCW):** `7827170170`")
+        st.markdown("- **KIRAN Mental Health Helpline:** `1800-599-0019`")
+        
+    with col_b:
+        st.markdown("### 📍 Live GPS Location & Hospital Tracker")
+        
+        loc_html = """
+        <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                document.getElementById("status").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            var lat = position.coords.latitude;
+            var lon = position.coords.longitude;
+            var mapsUrl = "https://www.google.com/maps/search/gynaecologist+womens+hospital/@" + lat + "," + lon + ",14z";
+            document.getElementById("status").innerHTML = "<b>✅ Live Location Detected!</b><br><br><a href='" + mapsUrl + "' target='_blank' style='background-color:#dc2626; color:white; padding:10px 16px; text-decoration:none; border-radius:8px; font-weight:bold;'>📍 View Nearby Women's Hospitals on Google Maps</a>";
+        }
+        function showError(error) {
+            document.getElementById("status").innerHTML = "Location access denied or unavailable. Please type your city manually below.";
+        }
+        </script>
+        <button onclick="getLocation()" style="background-color:#dc2626; color:white; border:none; padding:10px 16px; border-radius:8px; cursor:pointer; font-weight:bold;">🎯 Detect My Live GPS Location</button>
+        <div id="status" style="margin-top:15px; font-family:sans-serif;"></div>
+        """
+        components.html(loc_html, height=140)
+        
+        st.markdown("---")
+        st.markdown("### 🏙️ Or Search by City Name")
+        user_city = st.text_input("Enter City/Area Name:", "Hyderabad")
+        
+        city_coords = {
+            "hyderabad": (17.3850, 78.4867),
+            "mumbai": (19.0760, 72.8777),
+            "delhi": (28.6139, 77.2090),
+            "bangalore": (12.9716, 77.5946),
+            "bengaluru": (12.9716, 77.5946),
+            "chennai": (13.0827, 80.2707),
+            "kolkata": (22.5726, 88.3639),
+            "pune": (18.5204, 73.8567),
+            "ahmedabad": (23.0225, 72.5714),
+            "jaipur": (26.9124, 75.7873),
+            "visakhapatnam": (17.6868, 83.2185),
+            "vijayawada": (16.5062, 80.6480)
+        }
+        
+        city_key = user_city.strip().lower()
+        if city_key in city_coords:
+            lat, lon = city_coords[city_key]
+        else:
+            lat, lon = 20.5937, 78.9629
+            
+        hospital_df = pd.DataFrame({'lat': [lat], 'lon': [lon]})
+        st.map(hospital_df, zoom=11)
+        
+        encoded_city = user_city.replace(" ", "+")
+        gmaps_url = f"https://www.google.com/maps/search/gynaecologist+womens+hospital+near+{encoded_city}"
+        st.markdown(f"[👉 Click here to find Women's Hospitals near **{user_city}** on Google Maps]({gmaps_url})")
 
 elif app_mode == "Language & Accessibility":
     st.title(f"🌐 {t['nav_lang']}")
