@@ -393,54 +393,35 @@ LANG_DICT = {
 current_l = st.session_state["lang"]
 t = LANG_DICT.get(current_l, LANG_DICT["English"])
 
-# --- SIDEBAR AUTHENTICATION LOCK ---
-st.sidebar.markdown("### 🔒 Security Vault & Setup")
+# --- SIDEBAR AUTHENTICATION LOCK (LOGIN ONLY) ---
+st.sidebar.markdown("### 🔒 Security Vault Login")
 
 if not st.session_state["vault_unlocked"]:
-    tab_create, tab_login = st.sidebar.tabs(["Create Vault", "Login"])
-    
-    with tab_create:
-        st.markdown("Set custom credentials:")
-        new_user = st.text_input("New Username", key="new_u")
-        new_pass = st.text_input("New Password", type="password", key="new_p")
-        if st.button("Save New Credentials"):
-            if new_user and new_pass:
-                conn = sqlite3.connect(DB_FILE)
-                c = conn.cursor()
-                c.execute("DELETE FROM vault_creds")
-                c.execute("INSERT INTO vault_creds (username, password) VALUES (?, ?)", (new_user, new_pass))
-                conn.commit()
-                conn.close()
-                st.success("Vault credentials created successfully! You can now log in.")
-            else:
-                st.warning("Please enter both username and password.")
-                
-    with tab_login:
-        login_user = st.text_input("Username", key="login_u")
-        login_pass = st.text_input("Password", type="password", key="login_p")
-        if st.button("Unlock Vault"):
-            conn = sqlite3.connect(DB_FILE)
-            c = conn.cursor()
-            c.execute("SELECT username, password FROM vault_creds")
-            saved_cred = c.fetchone()
-            conn.close()
-            
-            s_user = saved_cred[0] if saved_cred else "admin"
-            s_pass = saved_cred[1] if saved_cred else "1234"
-            
-            if login_user == s_user and login_pass == s_pass:
-                st.session_state["vault_unlocked"] = True
-                st.success("Vault Unlocked!")
-                st.rerun()
-            else:
-                st.error("Invalid Username or Password")
+    login_user = st.sidebar.text_input("Username", key="login_u")
+    login_pass = st.sidebar.text_input("Password", type="password", key="login_p")
+    if st.sidebar.button("Unlock Vault"):
+        conn = sqlite3.connect(DB_FILE)
+        c = conn.cursor()
+        c.execute("SELECT username, password FROM vault_creds")
+        saved_cred = c.fetchone()
+        conn.close()
+        
+        s_user = saved_cred[0] if saved_cred else "admin"
+        s_pass = saved_cred[1] if saved_cred else "1234"
+        
+        if login_user == s_user and login_pass == s_pass:
+            st.session_state["vault_unlocked"] = True
+            st.success("Vault Unlocked!")
+            st.rerun()
+        else:
+            st.error("Invalid Username or Password")
 
     st.title("🩺 Welcome to HerHealth AI")
-    st.info("🔒 **Vault Locked:** Please create your secure vault credentials or log in using the sidebar to access your private health dashboard.")
+    st.info("🔒 **Vault Locked:** Please log in using the sidebar credentials (Default: `admin` / `1234`) to access your private health dashboard.")
     st.markdown("""
     ---
     ### 🛡️ Why Security Matters:
-    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar tabs to set up your vault.
+    HerHealth AI employs local database encryption to safeguard all your daily cycle logs, symptom histories, and clinical reports. Use the sidebar to log in to your vault.
     """)
 
 else:
