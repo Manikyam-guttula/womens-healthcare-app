@@ -246,52 +246,6 @@ else:
 
     app_mode = reverse_mapping.get(selected_display_mode, "Daily Log & Phase Tracker")
 
-    # --- LIGHT BACKGROUND WITH ELEGANT WOMAN LINE-DRAWING SVG VECTOR WATERMARK ---
-    # Soft pastel light gradient background paired with a fine minimalist line-art woman silhouette vector
-    svg_woman_watermark = "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='500' height='500' viewBox='0 0 24 24' fill='none' stroke='%23e11d48' stroke-width='0.35' stroke-linecap='round' stroke-linejoin='round' opacity='0.08'><path d='M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z'/><path d='M9 21h6'/><path d='M10 24h4'/></svg>\")"
-
-    theme_mapping = {
-        "Daily Log & Phase Tracker": {"bg": "linear-gradient(135deg, #fff1f2 0%, #ffe4e6 50%, #fecdd3 100%)", "btn": "#e11d48"},
-        "AI Predictive Forecaster": {"bg": "linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #e9d5ff 100%)", "btn": "#9333ea"},
-        "AI Insights & Analytics": {"bg": "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 50%, #bbf7d0 100%)", "btn": "#16a34a"},
-        "Doctor Report Generator": {"bg": "linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 50%, #99f6e4 100%)", "btn": "#0d9488"},
-        "AI Health Companion": {"bg": "linear-gradient(135deg, #fffbeb 0%, #fef3c7 50%, #fde68a 100%)", "btn": "#d97706"},
-        "PCOS Risk Screener": {"bg": "linear-gradient(135deg, #fdf4ff 0%, #fae8ff 50%, #f5d0fe 100%)", "btn": "#c026d3"},
-        "Medication Tracker": {"bg": "linear-gradient(135deg, #eff6ff 0%, #dbeafe 50%, #bfdbfe 100%)", "btn": "#2563eb"},
-        "Habit Correlation": {"bg": "linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%)", "btn": "#059669"},
-        "Emergency & Clinics": {"bg": "linear-gradient(135deg, #fff5f5 0%, #fed7d7 50%, #feb2b2 100%)", "btn": "#dc2626"},
-        "Language & Accessibility": {"bg": "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%)", "btn": "#0284c7"}
-    }
-
-    current_theme = theme_mapping.get(app_mode, {"bg": "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", "btn": "#0f172a"})
-
-    st.markdown(f"""
-    <style>
-        [data-testid="stAppViewContainer"] {{
-            background-image: {svg_woman_watermark}, {current_theme['bg']} !important;
-            background-repeat: repeat, no-repeat !important;
-            background-size: 350px 350px, cover !important;
-            background-position: center, center !important;
-            transition: background 0.6s ease-in-out;
-        }}
-        [data-testid="stMain"] {{ background: transparent !important; }}
-        [data-testid="stSidebar"] {{
-            background-color: rgba(255, 255, 255, 0.95) !important;
-            border-right: 1px solid #cbd5e1 !important;
-        }}
-        div.stButton > button {{
-            background: {current_theme['btn']} !important;
-            color: white !important;
-            border-radius: 8px !important;
-            padding: 0.5rem 1.2rem !important;
-            border: none !important;
-            font-weight: 600 !important;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }}
-        div.stButton > button:hover {{ filter: brightness(0.9); color: white !important; }}
-    </style>
-    """, unsafe_allow_html=True)
-
     # --- FEATURE MODULE ROUTING ---
 
     if app_mode == "Daily Log & Phase Tracker":
