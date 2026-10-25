@@ -40,27 +40,32 @@ def init_db():
 
 init_db()
 
-# --- PDF GENERATOR ---
+# --- SAFE PDF GENERATOR (FIXED UNICODE ERROR) ---
 def generate_pdf(df):
     pdf = FPDF()
     pdf.add_page()
-    pdf.set_font("Arial", 'B', 16)
+    pdf.set_font("Arial", 'B', 14)
     
     pdf.cell(0, 10, "HerHealth AI - Complete Health Summary Report", ln=1, align="C")
     pdf.ln(5)
     pdf.set_font("Arial", size=10)
     pdf.cell(0, 10, f"Generated on: {pd.Timestamp.now().strftime('%Y-%m-%d %H:%M')}", ln=1, align="C")
     pdf.ln(10)
-    pdf.set_font("Arial", 'B', 10)
+    pdf.set_font("Arial", 'B', 9)
+    
+    # Calculate column widths dynamically based on table size
+    col_width = 190 / max(len(df.columns), 1)
     
     for col in df.columns:
-        pdf.cell(30, 10, str(col), border=1)
+        safe_col = str(col).encode('latin-1', 'replace').decode('latin-1')
+        pdf.cell(col_width, 8, safe_col, border=1, align="C")
     pdf.ln()
     
-    pdf.set_font("Arial", size=10)
+    pdf.set_font("Arial", size=9)
     for _, row in df.iterrows():
         for val in row:
-            pdf.cell(30, 10, str(val), border=1)
+            safe_val = str(val).encode('latin-1', 'replace').decode('latin-1')
+            pdf.cell(col_width, 8, safe_val, border=1, align="C")
         pdf.ln()
         
     output = pdf.output(dest='S')
@@ -417,7 +422,7 @@ LANG_DICT = {
         "activity_options": ["आरामदेह / सुस्त (Sedentary)", "हल्की सैर", "मध्यम व्यायाम", "उच्च तीव्रता / जिम"],
         "habit_high_risk": "⚠️ **उच्च लक्षण प्रभाव अनुमानित (जोखिम स्कोर: {score}/5):** आपकी वर्तमान नींद ({sleep} घंटे) और जलयोजन ({water} लीटर) ऐंठन की गंभीरता और थकान से गहराई से जुड़े हुए हैं। सिफ़ारिश: पानी का सेवन बढ़ाएँ और कम से कम 7.5 घंटे की निरंतर नींद का लक्ष्य रखें।",
         "habit_mod_risk": "⚡ **मध्यम प्रभाव (जोखिम स्कोर: {score}/5):** छोटे जीवनशैली समायोजन—जैसे पानी का सेवन बढ़ाना या शाम की कैफीन कम करना—आपके चक्र के आराम को काफी हद तक सुधार सकते हैं।",
-        "habit_low_risk": "✅ **इष्टतम आदत संतुलन (जोखिम स्कोर: {score}/5):** बहुत बढ़िया! ऐंठन की तीव्रता को कम और ऊर्जा के स्तर को स्थिर रखने के लिए आपकी वर्तमान जीवनशैली की आदतें अच्छी तरह से संतुलित हैं।",
+        "habit_low_risk": "✅ **इष्टतम आदत संतुलन (जोखिम स्कोर: {score}/5):** बहुत बढ़िया! ऐंठन की तीव्रता को कम और ऊर्जा के स्तर को स्थिर रखने के लिए आपकी वर्तमान जीवनशैली की आदतें अच्छी तरह से संतुलित हैं.",
 
         # Doctor Report strings
         "doc_download_pdf": "मेडिकल पीडीएफ रिपोर्ट डाउनलोड करें",
