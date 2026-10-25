@@ -125,6 +125,11 @@ LANG_DICT = {
         "recent_history": "Recent Log History",
         "no_logs": "No entries logged yet.",
 
+        # Dropdown options
+        "flow_options": ["None/Dry", "Spotting", "Light", "Medium", "Heavy"],
+        "symptom_options": ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue", "Bloating"],
+        "mood_options": ["Happy", "Calm", "Anxious", "Irritable", "Tired", "Energetic"],
+
         "em_heading": "Emergency & Clinics",
         "em_sub": "Access 24/7 National Emergency Helplines or locate nearby women's hospitals.",
         "india_helplines": "All-India Emergency Helplines",
@@ -244,6 +249,11 @@ LANG_DICT = {
         "recent_history": "ఇటీవలి లాగ్ చరిత్ర",
         "no_logs": "ఇంకా ఎంట్రీలు ఏవీ లాగ్ చేయబడలేదు.",
 
+        # Dropdown options
+        "flow_options": ["ఏదీ లేదు/పొడిగా", "స్పాటింగ్ (చుక్కలు)", "తేలికపాటి (Light)", "मध्यम (Medium)", "అధిక (Heavy)"],
+        "symptom_options": ["ఏదీ లేదు", "తిమ్మిరి / పొత్తికడుపు నొప్పి", "తలనొప్పి / మైగ్రేన్", "మూడ్ స్వింగ్స్ / ఆందోళన", "తీవ్రమైన అలసట", "బ్లోటింగ్ (ఉబ్బు)"],
+        "mood_options": ["సంతోషంగా", "ప్రశాంతంగా", "ఆందోళనగా", "చికాకుగా", "అలసిపోయినట్లు", "శక్తివంతంగా"],
+
         "em_heading": "అత్యవసర & క్లినిక్‌లు",
         "em_sub": "24/7 జాతీయ అత్యవసర హెల్ప్‌లైన్‌లను యాక్సెస్ చేయండి లేదా సమీపంలోని మహిళా ఆసుపత్రులను కనుగొనండి.",
         "india_helplines": "అన్ని భారతదేశ అత్యవసర హెల్ప్‌లైన్‌లు",
@@ -285,7 +295,7 @@ LANG_DICT = {
         "pcos_q6": "PCOS లేదా మధుమేహం యొక్క కుటుంబ చరిత్ర?",
         "pcos_btn": "సమగ్ర రిస్క్‌ను అంచనా వేయండి",
         "pcos_high": "మధ్యస్థ నుండి అధిక రిస్క్ స్కోర్",
-        "pcos_high_msg": "నిపుణుడైన గైనకాలజిస్ట్‌ను సంప్రదించడాన్ని పరిగణించండి.",
+        "pcos_high_msg": "నిపుణడైన గైనకాలజిస్ట్‌ను సంప్రదించడాన్ని పరిగణించండి.",
         "pcos_low": "తక్కువ రిస్క్ స్కోర్",
         "pcos_low_msg": "మీ చక్రం క్రమం తప్పకుండా ట్రాక్ చేయడాన్ని కొనసాగించండి!",
 
@@ -362,6 +372,11 @@ LANG_DICT = {
         "save_success": "दैनिक स्वास्थ्य लॉग सुरक्षित रूप से सहेज लिया गया!",
         "recent_history": "हाल का लॉग इतिहास",
         "no_logs": "अभी तक कोई प्रविष्टि दर्ज नहीं की गई है.",
+
+        # Dropdown options
+        "flow_options": ["कोई नहीं/सूखा", "स्पॉटिंग (दाग)", "हल्का (Light)", "मध्यम (Medium)", "भारी (Heavy)"],
+        "symptom_options": ["कोई नहीं", "ऐंठन / श्रोणि दर्द", "सिरदर्द / माइग्रेन", "मूड में उतार-चढ़ाव / चिंता", "गंभीर थकान", "ब्लोटिंग (सूजन)"],
+        "mood_options": ["खुश", "शांत", "चिंतित", "चिड़चिड़ा", "थका हुआ", "ऊर्जावान"],
 
         "em_heading": "आपातकाल और क्लीनिक",
         "em_sub": "24/7 राष्ट्रीय आपातकालीन हेल्पलाइन तक पहुंचें या नजदीकी महिला अस्पताल खोजें।",
@@ -481,6 +496,11 @@ LANG_DICT = {
         "save_success": "தினசரி சுகாதாரப் பதிவு வெற்றிகரமாக சேமிக்கப்பட்டது!",
         "recent_history": "சமீபத்திய பதிவு வரலாறு",
         "no_logs": "பதிவுகள் எதுவும் இல்லை.",
+
+        # Dropdown options
+        "flow_options": ["எதுவும் இல்லை/வறண்ட", "ஸ்பாட்டிங் (புள்ளிகள்)", "இலேசான (Light)", "நடுத்தர (Medium)", "அதிகமான (Heavy)"],
+        "symptom_options": ["எதுவும் இல்லை", "தசைப்பிடிப்பு / இடுப்பு வலி", "தலைவலி / மைக्रेन", "மனநிலை மாற்றங்கள் / கவலை", "கடுமையான சோர்வு", "வயிறு உப்புசம் (Bloating)"],
+        "mood_options": ["மகிழ்ச்சியாக", "அமைதியாக", "கவலையாக", "கோபமாக", "சோர்வாக", "ஆற்றலாக"],
 
         "em_heading": "அவசரநிலை & கிளினிக்குகள்",
         "em_sub": "24/7 தேசிய அவசர உதவி எண்களை அணுகவும் அல்லது அருகில் உள்ள மருத்துவமனைகளைக் கண்டறியவும்.",
@@ -707,12 +727,12 @@ else:
             with col1:
                 log_date = st.date_input(t["date"])
                 cycle_day = st.number_input(t["cycle_day"], min_value=1, max_value=45, value=1)
-                flow = st.selectbox(t["flow_intensity"], ["None/Dry", "Spotting", "Light", "Medium", "Heavy"])
+                flow = st.selectbox(t["flow_intensity"], t["flow_options"])
             with col2:
-                symptom = st.selectbox(t["primary_symptom"], ["None", "Cramps/Pelvic Pain", "Headache/Migraine", "Mood Swings/Anxiety", "Severe Fatigue", "Bloating"])
+                symptom = st.selectbox(t["primary_symptom"], t["symptom_options"])
                 severity = st.slider(t["severity_level"], 1, 5, 1)
                 energy = st.slider(t["energy_level"], 1, 5, 3)
-                mood = st.selectbox(t["mood"], ["Happy", "Calm", "Anxious", "Irritable", "Tired", "Energetic"])
+                mood = st.selectbox(t["mood"], t["mood_options"])
             
             notes = st.text_area(t["notes"], placeholder=t["notes_placeholder"])
             
